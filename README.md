@@ -1,4 +1,4 @@
-# TradeMaster Pro
+# TradeMaster Pro   https://trademaster.guru/ 
 
 AI-powered stock trading platform that analyzes and predicts market opportunities.
 
