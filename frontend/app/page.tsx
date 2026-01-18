@@ -286,7 +286,7 @@ export default function Home() {
               Miksi TradeMaster Pro?
             </h3>
             <p className="text-center text-sm sm:text-base 2xl:text-2xl text-slate-400 mb-6 sm:mb-8 2xl:mb-12 max-w-2xl 2xl:max-w-4xl mx-auto px-2">
-              Suomen kattavin tekoälyavusteinen osakeanalyysi - kaikki data ja työkalut yhdessä paikassa.
+              Suomen kattavin osakeanalyysi - kaikki data ja työkalut yhdessä paikassa.
             </p>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 2xl:gap-10">
@@ -390,7 +390,7 @@ export default function Home() {
             </h4>
             <p className="text-slate-400 text-xs sm:text-sm 2xl:text-xl max-w-2xl 2xl:max-w-4xl mx-auto mb-3 sm:mb-4 2xl:mb-8 px-2">
               TradeMaster Pro kokoaa yhteen kurssidatan, pörssitiedotteet, sisäpiirikaupat, fundamenttianalyysit
-              ja tekoälypisteytyksen. Ei enää useiden sivustojen selaamista - löydät kaiken tarvitsemasi
+              ja osakepisteytyksen. Ei enää useiden sivustojen selaamista - löydät kaiken tarvitsemasi
               suomalaisista osakkeista yhdellä sivulla.
             </p>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-4 2xl:gap-6 text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
