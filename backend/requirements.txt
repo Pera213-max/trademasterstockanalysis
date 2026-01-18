@@ -1,0 +1,56 @@
+# FastAPI and Web Framework
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+gunicorn==21.2.0
+
+# Database
+sqlalchemy==2.0.36
+psycopg2-binary==2.9.10
+redis==5.2.0
+
+# Environment and Configuration
+python-dotenv==1.0.1
+pydantic-settings==2.6.1
+
+# HTTP Client
+httpx==0.28.0
+requests==2.32.3
+aiohttp==3.10.11
+
+# Data Processing and Analysis
+pandas>=2.2.0
+numpy>=2.0.0
+
+# Machine Learning
+scikit-learn==1.5.2
+xgboost==2.0.3  # Powerful ML for predictions
+
+# Trading APIs
+python-binance==1.0.22
+yfinance==0.2.50
+fredapi==0.5.2
+finnhub-python==2.4.20  # Real-time stock data
+newsapi-python==0.2.7  # News API
+
+# Social Media APIs
+praw==7.8.1
+tweepy==4.14.0
+
+# Task Scheduling
+apscheduler==3.10.4
+
+# WebSocket Support
+python-socketio==5.12.0
+
+# Web Scraping
+beautifulsoup4==4.12.3
+lxml==5.3.0
+
+# LLM APIs
+openai==1.59.3
+anthropic==0.42.0
+
+# Additional utilities
+aiofiles==24.1.0
+python-multipart==0.0.20
+cachetools==5.3.2  # In-memory caching

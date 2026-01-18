@@ -1,0 +1,162 @@
+[
+  {
+    "ticker": "VOLV-B.ST",
+    "symbol": "VOLV-B",
+    "name": "Volvo AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "ERIC-B.ST",
+    "symbol": "ERIC-B",
+    "name": "Telefonaktiebolaget LM Ericsson",
+    "sector": "Technology",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "ABB.ST",
+    "symbol": "ABB",
+    "name": "ABB Ltd",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "ATCO-A.ST",
+    "symbol": "ATCO-A",
+    "name": "Atlas Copco AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SEB-A.ST",
+    "symbol": "SEB-A",
+    "name": "Skandinaviska Enskilda Banken AB",
+    "sector": "Financials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "HM-B.ST",
+    "symbol": "HM-B",
+    "name": "H & M Hennes & Mauritz AB",
+    "sector": "Consumer",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SAND.ST",
+    "symbol": "SAND",
+    "name": "Sandvik AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SWED-A.ST",
+    "symbol": "SWED-A",
+    "name": "Swedbank AB",
+    "sector": "Financials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "ALFA.ST",
+    "symbol": "ALFA",
+    "name": "Alfa Laval AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "ASSA-B.ST",
+    "symbol": "ASSA-B",
+    "name": "ASSA ABLOY AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SCA-B.ST",
+    "symbol": "SCA-B",
+    "name": "Svenska Cellulosa AB",
+    "sector": "Materials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "ESSITY-B.ST",
+    "symbol": "ESSITY-B",
+    "name": "Essity AB",
+    "sector": "Consumer",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SKF-B.ST",
+    "symbol": "SKF-B",
+    "name": "SKF AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "ELECTA-B.ST",
+    "symbol": "ELECTA-B",
+    "name": "Electrolux AB",
+    "sector": "Consumer",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "KINV-B.ST",
+    "symbol": "KINV-B",
+    "name": "Kinnevik AB",
+    "sector": "Financials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "INVE-B.ST",
+    "symbol": "INVE-B",
+    "name": "Investor AB",
+    "sector": "Financials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SECU-B.ST",
+    "symbol": "SECU-B",
+    "name": "Securitas AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "TEL2-B.ST",
+    "symbol": "TEL2-B",
+    "name": "Tele2 AB",
+    "sector": "Telecom",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SKA-B.ST",
+    "symbol": "SKA-B",
+    "name": "Skanska AB",
+    "sector": "Industrials",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  },
+  {
+    "ticker": "SWMA.ST",
+    "symbol": "SWMA",
+    "name": "Swedish Match AB",
+    "sector": "Consumer",
+    "exchange": "STOCKHOLM",
+    "country": "SE"
+  }
+]

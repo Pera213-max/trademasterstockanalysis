@@ -1,0 +1,162 @@
+[
+  {
+    "ticker": "NOKIA.HE",
+    "symbol": "NOKIA",
+    "name": "Nokia Oyj",
+    "sector": "Technology",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "FORTUM.HE",
+    "symbol": "FORTUM",
+    "name": "Fortum Oyj",
+    "sector": "Energy",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "NESTE.HE",
+    "symbol": "NESTE",
+    "name": "Neste Oyj",
+    "sector": "Energy",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "SAMPO.HE",
+    "symbol": "SAMPO",
+    "name": "Sampo Oyj",
+    "sector": "Financials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "KNEBV.HE",
+    "symbol": "KNEBV",
+    "name": "KONE Oyj",
+    "sector": "Industrials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "UPM.HE",
+    "symbol": "UPM",
+    "name": "UPM-Kymmene Oyj",
+    "sector": "Materials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "STERV.HE",
+    "symbol": "STERV",
+    "name": "Stora Enso Oyj",
+    "sector": "Materials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "TYRES.HE",
+    "symbol": "TYRES",
+    "name": "Nokian Renkaat Oyj",
+    "sector": "Consumer",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "ORNBV.HE",
+    "symbol": "ORNBV",
+    "name": "Orion Oyj",
+    "sector": "Healthcare",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "KESKOB.HE",
+    "symbol": "KESKOB",
+    "name": "Kesko Oyj",
+    "sector": "Consumer",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "ELISA.HE",
+    "symbol": "ELISA",
+    "name": "Elisa Oyj",
+    "sector": "Telecom",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "TELIA1.HE",
+    "symbol": "TELIA1",
+    "name": "Telia Company AB",
+    "sector": "Telecom",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "WRT1V.HE",
+    "symbol": "WRT1V",
+    "name": "Wärtsilä Oyj",
+    "sector": "Industrials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "VALMT.HE",
+    "symbol": "VALMT",
+    "name": "Valmet Oyj",
+    "sector": "Industrials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "OUT1V.HE",
+    "symbol": "OUT1V",
+    "name": "Outokumpu Oyj",
+    "sector": "Materials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "CGCBV.HE",
+    "symbol": "CGCBV",
+    "name": "Cargotec Oyj",
+    "sector": "Industrials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "QTCOM.HE",
+    "symbol": "QTCOM",
+    "name": "Qt Group Oyj",
+    "sector": "Technology",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "METSA.HE",
+    "symbol": "METSA",
+    "name": "Metsä Board Oyj",
+    "sector": "Materials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "YIT.HE",
+    "symbol": "YIT",
+    "name": "YIT Oyj",
+    "sector": "Industrials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  },
+  {
+    "ticker": "NRDBY.HE",
+    "symbol": "NRDBY",
+    "name": "Nordea Bank Oyj",
+    "sector": "Financials",
+    "exchange": "HELSINKI",
+    "country": "FI"
+  }
+]
