@@ -110,7 +110,7 @@ export default function USDashboard() {
       {/* Footer */}
       <footer className="border-t border-slate-800/50 py-8 mt-20">
         <div className="max-w-4xl mx-auto px-4 text-center text-sm text-slate-500">
-          <p>TradeMaster Pro - AI-pohjainen osakeanalyysi</p>
+          <p>TradeMaster Pro - Dataohjattu osakeanalyysi</p>
         </div>
       </footer>
     </div>

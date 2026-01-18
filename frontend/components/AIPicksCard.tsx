@@ -34,7 +34,7 @@ const AIPicksCard: React.FC<AIPicksCardProps> = ({
         <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-slate-900/50 border border-purple-500/30 p-6">
           <div className="flex flex-col items-center justify-center py-12">
             <Loader2 className="w-16 h-16 text-purple-400 animate-spin mb-4" />
-            <h3 className="text-2xl font-bold text-white mb-2">Loading AI Predictions</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">Loading Stock Analysis</h3>
             <p className="text-slate-300 text-center max-w-md mb-1">
               Analyzing {selectedHorizon === 'day' ? 'day trading' : selectedHorizon === 'swing' ? 'swing trading' : 'long-term'} opportunities...
             </p>
@@ -66,7 +66,7 @@ const AIPicksCard: React.FC<AIPicksCardProps> = ({
         <div className="flex items-center gap-3 mb-4">
           <AlertCircle className="w-8 h-8 text-red-400" />
           <div>
-            <h3 className="text-xl font-bold text-white">Error Loading AI Picks</h3>
+            <h3 className="text-xl font-bold text-white">Error Loading Stock Picks</h3>
             <p className="text-red-300 text-sm">
               {error instanceof Error ? error.message : 'Failed to load predictions'}
             </p>
@@ -157,7 +157,7 @@ const AIPicksCard: React.FC<AIPicksCardProps> = ({
 
     return {
       isPositive: true,
-      context: `ML model identifies positive signal. Technical analysis supports buy position in coming days.`
+      context: `Technical analysis identifies positive signal. Multiple indicators support buy position in coming days.`
     };
   };
 
@@ -176,8 +176,8 @@ const AIPicksCard: React.FC<AIPicksCardProps> = ({
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h2 className="text-3xl font-bold text-white">AI Picks</h2>
-                <p className="text-slate-300">Powered by Machine Learning</p>
+                <h2 className="text-3xl font-bold text-white">Top Picks</h2>
+                <p className="text-slate-300">Data-Driven Stock Screening</p>
               </div>
             </div>
             <div className="flex flex-col items-end gap-2">
@@ -345,7 +345,7 @@ const AIPicksCard: React.FC<AIPicksCardProps> = ({
           <Clock className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
           <div className="text-sm text-yellow-200">
             <strong className="block mb-1">Investment Disclaimer</strong>
-            AI picks are based on algorithmic analysis and should not be considered financial advice.
+            These picks are based on technical analysis and should not be considered financial advice.
             Always conduct your own research and consider your risk tolerance before making investment decisions.
           </div>
         </div>

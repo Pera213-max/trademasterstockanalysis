@@ -138,7 +138,7 @@ export default function Home() {
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 2xl:gap-4 mb-3 sm:mb-4 2xl:mb-6 text-[11px] sm:text-xs 2xl:text-lg">
                   <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-3 text-slate-300">
                     <Sparkles className="w-3 h-3 2xl:w-6 2xl:h-6 text-yellow-400 flex-shrink-0" />
-                    <span>AI-pisteytys</span>
+                    <span>Pisteytys</span>
                   </div>
                   <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-3 text-slate-300">
                     <Newspaper className="w-3 h-3 2xl:w-6 2xl:h-6 text-cyan-400 flex-shrink-0" />

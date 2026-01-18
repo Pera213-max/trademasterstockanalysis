@@ -105,7 +105,7 @@ const SectorPicksCard: React.FC<SectorPicksCardProps> = ({
         <div>
           <h2 className="text-xl font-bold text-white">Sector Picks</h2>
           <p className="text-sm text-gray-400 mt-1">
-            AI-powered picks by sector and theme
+            Top-scored picks by sector and theme
           </p>
         </div>
         {data?.cached && (

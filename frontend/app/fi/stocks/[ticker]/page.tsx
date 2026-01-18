@@ -978,7 +978,7 @@ export default function FiStockPage() {
           {fundamentalInsight && (
             <section className="bg-slate-800/40 border border-slate-700/50 rounded-xl 2xl:rounded-3xl p-5 2xl:p-10">
               <div className="flex items-center justify-between gap-3 2xl:gap-5 mb-3 2xl:mb-6">
-                <h3 className="text-lg 2xl:text-4xl font-semibold text-white">AI‑tulkinta (fundamentit)</h3>
+                <h3 className="text-lg 2xl:text-4xl font-semibold text-white">Tulkinta (fundamentit)</h3>
                 <span className={`px-2 2xl:px-4 py-0.5 2xl:py-1.5 text-xs 2xl:text-base rounded 2xl:rounded-lg border ${impactClass(fundamentalInsight.impact)}`}>
                   {impactLabel(fundamentalInsight.impact)}
                 </span>

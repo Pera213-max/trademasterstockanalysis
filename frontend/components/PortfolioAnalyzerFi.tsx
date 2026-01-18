@@ -181,7 +181,7 @@ const t = {
   bestPerformer: 'Paras tuotto',
   worstPerformer: 'Heikoin tuotto',
   winRate: 'Voittosuhde',
-  aiInsights: 'AI-salkkuhuomiot',
+  aiInsights: 'Salkkuhuomiot',
   sectorBreakdown: 'Toimialajakauma',
   rebalancing: 'Tasapainotusehdotukset',
   remove: 'Poista',
@@ -1619,7 +1619,7 @@ const PortfolioAnalyzerFi: React.FC = () => {
                           <div className="flex items-start gap-2">
                             <Target className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                             <div className="text-sm text-blue-200">
-                              <strong>AI-suositus:</strong>{' '}
+                              <strong>Suositus:</strong>{' '}
                               {isLargePosition && isWinning ?
                                 `Kotiuta osittain voittoja (${position.weight.toFixed(1)}% salkusta). Kevennä noin 15% tasolle.` :
                               isLargePosition && !isWinning ?

@@ -1,15 +1,15 @@
 # TradeMaster Pro   https://trademaster.guru/ 
 
-AI-powered stock trading platform that analyzes and predicts market opportunities.
+Data-driven stock analysis platform for Finnish and US markets with real-time market data and advanced technical analysis.
 
 ## What this is
 
-TradeMaster Pro is a professional trading platform that combines:
+TradeMaster Pro is a professional trading analysis platform that combines:
 
-- **AI-Powered Predictions** - Machine learning models (scikit-learn, XGBoost) analyze stocks and provide buy/sell recommendations
+- **Advanced Stock Screening** - Multi-factor scoring algorithms analyze 1000+ stocks and generate buy/sell signals
 - **Real-Time Market Data** - Prices, news, and social media sentiment update via WebSocket
-- **Technical Analysis** - RSI, MACD, Bollinger Bands, moving averages
-- **Social Media Monitoring** - Reddit (r/wallstreetbets, r/stocks) and Twitter sentiment analysis
+- **Technical Analysis** - RSI, MACD, Bollinger Bands, moving averages, volume analysis
+- **Social Sentiment Tracking** - Reddit (r/wallstreetbets, r/stocks) and Twitter sentiment monitoring
 - **Portfolio Analysis** - Risk management and diversification analytics
 
 Supports both **US markets** (S&P 500, NYSE, NASDAQ - 1000+ stocks) and **Finnish markets** (Helsinki Stock Exchange).
@@ -20,7 +20,7 @@ I wanted to build a comprehensive trading tool that:
 
 1. Automates stock analysis and saves time from manual research
 2. Aggregates multiple data sources (prices, news, social media) into one view
-3. Provides AI-powered predictions to support decision-making
+3. Provides data-driven signals to support decision-making
 4. Works in real-time with WebSocket connections
 5. Teaches full-stack development with a modern tech stack
 
@@ -31,7 +31,7 @@ I wanted to build a comprehensive trading tool that:
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
 │    Frontend     │────▶│     Backend     │────▶│   Data Sources  │
-│    (Next.js)    │◀────│    (FastAPI)    │◀────│   (APIs, ML)    │
+│    (Next.js)    │◀────│    (FastAPI)    │◀────│    (APIs)       │
 └─────────────────┘     └─────────────────┘     └─────────────────┘
         │                       │
         │                       ▼
@@ -46,8 +46,8 @@ I wanted to build a comprehensive trading tool that:
 ### Data Flow
 
 1. **Backend** fetches data from external APIs (yfinance, Finnhub, Reddit, Twitter)
-2. **Redis** caches data (prices 60s, predictions 12h, news 10min)
-3. **ML models** analyze data and generate predictions
+2. **Redis** caches data (prices 60s, analysis 12h, news 10min)
+3. **Analysis engine** scores stocks using technical indicators and sentiment data
 4. **WebSocket** sends real-time updates to frontend
 5. **Frontend** displays data as interactive charts and cards
 
@@ -60,9 +60,8 @@ Python 3.11+
 ├── SQLAlchemy       # ORM (PostgreSQL)
 ├── Redis            # Caching
 ├── Socket.IO        # Real-time communication
-├── scikit-learn     # Machine learning
-├── XGBoost          # Gradient boosting
-├── Pandas/NumPy     # Data analysis
+├── Pandas/NumPy     # Data analysis & calculations
+├── TA-Lib patterns  # Technical indicator calculations
 └── APScheduler      # Background tasks
 ```
 
@@ -171,7 +170,7 @@ trademasterstockanalysis/
 1. **Full-stack Architecture** - Building a scalable app with separate frontend and backend
 2. **Real-time Systems** - Managing WebSocket connections with Socket.IO
 3. **Caching Strategies** - Redis patterns and TTL-based invalidation
-4. **ML in Production** - Integrating machine learning models into web applications
+4. **Data Pipeline Design** - Aggregating and processing data from multiple APIs
 5. **API Integrations** - Combining multiple external APIs with rate limiting
 6. **TypeScript** - Type-safe frontend development
 7. **Docker** - Containerization and docker-compose for production
@@ -184,7 +183,7 @@ trademasterstockanalysis/
 
 ## Code Examples
 
-### Backend: AI Prediction Endpoint (FastAPI)
+### Backend: Stock Analysis Endpoint (FastAPI)
 
 ```python
 # backend/app/routers/stocks.py
@@ -196,15 +195,15 @@ async def get_stock_analysis(ticker: str):
     if cached:
         return json.loads(cached)
 
-    # Fetch data and run ML model
+    # Fetch data and run analysis
     stock_data = await yfinance_service.get_stock_data(ticker)
-    prediction = ml_predictor.predict(stock_data)
+    analysis = stock_analyzer.analyze(stock_data)
 
     result = {
         "ticker": ticker,
         "price": stock_data.current_price,
-        "prediction": prediction.signal,  # "BUY" / "SELL" / "HOLD"
-        "confidence": prediction.confidence,
+        "signal": analysis.signal,  # "BUY" / "SELL" / "HOLD"
+        "score": analysis.score,
         "technical_indicators": {
             "rsi": stock_data.rsi,
             "macd": stock_data.macd,
@@ -258,43 +257,36 @@ export function TopMovers() {
 }
 ```
 
-### ML Prediction Model (XGBoost)
+### Stock Scoring Algorithm
 
 ```python
-# backend/app/services/ml_predictor.py
+# backend/app/services/predictor.py
 
-from xgboost import XGBClassifier
-import pandas as pd
-import numpy as np
+class StockAnalyzer:
+    def calculate_score(self, data: pd.DataFrame) -> float:
+        score = 0.0
 
-class StockPredictor:
-    def __init__(self):
-        self.model = XGBClassifier(
-            n_estimators=100,
-            max_depth=6,
-            learning_rate=0.1
-        )
+        # Technical indicators (40 points)
+        if data['rsi'].iloc[-1] < 30:  # Oversold
+            score += 15
+        if data['close'].iloc[-1] > data['sma_50'].iloc[-1]:
+            score += 15
+        if data['macd'].iloc[-1] > data['macd_signal'].iloc[-1]:
+            score += 10
 
-    def predict(self, features: pd.DataFrame) -> Prediction:
-        X = self._prepare_features(features)
+        # Volume analysis (20 points)
+        if data['volume'].iloc[-1] > data['volume_avg'].iloc[-1] * 1.5:
+            score += 20
 
-        proba = self.model.predict_proba(X)[0]
-        signal = ["SELL", "HOLD", "BUY"][np.argmax(proba)]
+        # Momentum (20 points)
+        weekly_change = (data['close'].iloc[-1] / data['close'].iloc[-5] - 1)
+        if weekly_change > 0.05:
+            score += 20
 
-        return Prediction(
-            signal=signal,
-            confidence=float(max(proba)),
-            reasons=self._explain_prediction(features)
-        )
+        # Sentiment bonus (20 points)
+        score += self._calculate_sentiment_score(data)
 
-    def _prepare_features(self, data: pd.DataFrame) -> np.ndarray:
-        return np.array([[
-            data['rsi'].iloc[-1],
-            data['macd'].iloc[-1],
-            data['volume_ratio'].iloc[-1],
-            data['price_change_5d'].iloc[-1],
-            data['volatility'].iloc[-1]
-        ]])
+        return min(score, 100)
 ```
 
 ## Roadmap

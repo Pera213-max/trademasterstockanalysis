@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 const defaultDescription =
-  "AI-powered stock analysis for US and Finnish markets with real-time data and insights.";
+  "Data-driven stock analysis for Finnish and US markets with real-time data and technical insights.";
 
 export const viewport = {
   width: "device-width",

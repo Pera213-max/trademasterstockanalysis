@@ -149,7 +149,7 @@ const ShortPicksCard: React.FC<ShortPicksCardProps> = ({
               </div>
               <div>
                 <h2 className="text-3xl font-bold text-white">Short Picks</h2>
-                <p className="text-slate-300">AI-Powered Short Opportunities</p>
+                <p className="text-slate-300">Data-Driven Short Opportunities</p>
               </div>
             </div>
             <div className="flex flex-col items-end gap-2">

@@ -29,8 +29,8 @@ const UsageGuide = () => {
     },
     {
       icon: <TrendingUp className="w-4 h-4 text-green-400" />,
-      title: "AI Picks",
-      description: "AI-scored stock recommendations (0-100)"
+      title: "Top Picks",
+      description: "Scored stock recommendations (0-100)"
     },
     {
       icon: <Newspaper className="w-4 h-4 text-orange-400" />,

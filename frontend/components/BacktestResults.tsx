@@ -74,7 +74,7 @@ const BacktestResults: React.FC<BacktestResultsProps> = ({ className = '' }) => 
             <BarChart3 className="w-6 h-6 text-purple-400" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-white">AI Picks Performance</h2>
+            <h2 className="text-xl font-bold text-white">Top Picks Performance</h2>
             <p className="text-sm text-gray-400">Historical backtest results ({backtestData.period})</p>
           </div>
         </div>

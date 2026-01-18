@@ -518,7 +518,7 @@ const PortfolioAnalyzer: React.FC = () => {
           <div className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 border border-green-500/30 rounded-lg p-6">
             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
               <Brain className="w-6 h-6 text-green-400" />
-              AI Position Analysis
+              Position Analysis
             </h3>
             <div className="space-y-3">
               {analysis.positions.map((position, idx) => {
@@ -573,7 +573,7 @@ const PortfolioAnalyzer: React.FC = () => {
                       <div className="flex items-start gap-2">
                         <Target className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                         <div className="text-sm text-blue-200">
-                          <strong>AI Recommendation:</strong>{' '}
+                          <strong>Recommendation:</strong>{' '}
                           {isLargePosition && isWinning ?
                             `Consider taking partial profits on ${position.ticker}. It represents ${position.weight.toFixed(1)}% of your portfolio. Trim to 15% to reduce concentration risk.` :
                           isLargePosition && !isWinning ?
