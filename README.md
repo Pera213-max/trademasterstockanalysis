@@ -95,7 +95,7 @@ TypeScript / Next.js 14
 
 ```bash
 # Clone the repo
-git clone https://github.com/[username]/trademasterstockanalysis.git
+git clone https://github.com/Pera213-max/trademasterstockanalysis.git
 cd trademasterstockanalysis
 
 # Copy environment template
