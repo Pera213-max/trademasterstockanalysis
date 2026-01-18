@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeMaster Pro - API Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 { color: #60a5fa; }
+        .success { color: #4ade80; }
+        .error { color: #f87171; }
+        .warning { color: #fbbf24; }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover { background: #2563eb; }
+        pre {
+            background: #1e293b;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 3px solid #3b82f6;
+        }
+        .indicator {
+            background: #1e293b;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .positive { border-left: 3px solid #4ade80; }
+        .negative { border-left: 3px solid #f87171; }
+        .neutral { border-left: 3px solid #94a3b8; }
+    </style>
+</head>
+<body>
+    <h1>🚀 TradeMaster Pro - API Connection Test</h1>
+
+    <div id="status">
+        <p>Testing connection to backend...</p>
+    </div>
+
+    <button onclick="testBackend()">🔄 Test Backend Connection</button>
+    <button onclick="testMacroIndicators()">📊 Test Macro Indicators</button>
+    <button onclick="testAllEndpoints()">🧪 Test All Endpoints</button>
+
+    <div id="results"></div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+
+        async function testBackend() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Testing Backend...</h2>';
+
+            try {
+                const response = await fetch(`${API_URL}/docs`);
+                if (response.ok) {
+                    results.innerHTML += '<p class="success">✓ Backend is running!</p>';
+                    results.innerHTML += `<p>Response status: ${response.status}</p>`;
+                    return true;
+                } else {
+                    results.innerHTML += '<p class="error">✗ Backend responded with error</p>';
+                    results.innerHTML += `<p>Status: ${response.status}</p>`;
+                    return false;
+                }
+            } catch (error) {
+                results.innerHTML += '<p class="error">✗ Cannot connect to backend</p>';
+                results.innerHTML += `<p>Error: ${error.message}</p>`;
+                results.innerHTML += '<p class="warning">⚠ Make sure backend is running on port 8000</p>';
+                results.innerHTML += '<pre>cd backend\npython -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload</pre>';
+                return false;
+            }
+        }
+
+        async function testMacroIndicators() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Testing Macro Indicators API...</h2>';
+
+            try {
+                const response = await fetch(`${API_URL}/api/macro/indicators`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                results.innerHTML += '<p class="success">✓ Macro Indicators API works!</p>';
+                results.innerHTML += `<p>Found ${data.count} indicators</p>`;
+                results.innerHTML += `<p>Success: ${data.success}</p>`;
+
+                if (data.summary) {
+                    results.innerHTML += `<p>Summary: ${data.summary.positive} positive, ${data.summary.negative} negative, ${data.summary.neutral} neutral</p>`;
+                    results.innerHTML += `<p>Overall Sentiment: <span class="${data.summary.overall_sentiment.toLowerCase()}">${data.summary.overall_sentiment}</span></p>`;
+                }
+
+                results.innerHTML += '<h3>Indicators:</h3>';
+
+                data.data.forEach(indicator => {
+                    const impactClass = indicator.impact.toLowerCase();
+                    const changeSign = indicator.changePercent >= 0 ? '+' : '';
+                    results.innerHTML += `
+                        <div class="indicator ${impactClass}">
+                            <span><strong>${indicator.shortName || indicator.name}</strong></span>
+                            <span>${indicator.currentValue.toFixed(2)} ${indicator.unit || ''} (${changeSign}${indicator.changePercent.toFixed(2)}%)</span>
+                        </div>
+                    `;
+                });
+
+                results.innerHTML += '<h3>Raw Response:</h3>';
+                results.innerHTML += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+
+            } catch (error) {
+                results.innerHTML += '<p class="error">✗ Failed to fetch macro indicators</p>';
+                results.innerHTML += `<p>Error: ${error.message}</p>`;
+            }
+        }
+
+        async function testAllEndpoints() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Testing All Endpoints...</h2>';
+
+            const endpoints = [
+                { name: 'Macro Indicators', url: '/api/macro/indicators' },
+                { name: 'Stock Picks', url: '/api/stocks/top-picks' },
+                { name: 'Hidden Gems', url: '/api/stocks/hidden-gems' },
+                { name: 'Quick Wins', url: '/api/stocks/quick-wins' },
+                { name: 'News Bombs', url: '/api/news/bombs' },
+            ];
+
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(`${API_URL}${endpoint.url}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        results.innerHTML += `<p class="success">✓ ${endpoint.name}: OK (${data.data?.length || 0} items)</p>`;
+                    } else {
+                        results.innerHTML += `<p class="error">✗ ${endpoint.name}: ${response.status}</p>`;
+                    }
+                } catch (error) {
+                    results.innerHTML += `<p class="error">✗ ${endpoint.name}: ${error.message}</p>`;
+                }
+            }
+        }
+
+        // Auto-test on load
+        window.onload = async () => {
+            const backendOk = await testBackend();
+            if (backendOk) {
+                setTimeout(testMacroIndicators, 1000);
+            }
+        };
+    </script>
+</body>
+</html>
