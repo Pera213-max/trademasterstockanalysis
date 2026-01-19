@@ -84,7 +84,7 @@ export default function Home() {
           </h1>
 
           <p className="text-lg sm:text-xl md:text-2xl 2xl:text-4xl text-slate-300 mb-2 2xl:mb-4">
-            Tekoälyavusteinen osakeanalyysi
+            Datalähtöinen osakeanalyysi
           </p>
           <p className="text-sm sm:text-base 2xl:text-2xl text-slate-400 max-w-xl 2xl:max-w-3xl mx-auto px-2">
             Ammattimaista markkina-analyysiä, reaaliaikaista dataa ja älykkäitä
@@ -244,7 +244,7 @@ export default function Home() {
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8">
                 <div className="flex items-center gap-2 sm:gap-3 2xl:gap-4 mb-2 sm:mb-3 2xl:mb-5">
                   <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-yellow-400 flex-shrink-0" />
-                  <h4 className="text-white font-semibold text-xs sm:text-base 2xl:text-2xl">Tekoälypisteytys</h4>
+                  <h4 className="text-white font-semibold text-xs sm:text-base 2xl:text-2xl">Älykäs pisteytys</h4>
                 </div>
                 <p className="text-[11px] sm:text-sm 2xl:text-xl text-slate-400 line-clamp-3 sm:line-clamp-none">
                   Automaattinen osakkeiden ranking tuotto-, riski- ja fundamenttianalyysillä.
@@ -420,7 +420,7 @@ export default function Home() {
               <span className="text-[11px] sm:text-sm 2xl:text-lg">Ota yhteyttä</span>
             </a>
             <p className="text-center sm:text-right text-[11px] sm:text-sm 2xl:text-lg">
-              Tekoälyavusteista markkina-analyysiä. Ei sijoitusneuvontaa.
+              Datalähtöistä markkina-analyysiä. Ei sijoitusneuvontaa.
             </p>
           </div>
         </div>
