@@ -1303,3 +1303,44 @@ export async function getFiIrHeadlines(ticker: string, limit: number = 5) {
     `/api/fi/ir-headlines/${ticker}?${params}`
   );
 }
+
+// ============================================================================
+// FI DAILY SUMMARY (Gemini AI)
+// ============================================================================
+
+export interface FiDailySummaryMover {
+  ticker: string;
+  name: string;
+  price: number;
+  changePercent: number;
+}
+
+export interface FiDailySummary {
+  date: string;
+  summary: string;
+  gainers: FiDailySummaryMover[];
+  losers: FiDailySummaryMover[];
+  generated_at: string;
+  next_update: string;
+  model: string;
+}
+
+/**
+ * Get AI-generated daily market summary
+ * @param date Optional date in YYYY-MM-DD format (default: latest)
+ */
+export async function getFiDailySummary(date?: string) {
+  const params = date ? new URLSearchParams({ date }) : new URLSearchParams();
+  return apiCall<{ success: boolean; data: FiDailySummary | null; message?: string }>(
+    `/api/fi/daily-summary?${params}`
+  );
+}
+
+/**
+ * Get list of dates with available daily summaries
+ */
+export async function getFiDailySummaryDates(limit: number = 14) {
+  const params = new URLSearchParams({ limit: limit.toString() });
+  return apiCall<{ success: boolean; dates: string[] }>(`/api/fi/daily-summary/dates?${params}`);
+}
+

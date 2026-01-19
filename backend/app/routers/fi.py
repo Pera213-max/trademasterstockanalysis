@@ -23,6 +23,7 @@ from app.services.fi_data import get_fi_data_service
 from app.services.fi_event_service import get_fi_event_service
 from app.services.fi_insight_service import get_fi_insight_service
 from app.services.fi_macro_service import get_fi_macro_service
+from app.services.fi_gemini_service import get_fi_gemini_service
 from app.utils.admin_auth import is_force_refresh_allowed
 
 logger = logging.getLogger(__name__)
@@ -889,3 +890,104 @@ async def analyze_fi_portfolio(request: PortfolioRequest):
     except Exception as e:
         logger.error(f"Error analyzing FI portfolio: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================================
+# FI Daily Market Summary (Gemini AI)
+# ============================================================
+
+@router.get("/daily-summary")
+async def get_daily_summary(
+    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: latest)")
+):
+    """
+    Get AI-generated daily market summary.
+    
+    Returns summary for specified date or latest available.
+    Summaries are generated after market close (19:00 Helsinki time).
+    """
+    try:
+        gemini_service = get_fi_gemini_service()
+        
+        if date:
+            from datetime import datetime as dt
+            try:
+                summary_date = dt.strptime(date, "%Y-%m-%d").date()
+                summary = gemini_service.get_summary(summary_date)
+            except ValueError:
+                raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD")
+        else:
+            summary = gemini_service.get_latest_summary()
+        
+        if not summary:
+            return {
+                "success": True,
+                "data": None,
+                "message": "Ei vielä analyysiä saatavilla."
+            }
+        
+        return {
+            "success": True,
+            "data": summary
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting daily summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/daily-summary/dates")
+async def get_available_summary_dates(
+    limit: int = Query(14, ge=1, le=30)
+):
+    """Get list of dates with available summaries."""
+    try:
+        gemini_service = get_fi_gemini_service()
+        dates = gemini_service.get_available_dates(limit=limit)
+        
+        return {
+            "success": True,
+            "dates": dates
+        }
+    except Exception as e:
+        logger.error(f"Error getting summary dates: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/daily-summary/generate")
+async def generate_daily_summary(
+    request: Request,
+    force: bool = Query(False, description="Force regenerate even if exists")
+):
+    """
+    Generate daily market summary (admin-only).
+    Called by scheduler after market close.
+    """
+    if not is_force_refresh_allowed(request):
+        raise HTTPException(status_code=403, detail="Admin key required")
+    
+    try:
+        gemini_service = get_fi_gemini_service()
+        
+        if not gemini_service.is_enabled():
+            raise HTTPException(
+                status_code=503,
+                detail="Gemini API not configured. Set GEMINI_API_KEY environment variable."
+            )
+        
+        summary = gemini_service.generate_daily_summary(force=force)
+        
+        if not summary:
+            raise HTTPException(status_code=500, detail="Failed to generate summary")
+        
+        return {
+            "success": True,
+            "data": summary
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating daily summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
