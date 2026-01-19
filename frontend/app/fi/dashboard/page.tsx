@@ -7,7 +7,7 @@ import {
   BarChart3, TrendingUp, TrendingDown, ArrowLeft, Globe, Flag,
   Sparkles, Building2, Activity, ChevronRight, Star, AlertTriangle,
   ArrowUpRight, ArrowDownRight, Filter, Search, RefreshCw, PieChart,
-  Target, Zap, Clock, Brain, Calendar
+  Target, Zap, Clock
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import {
@@ -18,14 +18,12 @@ import {
   getFiMacro,
   getFiUniverse,
   getFiPotential,
-  getFiDailySummary,
   FiRankedStock,
   FiStock,
   FiMover,
   FiNewsEvent,
   FiMacroIndicator,
   FiPotentialStock,
-  FiDailySummary,
 } from '@/lib/api';
 
 // Suomenkieliset tekstit
@@ -295,18 +293,6 @@ export default function FiDashboardPage() {
 
   const potentialStocks = potentialData?.data || [];
 
-  // Fetch AI daily summary
-  const {
-    data: dailySummaryData,
-    isLoading: dailySummaryLoading,
-  } = useQuery({
-    queryKey: ['fi-daily-summary'],
-    queryFn: () => getFiDailySummary(),
-    staleTime: 30 * 60 * 1000, // 30 minutes
-  });
-
-  const dailySummary = dailySummaryData?.data;
-
   const gainers = moversData?.gainers || [];
   const losers = moversData?.losers || [];
   const sectors = useMemo(
@@ -538,50 +524,6 @@ export default function FiDashboardPage() {
             </section>
           )}
 
-          {/* AI Daily Summary Section */}
-          <section className="bg-gradient-to-br from-violet-900/30 to-indigo-900/30 border border-violet-700/40 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
-            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-4 lg:mb-6 2xl:mb-8">
-              <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4">
-                <Brain className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 2xl:w-10 2xl:h-10 text-violet-400" />
-                <div>
-                  <h3 className="text-base sm:text-lg lg:text-xl 2xl:text-4xl font-semibold text-white">Päivän analyysi</h3>
-                  <p className="text-[11px] sm:text-xs lg:text-sm 2xl:text-xl text-slate-400">AI-generoitu markkinakatsaus</p>
-                </div>
-              </div>
-              {dailySummary && (
-                <div className="flex flex-wrap items-center gap-2 text-[10px] sm:text-xs 2xl:text-base">
-                  <span className="flex items-center gap-1 px-2 py-1 bg-slate-900/50 rounded-lg text-slate-400">
-                    <Calendar className="w-3 h-3 2xl:w-4 2xl:h-4" />
-                    {new Date(dailySummary.date).toLocaleDateString('fi-FI')}
-                  </span>
-                  <span className="px-2 py-1 bg-violet-500/20 text-violet-300 rounded-lg">
-                    Päivittyy klo {dailySummary.next_update}
-                  </span>
-                </div>
-              )}
-            </div>
-
-            {dailySummaryLoading ? (
-              <div className="text-slate-400 text-sm 2xl:text-2xl">{t.loading}</div>
-            ) : !dailySummary ? (
-              <div className="text-slate-400 text-sm 2xl:text-2xl">Ei vielä analyysiä tältä päivältä. Generoituu markkinoiden sulkeuduttua klo 19:00.</div>
-            ) : (
-              <div className="space-y-4 2xl:space-y-6">
-                <div className="prose prose-sm 2xl:prose-xl prose-invert max-w-none">
-                  <p className="text-slate-200 text-sm lg:text-base 2xl:text-2xl leading-relaxed whitespace-pre-line">
-                    {dailySummary.summary}
-                  </p>
-                </div>
-
-                {dailySummary.generated_at && (
-                  <div className="text-[10px] sm:text-xs 2xl:text-base text-slate-500 pt-2 border-t border-slate-700/50">
-                    Generoitu: {new Date(dailySummary.generated_at).toLocaleString('fi-FI')}
-                  </div>
-                )}
-              </div>
-            )}
-          </section>
-
           {/* Top Movers Section */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 2xl:gap-12">
             {/* Gainers */}
@@ -677,8 +619,8 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('short')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'short'
-                    ? 'bg-purple-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
                   <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 2xl:w-5 2xl:h-5" />
@@ -687,8 +629,8 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('medium')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'medium'
-                    ? 'bg-purple-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
                   <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 2xl:w-5 2xl:h-5" />
@@ -697,8 +639,8 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('long')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'long'
-                    ? 'bg-purple-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                      ? 'bg-purple-600 text-white'
+                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
                   <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 2xl:w-5 2xl:h-5" />
@@ -801,9 +743,9 @@ export default function FiDashboardPage() {
                           )}
                           {event.impact && (
                             <span className={`text-xs 2xl:text-lg px-2 2xl:px-4 py-0.5 2xl:py-1.5 rounded 2xl:rounded-lg ${event.impact === 'POSITIVE' ? 'bg-green-500/20 text-green-400' :
-                              event.impact === 'NEGATIVE' ? 'bg-red-500/20 text-red-400' :
-                                event.impact === 'MIXED' ? 'bg-yellow-500/20 text-yellow-400' :
-                                  'bg-slate-500/20 text-slate-400'
+                                event.impact === 'NEGATIVE' ? 'bg-red-500/20 text-red-400' :
+                                  event.impact === 'MIXED' ? 'bg-yellow-500/20 text-yellow-400' :
+                                    'bg-slate-500/20 text-slate-400'
                               }`}>
                               {event.impact === 'POSITIVE' ? 'Positiivinen' :
                                 event.impact === 'NEGATIVE' ? 'Negatiivinen' :
@@ -854,8 +796,8 @@ export default function FiDashboardPage() {
                   <button
                     onClick={() => setTopMode('best')}
                     className={`px-2 sm:px-3 2xl:px-5 py-0.5 sm:py-1 2xl:py-2 rounded-full transition ${topMode === 'best'
-                      ? 'bg-cyan-600 text-white'
-                      : 'text-slate-300 hover:text-white'
+                        ? 'bg-cyan-600 text-white'
+                        : 'text-slate-300 hover:text-white'
                       }`}
                   >
                     <span className="hidden sm:inline">Top 25 </span>parhaat
@@ -863,8 +805,8 @@ export default function FiDashboardPage() {
                   <button
                     onClick={() => setTopMode('worst')}
                     className={`px-2 sm:px-3 2xl:px-5 py-0.5 sm:py-1 2xl:py-2 rounded-full transition ${topMode === 'worst'
-                      ? 'bg-cyan-600 text-white'
-                      : 'text-slate-300 hover:text-white'
+                        ? 'bg-cyan-600 text-white'
+                        : 'text-slate-300 hover:text-white'
                       }`}
                   >
                     <span className="hidden sm:inline">Top 25 </span>heikoimmat
@@ -1092,8 +1034,8 @@ export default function FiDashboardPage() {
                   type="button"
                   onClick={() => setTopSector('')}
                   className={`p-2 sm:p-3 2xl:p-5 rounded-lg sm:rounded-xl 2xl:rounded-2xl border text-left transition ${topSector === ''
-                    ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-200'
-                    : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
+                      ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-200'
+                      : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
                     }`}
                 >
                   <div className="font-medium text-xs sm:text-sm 2xl:text-2xl">Kaikki</div>
@@ -1107,8 +1049,8 @@ export default function FiDashboardPage() {
                       type="button"
                       onClick={() => setTopSector(sector.sector)}
                       className={`p-2 sm:p-3 2xl:p-5 rounded-lg sm:rounded-xl 2xl:rounded-2xl border text-left transition ${active
-                        ? 'bg-purple-500/15 border-purple-500/40 text-purple-200'
-                        : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
+                          ? 'bg-purple-500/15 border-purple-500/40 text-purple-200'
+                          : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
                         }`}
                     >
                       <div className="font-medium text-xs sm:text-sm 2xl:text-2xl truncate">{sector.sector}</div>

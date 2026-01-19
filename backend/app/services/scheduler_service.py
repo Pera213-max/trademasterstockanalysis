@@ -123,25 +123,6 @@ class BackgroundScheduler:
         """Deprecated: yfinance news ingestion is disabled by default."""
         logger.info("Skipping FI yfinance news refresh (disabled by default)")
 
-    async def generate_fi_daily_summary_task(self):
-        """Background task to generate daily market summary using Gemini."""
-        try:
-            logger.info("Generating FI daily market summary...")
-            from app.services.fi_gemini_service import get_fi_gemini_service
-
-            gemini_service = get_fi_gemini_service()
-            if not gemini_service.is_enabled():
-                logger.warning("Gemini not configured, skipping daily summary")
-                return
-            
-            summary = gemini_service.generate_daily_summary(force=False)
-            if summary:
-                logger.info("FI daily summary generated for %s", summary.get("date"))
-            else:
-                logger.warning("FI daily summary generation returned None")
-        except Exception as e:
-            logger.error("FI daily summary generation failed: %s", e)
-
     async def refresh_social_trending_task(self):
         """Background task to refresh Reddit trending (uses cache)"""
         try:
@@ -465,15 +446,6 @@ class BackgroundScheduler:
         )
 
         # Finnish yfinance news - disabled by default
-
-        # Finnish daily market summary (Gemini AI) - once daily at 19:00 Helsinki time
-        self.scheduler.add_job(
-            self.generate_fi_daily_summary_task,
-            trigger=CronTrigger(hour=19, minute=0, timezone=ZoneInfo("Europe/Helsinki")),
-            id='generate_fi_daily_summary',
-            name='Generate FI Daily Summary 19:00 (after market close)',
-            replace_existing=True
-        )
 
         # Reddit trending - every 4 hours
         self.scheduler.add_job(
