@@ -162,7 +162,7 @@ export default function CryptoDetailsPage() {
         setOnChain(mockOnChain);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching crypto data:', error);
+        // Silently handle errors
         setLoading(false);
       }
     };

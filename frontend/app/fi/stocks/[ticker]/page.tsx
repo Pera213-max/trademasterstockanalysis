@@ -522,13 +522,20 @@ export default function FiStockPage() {
     }
   };
 
+  // Safe format helper that handles Infinity strings and non-numbers
+  const safeFormat = (v: number | string | null | undefined, decimals: number, suffix = '') => {
+    const num = safeNumber(v);
+    if (num === null) return '—';
+    return `${num.toFixed(decimals)}${suffix}`;
+  };
+
   const benchmarkMetrics = [
-    { key: 'peRatio', label: 'P/E', better: 'lower', format: (v: number) => v.toFixed(1) },
-    { key: 'priceToBook', label: 'P/B', better: 'lower', format: (v: number) => v.toFixed(2) },
-    { key: 'dividendYield', label: 'Osinkotuotto', better: 'higher', format: (v: number) => `${v.toFixed(1)}%` },
-    { key: 'returnOnEquity', label: 'ROE', better: 'higher', format: (v: number) => `${v.toFixed(1)}%` },
-    { key: 'profitMargins', label: 'Voittomarginaali', better: 'higher', format: (v: number) => `${v.toFixed(1)}%` },
-    { key: 'debtToEquity', label: 'Velkaantumisaste', better: 'lower', format: (v: number) => `${v.toFixed(0)}%` },
+    { key: 'peRatio', label: 'P/E', better: 'lower', format: (v: number | string) => safeFormat(v, 1) },
+    { key: 'priceToBook', label: 'P/B', better: 'lower', format: (v: number | string) => safeFormat(v, 2) },
+    { key: 'dividendYield', label: 'Osinkotuotto', better: 'higher', format: (v: number | string) => safeFormat(v, 1, '%') },
+    { key: 'returnOnEquity', label: 'ROE', better: 'higher', format: (v: number | string) => safeFormat(v, 1, '%') },
+    { key: 'profitMargins', label: 'Voittomarginaali', better: 'higher', format: (v: number | string) => safeFormat(v, 1, '%') },
+    { key: 'debtToEquity', label: 'Velkaantumisaste', better: 'lower', format: (v: number | string) => safeFormat(v, 0, '%') },
   ];
 
   return (
@@ -957,20 +964,25 @@ export default function FiStockPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 2xl:gap-6">
                 {benchmarkMetrics.map((metric) => {
-                  const value = sectorBenchmarks.values?.[metric.key];
-                  const median = sectorBenchmarks.medians?.[metric.key];
-                  const hasData = value !== null && value !== undefined && median !== null && median !== undefined;
-                  const delta = hasData && median ? ((value - median) / median) * 100 : null;
+                  const rawValue = sectorBenchmarks.values?.[metric.key];
+                  const rawMedian = sectorBenchmarks.medians?.[metric.key];
+                  // Convert to safe numbers (handles "Infinity" strings)
+                  const value = safeNumber(rawValue);
+                  const median = safeNumber(rawMedian);
+                  const hasData = value !== null && median !== null;
+                  const delta = hasData && median !== 0 ? ((value - median) / median) * 100 : null;
+                  // Also check if delta is finite
+                  const safeDelta = delta !== null && isFinite(delta) ? delta : null;
                   const better = hasData
                     ? metric.better === 'lower'
                       ? value < median
                       : value > median
                     : null;
                   const deltaClass = better === null ? 'text-slate-400' : better ? 'text-emerald-400' : 'text-red-400';
-                  const valueLabel = value !== null && value !== undefined ? metric.format(value) : '—';
-                  const medianLabel = median !== null && median !== undefined ? metric.format(median) : '—';
-                  const deltaLabel = delta !== null && delta !== undefined
-                    ? `${delta > 0 ? '+' : ''}${delta.toFixed(1)}%`
+                  const valueLabel = value !== null ? metric.format(value) : '—';
+                  const medianLabel = median !== null ? metric.format(median) : '—';
+                  const deltaLabel = safeDelta !== null
+                    ? `${safeDelta > 0 ? '+' : ''}${safeDelta.toFixed(1)}%`
                     : '—';
 
                   return (

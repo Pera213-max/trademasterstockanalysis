@@ -714,7 +714,7 @@ export async function fetchStockData(ticker: string) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching stock data:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -731,7 +731,7 @@ export async function fetchMarketPrices() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching market prices:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -748,7 +748,7 @@ export async function fetchMarketTrends() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching market trends:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -765,7 +765,7 @@ export async function fetchPredictions() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching predictions:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -782,7 +782,7 @@ export async function fetchPortfolio() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching portfolio:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -805,7 +805,7 @@ export async function createTrade(tradeData: any) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error creating trade:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -822,7 +822,7 @@ export async function fetchCryptoData(symbol: string) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching crypto data:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -839,7 +839,7 @@ export async function fetchCryptoMarket() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching crypto market data:', error);
+    // Error handled silently
     throw error;
   }
 }
@@ -856,7 +856,7 @@ export async function fetchFearGreedIndex() {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching fear & greed index:', error);
+    // Error handled silently
     throw error;
   }
 }

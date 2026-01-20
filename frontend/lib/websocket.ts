@@ -98,8 +98,6 @@ class WebSocketClient {
     }
 
     // Skip WebSocket connection - all data comes from REST API
-    // WebSocket is optional for real-time streaming
-    console.log('[WebSocket] Skipping connection - using REST API instead');
     this.updateStatus('disconnected');
     return;
 
@@ -231,11 +229,9 @@ class WebSocketClient {
     const subscriptionKey = ticker ? `${channel}:${ticker}` : channel;
 
     if (this.subscriptions.has(subscriptionKey)) {
-      console.log(`[WebSocket] Already subscribed to ${subscriptionKey}`);
       return;
     }
 
-    console.log(`[WebSocket] Subscribing to ${subscriptionKey}`);
     this.subscriptions.add(subscriptionKey);
 
     // Send subscription event to server
@@ -258,7 +254,6 @@ class WebSocketClient {
       return;
     }
 
-    console.log(`[WebSocket] Unsubscribing from ${subscriptionKey}`);
     this.subscriptions.delete(subscriptionKey);
 
     // Send unsubscription event to server
@@ -337,7 +332,6 @@ class WebSocketClient {
    */
   public disconnect() {
     if (this.socket) {
-      console.log('[WebSocket] Disconnecting...');
       this.socket.disconnect();
       this.subscriptions.clear();
     }
@@ -349,8 +343,6 @@ class WebSocketClient {
   public emit(event: string, data: any) {
     if (this.socket?.connected) {
       this.socket.emit(event, data);
-    } else {
-      console.warn('[WebSocket] Cannot emit, not connected');
     }
   }
 }
@@ -414,7 +406,6 @@ export function useWebSocket<T = WebSocketMessage>(
       setError(null);
     } catch (err) {
       setError(err as Error);
-      console.error('[useWebSocket] Error processing message:', err);
     }
   }, []);
 
