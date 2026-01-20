@@ -123,10 +123,23 @@ const formatPercent = (value: number | null | undefined, decimals = 2) => {
 };
 
 // Format number (Finnish format with comma)
-const formatNumber = (value: number | null | undefined, decimals = 2, showZeroAsDash = false) => {
+const formatNumber = (value: number | string | null | undefined, decimals = 2, showZeroAsDash = false) => {
   if (value === null || value === undefined) return '—';
-  if (showZeroAsDash && value === 0) return '—';
-  return value.toFixed(decimals).replace('.', ',');
+  // Handle "Infinity" string or Infinity number
+  if (value === 'Infinity' || value === '-Infinity' || value === Infinity || value === -Infinity || (typeof value === 'number' && !isFinite(value))) return '—';
+  const numValue = typeof value === 'string' ? parseFloat(value) : value;
+  if (isNaN(numValue)) return '—';
+  if (showZeroAsDash && numValue === 0) return '—';
+  return numValue.toFixed(decimals).replace('.', ',');
+};
+
+// Safe number conversion - returns null for Infinity, NaN, or invalid values
+const safeNumber = (value: number | string | null | undefined): number | null => {
+  if (value === null || value === undefined) return null;
+  if (value === 'Infinity' || value === '-Infinity' || value === Infinity || value === -Infinity) return null;
+  const numValue = typeof value === 'string' ? parseFloat(value) : value;
+  if (isNaN(numValue) || !isFinite(numValue)) return null;
+  return numValue;
 };
 
 // Format large number (Finnish format with comma)
@@ -222,45 +235,51 @@ const generateInsights = (analysis: any) => {
     }
   }
 
-  // PE ratio insights
-  if (fundamentals.peRatio && fundamentals.peRatio > 0) {
-    if (fundamentals.peRatio < 15) {
-      strengths.push(`Edullinen P/E-luku: ${fundamentals.peRatio.toFixed(1)}`);
-    } else if (fundamentals.peRatio > 35) {
-      risks.push(`Korkea P/E-luku: ${fundamentals.peRatio.toFixed(1)}`);
+  // PE ratio insights - use safeNumber to handle "Infinity" strings from API
+  const peRatio = safeNumber(fundamentals.peRatio);
+  if (peRatio && peRatio > 0) {
+    if (peRatio < 15) {
+      strengths.push(`Edullinen P/E-luku: ${peRatio.toFixed(1)}`);
+    } else if (peRatio > 35) {
+      risks.push(`Korkea P/E-luku: ${peRatio.toFixed(1)}`);
     }
   }
 
   // Dividend insights
-  if (fundamentals.dividendYield && fundamentals.dividendYield > 3) {
-    strengths.push(`Hyvä osinkotuotto: ${fundamentals.dividendYield.toFixed(1)}%`);
+  const dividendYield = safeNumber(fundamentals.dividendYield);
+  if (dividendYield && dividendYield > 3) {
+    strengths.push(`Hyvä osinkotuotto: ${dividendYield.toFixed(1)}%`);
   }
 
   // Profit margin insights
-  if (fundamentals.profitMargins) {
-    if (fundamentals.profitMargins > 0.15) {
-      strengths.push(`Vahva voittomarginaali: ${(fundamentals.profitMargins * 100).toFixed(1)}%`);
-    } else if (fundamentals.profitMargins < 0) {
+  const profitMargins = safeNumber(fundamentals.profitMargins);
+  if (profitMargins !== null) {
+    if (profitMargins > 0.15) {
+      strengths.push(`Vahva voittomarginaali: ${(profitMargins * 100).toFixed(1)}%`);
+    } else if (profitMargins < 0) {
       risks.push('Tappiollinen liiketoiminta');
     }
   }
 
   // ROE insights
-  if (fundamentals.returnOnEquity && fundamentals.returnOnEquity > 0.15) {
-    strengths.push(`Korkea pääoman tuotto (ROE): ${(fundamentals.returnOnEquity * 100).toFixed(1)}%`);
+  const returnOnEquity = safeNumber(fundamentals.returnOnEquity);
+  if (returnOnEquity && returnOnEquity > 0.15) {
+    strengths.push(`Korkea pääoman tuotto (ROE): ${(returnOnEquity * 100).toFixed(1)}%`);
   }
 
   // Debt insights
-  if (fundamentals.debtToEquity && fundamentals.debtToEquity > 150) {
-    risks.push(`Korkea velkaantuminen: ${fundamentals.debtToEquity.toFixed(0)}%`);
+  const debtToEquity = safeNumber(fundamentals.debtToEquity);
+  if (debtToEquity && debtToEquity > 150) {
+    risks.push(`Korkea velkaantuminen: ${debtToEquity.toFixed(0)}%`);
   }
 
   // Revenue growth insights
-  if (fundamentals.revenueGrowth) {
-    if (fundamentals.revenueGrowth > 0.1) {
-      strengths.push(`Liikevaihto kasvaa: ${(fundamentals.revenueGrowth * 100).toFixed(1)}%`);
-    } else if (fundamentals.revenueGrowth < -0.1) {
-      risks.push(`Liikevaihto laskee: ${(fundamentals.revenueGrowth * 100).toFixed(1)}%`);
+  const revenueGrowth = safeNumber(fundamentals.revenueGrowth);
+  if (revenueGrowth !== null) {
+    if (revenueGrowth > 0.1) {
+      strengths.push(`Liikevaihto kasvaa: ${(revenueGrowth * 100).toFixed(1)}%`);
+    } else if (revenueGrowth < -0.1) {
+      risks.push(`Liikevaihto laskee: ${(revenueGrowth * 100).toFixed(1)}%`);
     }
   }
 
