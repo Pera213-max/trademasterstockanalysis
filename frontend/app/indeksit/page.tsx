@@ -1053,7 +1053,7 @@ export default function IndicesPage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-cyan-400" />
-            <span>TradeMaster Pro - Indeksit</span>
+            <span>OsakedataX - Indeksit</span>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/fi/dashboard" className="hover:text-cyan-400 transition-colors">

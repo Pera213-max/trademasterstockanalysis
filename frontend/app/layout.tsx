@@ -13,8 +13,8 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "TradeMaster Pro",
-    template: "%s | TradeMaster Pro",
+    default: "OsakedataX",
+    template: "%s | OsakedataX",
   },
   description: defaultDescription,
   icons: {
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
   themeColor: "#0b1120",
   openGraph: {
-    title: "TradeMaster Pro",
+    title: "OsakedataX",
     description: defaultDescription,
     type: "website",
     images: [
@@ -32,13 +32,13 @@ export const metadata: Metadata = {
         url: "/icon-512.png",
         width: 512,
         height: 512,
-        alt: "TradeMaster Pro",
+        alt: "OsakedataX",
       },
     ],
   },
   twitter: {
     card: "summary",
-    title: "TradeMaster Pro",
+    title: "OsakedataX",
     description: defaultDescription,
     images: ["/icon-512.png"],
   },

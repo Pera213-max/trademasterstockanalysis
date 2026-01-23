@@ -19,7 +19,7 @@ export default function USDashboard() {
                 </div>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white">TradeMaster Pro</h1>
+                <h1 className="text-xl font-bold text-white">OsakedataX</h1>
                 <p className="text-xs text-slate-400">USA Markets</p>
               </div>
             </Link>
@@ -110,7 +110,7 @@ export default function USDashboard() {
       {/* Footer */}
       <footer className="border-t border-slate-800/50 py-8 mt-20">
         <div className="max-w-4xl mx-auto px-4 text-center text-sm text-slate-500">
-          <p>TradeMaster Pro - Dataohjattu osakeanalyysi</p>
+          <p>OsakedataX - Dataohjattu osakeanalyysi</p>
         </div>
       </footer>
     </div>

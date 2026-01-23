@@ -19,7 +19,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true);
     // Load theme from localStorage
-    const savedTheme = localStorage.getItem('trademaster-theme') as Theme;
+    const savedTheme = localStorage.getItem('osakedatax-theme') as Theme;
     if (savedTheme) {
       setThemeState(savedTheme);
       document.documentElement.classList.toggle('dark', savedTheme === 'dark');
@@ -32,7 +32,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('trademaster-theme', newTheme);
+    localStorage.setItem('osakedatax-theme', newTheme);
     document.documentElement.classList.toggle('dark', newTheme === 'dark');
   };
 

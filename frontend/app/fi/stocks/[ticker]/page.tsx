@@ -28,7 +28,7 @@ const TIME_PERIODS = [
 
 // Finnish translations
 const t = {
-  title: 'TradeMaster Pro',
+  title: 'OsakedataX',
   subtitle: 'Osakeanalyysi',
   backToDashboard: 'Takaisin',
   loading: 'Ladataan...',
@@ -1149,7 +1149,7 @@ export default function FiStockPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 2xl:gap-6 text-sm 2xl:text-2xl text-slate-500">
             <div className="flex items-center gap-2 2xl:gap-4">
               <BarChart3 className="w-5 h-5 2xl:w-8 2xl:h-8 text-cyan-400" />
-              <span>TradeMaster Pro</span>
+              <span>OsakedataX</span>
               <span>•</span>
               <span>Nasdaq Helsinki</span>
             </div>

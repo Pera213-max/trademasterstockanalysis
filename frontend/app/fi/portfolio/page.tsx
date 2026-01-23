@@ -86,7 +86,7 @@ const POPULAR_STOCKS = [
   { ticker: 'ORION B', name: 'Orion' },
 ];
 
-const STORAGE_KEY = 'trademaster_fi_portfolio';
+const STORAGE_KEY = 'osakedatax_fi_portfolio';
 
 export default function FiPortfolioPage() {
   const [holdings, setHoldings] = useState<Holding[]>([]);

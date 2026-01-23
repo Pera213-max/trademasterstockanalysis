@@ -80,7 +80,7 @@ export default function Home() {
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-8xl font-bold text-white mb-3 sm:mb-4 2xl:mb-6">
-            TradeMaster Pro
+            OsakedataX
           </h1>
 
           <p className="text-lg sm:text-xl md:text-2xl 2xl:text-4xl text-slate-300 mb-2 2xl:mb-4">
@@ -280,10 +280,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Miksi TradeMaster Pro? */}
+          {/* Miksi OsakedataX? */}
           <div className="mt-10 sm:mt-16 2xl:mt-24">
             <h3 className="text-center text-xl sm:text-2xl 2xl:text-5xl font-bold text-white mb-2 sm:mb-3 2xl:mb-6">
-              Miksi TradeMaster Pro?
+              Miksi OsakedataX?
             </h3>
             <p className="text-center text-sm sm:text-base 2xl:text-2xl text-slate-400 mb-6 sm:mb-8 2xl:mb-12 max-w-2xl 2xl:max-w-4xl mx-auto px-2">
               Suomen kattavin osakeanalyysi - kaikki data ja työkalut yhdessä paikassa.
@@ -389,7 +389,7 @@ export default function Home() {
               Kaikki yhdessä paikassa
             </h4>
             <p className="text-slate-400 text-xs sm:text-sm 2xl:text-xl max-w-2xl 2xl:max-w-4xl mx-auto mb-3 sm:mb-4 2xl:mb-8 px-2">
-              TradeMaster Pro kokoaa yhteen kurssidatan, pörssitiedotteet, sisäpiirikaupat, fundamenttianalyysit
+              OsakedataX kokoaa yhteen kurssidatan, pörssitiedotteet, sisäpiirikaupat, fundamenttianalyysit
               ja osakepisteytyksen. Ei enää useiden sivustojen selaamista - löydät kaiken tarvitsemasi
               suomalaisista osakkeista yhdellä sivulla.
             </p>
@@ -409,7 +409,7 @@ export default function Home() {
         <div className="max-w-4xl 2xl:max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 2xl:gap-6 text-xs sm:text-sm 2xl:text-xl text-slate-500">
           <div className="flex items-center gap-2 2xl:gap-4">
             <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-cyan-400" />
-            <span>TradeMaster Pro</span>
+            <span>OsakedataX</span>
           </div>
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 2xl:gap-6">
             <a

@@ -1,5 +1,5 @@
 /**
- * WebSocket Client for TradeMaster Pro
+ * WebSocket Client for OsakedataX
  *
  * Real-time data streaming using Socket.io
  * Connects to FastAPI backend with Socket.io support

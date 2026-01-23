@@ -28,7 +28,7 @@ import {
 
 // Suomenkieliset tekstit
 const t = {
-  title: 'TradeMaster Pro',
+  title: 'OsakedataX',
   subtitle: 'Suomen Osakkeet',
   exchange: 'Nasdaq Helsinki',
   topRanked: 'Parhaat Osakkeet',
@@ -37,8 +37,8 @@ const t = {
   gainers: 'Nousijat',
   losers: 'Laskijat',
   sectors: 'Toimialat',
-  events: 'Tiedotteet & sisäpiiri',
-  eventsDesc: 'Viimeisimmät pörssitiedotteet ja merkittävät tapahtumat',
+  events: 'Tiedotteet & Uutiset',
+  eventsDesc: '2 viikon merkittävimmät pörssitiedotteet',
   score: 'Pisteet',
   risk: 'Riski',
   price: 'Hinta',
@@ -260,14 +260,14 @@ export default function FiDashboardPage() {
     staleTime: 60 * 60 * 1000, // 1 hour
   });
 
-  // Fetch significant events (filtered, no duplicates, last 7 days)
+  // Fetch significant events (filtered, no duplicates, last 14 days)
   const {
     data: eventsData,
     isLoading: eventsLoading,
     error: eventsError
   } = useQuery({
     queryKey: ['fi-significant-events'],
-    queryFn: () => getFiSignificantEvents(7, 8),
+    queryFn: () => getFiSignificantEvents(14, 8),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
@@ -1071,7 +1071,7 @@ export default function FiDashboardPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-4 2xl:gap-8 text-xs sm:text-sm 2xl:text-2xl text-slate-500">
             <div className="flex items-center gap-1.5 sm:gap-2 2xl:gap-4 flex-wrap justify-center">
               <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-cyan-400" />
-              <span>TradeMaster Pro</span>
+              <span>OsakedataX</span>
               <span className="hidden sm:inline">•</span>
               <span className="hidden sm:inline">Nasdaq Helsinki</span>
               <span className="hidden sm:inline">•</span>

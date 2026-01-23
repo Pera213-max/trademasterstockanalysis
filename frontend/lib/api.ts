@@ -1,5 +1,5 @@
 /**
- * API Client for TradeMaster Pro
+ * API Client for OsakedataX
  * Central location for all API calls to the backend
  */
 
