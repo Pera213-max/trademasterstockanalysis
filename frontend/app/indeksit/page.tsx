@@ -1057,10 +1057,7 @@ export default function IndicesPage() {
           </div>
           <div className="flex items-center gap-4">
             <Link href="/fi/dashboard" className="hover:text-cyan-400 transition-colors">
-              Suomi
-            </Link>
-            <Link href="/us/dashboard" className="hover:text-purple-400 transition-colors">
-              USA
+              Osakkeet
             </Link>
             <Link href="/" className="hover:text-white transition-colors">
               Etusivu

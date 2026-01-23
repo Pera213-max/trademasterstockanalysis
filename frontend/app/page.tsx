@@ -54,16 +54,12 @@ export default function Home() {
     }
   };
 
-  const [usStatus, setUsStatus] = useState<MarketStatus>(() =>
-    getMarketStatus("America/New_York", 9, 30, 16, 0)
-  );
   const [fiStatus, setFiStatus] = useState<MarketStatus>(() =>
     getMarketStatus("Europe/Helsinki", 10, 0, 18, 30)
   );
 
   useEffect(() => {
     const id = setInterval(() => {
-      setUsStatus(getMarketStatus("America/New_York", 9, 30, 16, 0));
       setFiStatus(getMarketStatus("Europe/Helsinki", 10, 0, 18, 30));
     }, 60 * 1000);
     return () => clearInterval(id);
@@ -161,48 +157,8 @@ export default function Home() {
               </div>
             </Link>
 
-            {/* USA & Indeksit samalla rivillä */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 2xl:gap-8">
-              {/* USA - Tulossa pian */}
-              <div
-                className="group relative overflow-hidden bg-slate-800/40 border border-slate-700/40 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-5 2xl:p-8 opacity-80 cursor-default"
-              >
-                <div className="absolute top-0 right-0 w-24 h-24 2xl:w-40 2xl:h-40 bg-purple-500/5 rounded-full blur-2xl" />
-
-                <div className="absolute top-3 right-3 2xl:top-5 2xl:right-5 px-2 2xl:px-4 py-0.5 2xl:py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-[10px] 2xl:text-sm font-semibold text-white shadow-lg">
-                  Tulossa pian
-                </div>
-
-                <div className="relative">
-                  <div className="flex items-center gap-2 sm:gap-3 2xl:gap-5 mb-2 sm:mb-3 2xl:mb-5">
-                    <div className="p-1.5 sm:p-2 2xl:p-4 bg-purple-500/20 rounded-lg 2xl:rounded-xl">
-                      <Building2 className="w-5 h-5 sm:w-6 sm:h-6 2xl:w-10 2xl:h-10 text-purple-400" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg sm:text-xl 2xl:text-4xl font-bold text-white">USA</h3>
-                      <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">NYSE & NASDAQ</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 2xl:space-y-2 mb-2 sm:mb-3 2xl:mb-5 text-[11px] sm:text-xs 2xl:text-lg">
-                    <div className="flex items-center gap-2 2xl:gap-3 text-slate-400">
-                      <TrendingUp className="w-3 h-3 2xl:w-5 2xl:h-5 text-green-400" />
-                      <span>S&P 500</span>
-                    </div>
-                    <div className="flex items-center gap-2 2xl:gap-3 text-slate-400">
-                      <Building2 className="w-3 h-3 2xl:w-5 2xl:h-5 text-blue-400" />
-                      <span>NYSE & NASDAQ</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 2xl:gap-3 text-slate-500 font-medium text-xs sm:text-sm 2xl:text-xl">
-                    <span>Kehitteillä</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Indeksisijoittaminen */}
-              <Link
+            {/* Indeksisijoittaminen */}
+            <Link
                 href="/indeksit"
                 className="group relative overflow-hidden bg-gradient-to-r from-emerald-900/30 to-teal-900/30 hover:from-emerald-900/50 hover:to-teal-900/50 border border-emerald-700/40 hover:border-emerald-500/60 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-5 2xl:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/20 block"
               >
@@ -232,7 +188,6 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            </div>
           </div>
 
           {/* Ominaisuudet */}
@@ -374,11 +329,11 @@ export default function Home() {
                 <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Salkun hajauttaminen, riskit ja vertailu indekseihin</p>
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8 text-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-purple-500/20 flex items-center justify-center">
-                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-purple-400" />
+                <div className="w-8 h-8 sm:w-10 sm:h-10 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-orange-500/20 flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-orange-400" />
                 </div>
-                <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">USA-analyysit</h4>
-                <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Syvälliset analyysit S&P 500 ja muille USA-osakkeille</p>
+                <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Viikon momentum</h4>
+                <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Viikon parhaat ja heikoimmat osakkeet, momentum-signaalit</p>
               </div>
             </div>
           </div>
