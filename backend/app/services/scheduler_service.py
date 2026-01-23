@@ -262,15 +262,12 @@ class BackgroundScheduler:
             logger.error("Failed to start data manager worker: %s", e)
 
     async def warm_cache_on_startup(self):
-        """Warm heavy caches so users do not wait on first request."""
+        """Warm Finnish stock caches on startup."""
         try:
-            logger.info("Warming cache on startup...")
+            logger.info("Warming FI cache on startup...")
 
-            # Start yfinance data manager worker FIRST
+            # Start yfinance data manager worker
             await self.start_data_manager_worker()
-
-            # Trigger initial stock data pre-fetch in background
-            await self.prefetch_stock_data_task()
 
             # Warm Finnish stock caches in background
             try:
@@ -280,38 +277,15 @@ class BackgroundScheduler:
             except Exception as e:
                 logger.error("Failed to start FI cache warming: %s", e)
 
-            # Warm US analysis cache on startup (core tickers only)
-            if os.getenv("US_ANALYSIS_PREFETCH_ON_STARTUP", "true").lower() in ("1", "true", "yes"):
-                await self.refresh_us_analysis_cache_task(reason="startup")
-
-            # Then warm AI picks cache
-            await self.refresh_ai_picks_task(timeframe="day")
-            await self.refresh_ai_picks_task(timeframe="swing")
-            await self.refresh_ai_picks_task(timeframe="long")
-            await self.refresh_hidden_gems_task(timeframe="day", reason="startup")
-            await self.refresh_hidden_gems_task(timeframe="swing", reason="startup")
-            await self.refresh_hidden_gems_task(timeframe="long", reason="startup")
-            await self.refresh_quick_wins_task(reason="startup")
-
-            # Also refresh news and social on startup
-            await self.refresh_news_task()
-            await self.refresh_social_trending_task()
-            await self.refresh_fi_disclosures_task()
-            await self.refresh_fi_ir_headlines_task()
-
             # Warm FI macro indicators cache on startup
             await self.refresh_fi_macro_cache_task()
 
             # Warm FI momentum cache on startup
             await self.refresh_fi_momentum_cache_task()
 
-            # Kick off a full FI cache warm (quotes + fundamentals + history)
-            try:
-                from app.services.fi_data import get_fi_data_service
-                fi_service = get_fi_data_service()
-                fi_service.warm_cache_async()
-            except Exception as e:
-                logger.error("Failed to start full FI cache warm: %s", e)
+            # Finnish disclosures and news
+            await self.refresh_fi_disclosures_task()
+            await self.refresh_fi_ir_headlines_task()
 
             logger.info("Startup cache warm completed")
         except Exception as e:
@@ -392,15 +366,6 @@ class BackgroundScheduler:
         logger.info("=" * 60)
 
         # Add jobs with different intervals
-        # News refresh - every 4 hours (cached, so no need for frequent updates)
-        self.scheduler.add_job(
-            self.refresh_news_task,
-            trigger=IntervalTrigger(hours=4),
-            id='refresh_news',
-            name='Refresh News Every 4 Hours',
-            replace_existing=True
-        )
-
         # Finnish disclosures/news - once daily (reduce load, enough for FI market)
         self.scheduler.add_job(
             self.refresh_fi_disclosures_task,
@@ -446,15 +411,6 @@ class BackgroundScheduler:
             replace_existing=True
         )
 
-        # US analysis cache warm - once daily (core tickers)
-        self.scheduler.add_job(
-            self.refresh_us_analysis_cache_task,
-            trigger=CronTrigger(hour=3, minute=30, timezone=ZoneInfo("UTC")),
-            id='refresh_us_analysis_cache',
-            name='Refresh US Analysis Cache Daily 03:30 UTC',
-            replace_existing=True
-        )
-
         # Finnish short positions (FIVA) - once daily at 06:00 Helsinki time
         self.scheduler.add_job(
             self.refresh_fi_shorts_task,
@@ -473,105 +429,6 @@ class BackgroundScheduler:
             replace_existing=True
         )
 
-        # Finnish yfinance news - disabled by default
-
-        # Reddit trending - every 4 hours
-        self.scheduler.add_job(
-            self.refresh_social_trending_task,
-            trigger=IntervalTrigger(hours=4),
-            id='refresh_social_trending',
-            name='Refresh Reddit Trending Every 4 Hours',
-            replace_existing=True
-        )
-
-        self.scheduler.add_job(
-            self.refresh_market_data_task,
-            trigger=IntervalTrigger(minutes=2),
-            id='refresh_market',
-            name='Refresh Market Data Every 2 Minutes',
-            replace_existing=True
-        )
-
-        self.scheduler.add_job(
-            self.refresh_ai_picks_task,
-            trigger=IntervalTrigger(days=1),
-            id='refresh_ai_picks_day',
-            name='Refresh AI Picks Day (Daily)',
-            replace_existing=True,
-            kwargs={"timeframe": "day"}
-        )
-
-        self.scheduler.add_job(
-            self.refresh_ai_picks_task,
-            trigger=IntervalTrigger(days=2),
-            id='refresh_ai_picks_swing',
-            name='Refresh AI Picks Swing (Every 2 Days)',
-            replace_existing=True,
-            kwargs={"timeframe": "swing"}
-        )
-
-        self.scheduler.add_job(
-            self.refresh_ai_picks_task,
-            trigger=IntervalTrigger(days=3),
-            id='refresh_ai_picks_long',
-            name='Refresh AI Picks Long (Every 3 Days)',
-            replace_existing=True,
-            kwargs={"timeframe": "long"}
-        )
-
-        self.scheduler.add_job(
-            self.refresh_hidden_gems_task,
-            trigger=IntervalTrigger(days=1),
-            id='refresh_hidden_gems_day',
-            name='Refresh Hidden Gems Day (Daily)',
-            replace_existing=True,
-            kwargs={"timeframe": "day"}
-        )
-
-        self.scheduler.add_job(
-            self.refresh_hidden_gems_task,
-            trigger=IntervalTrigger(days=2),
-            id='refresh_hidden_gems_swing',
-            name='Refresh Hidden Gems Swing (Every 2 Days)',
-            replace_existing=True,
-            kwargs={"timeframe": "swing"}
-        )
-
-        self.scheduler.add_job(
-            self.refresh_hidden_gems_task,
-            trigger=IntervalTrigger(days=3),
-            id='refresh_hidden_gems_long',
-            name='Refresh Hidden Gems Long (Every 3 Days)',
-            replace_existing=True,
-            kwargs={"timeframe": "long"}
-        )
-
-        self.scheduler.add_job(
-            self.refresh_quick_wins_task,
-            trigger=IntervalTrigger(hours=12),
-            id='refresh_quick_wins',
-            name='Refresh Quick Wins Twice Daily',
-            replace_existing=True
-        )
-
-        self.scheduler.add_job(
-            self.refresh_universe_alerts_task,
-            trigger=IntervalTrigger(minutes=15),
-            id='refresh_universe_alerts',
-            name='Refresh Universe Alerts Every 15 Minutes',
-            replace_existing=True
-        )
-
-        # Stock data pre-fetch - ensures all 4000+ stocks are cached
-        # Runs every 30 minutes to keep cache fresh
-        self.scheduler.add_job(
-            self.prefetch_stock_data_task,
-            trigger=IntervalTrigger(minutes=30),
-            id='prefetch_stock_data',
-            name='Pre-fetch Stock Data Every 30 Minutes',
-            replace_existing=True
-        )
-
         # Start the scheduler
         self.scheduler.start()
         self.is_running = True
@@ -582,14 +439,13 @@ class BackgroundScheduler:
         except RuntimeError:
             logger.warning("No running event loop; skipping startup cache warm")
 
-        logger.info("News refresh: Every 4 hours (cached)")
-        logger.info("Reddit trending: Every 4 hours (cached)")
-        logger.info("Market data: Every 2 minutes")
-        logger.info("AI picks (Top Picks): day daily, swing every 2 days, long every 3 days")
-        logger.info("Hidden gems: day daily, swing every 2 days, long every 3 days")
-        logger.info("Quick wins: twice daily")
-        logger.info("Universe smart alerts: Every 15 minutes")
-        logger.info("Stock data pre-fetch: Every 30 minutes (4000+ stocks)")
+        logger.info("FI Disclosures: Daily 06:30")
+        logger.info("FI IR Headlines: Daily 06:45")
+        logger.info("FI Short Positions: Daily 06:00")
+        logger.info("FI Macro Indicators: Every 5 minutes")
+        logger.info("FI Momentum: Every 15 minutes")
+        logger.info("FI Full Cache: Daily 18:50")
+        logger.info("FI Fundamental Insights: Daily 19:00")
         logger.info("=" * 60)
 
     def stop(self):
