@@ -36,6 +36,8 @@ CACHE_TTL_MOVERS = 600  # 10 minutes for movers
 CACHE_TTL_QUICK_DATA_STALE = 86400  # 24 hours fallback for quick data
 CACHE_TTL_RANKINGS_STALE = 86400  # 24 hours fallback for rankings
 CACHE_TTL_MOVERS_STALE = 3600  # 1 hour fallback for movers
+CACHE_TTL_MOMENTUM = 900  # 15 minutes for weekly momentum
+CACHE_TTL_MOMENTUM_STALE = 7200  # 2 hours fallback for momentum
 CACHE_TTL_CACHE_READY = 86400  # 24 hours cache readiness flag
 CACHE_TTL_ANALYSIS = 3600  # 1 hour for analysis results
 CACHE_TTL_ANALYSIS_STALE = 86400  # 24 hours fallback for analysis results
@@ -2430,9 +2432,6 @@ class FiDataService:
         stale_key = "fi:weekly_momentum:stale"
         lock_key = "fi:weekly_momentum:lock"
 
-        CACHE_TTL = 900  # 15 minutes
-        STALE_TTL = 7200  # 2 hours
-
         def _slice(result):
             if not result:
                 return {
@@ -2452,19 +2451,19 @@ class FiDataService:
                 "updated_at": result.get("updated_at")
             }
 
-        cached = self._get_cached_json(cache_key, local_ttl=CACHE_TTL)
+        cached = self._get_cached_json(cache_key, local_ttl=CACHE_TTL_MOMENTUM)
         if cached is not None:
             return _slice(cached)
 
-        stale = self._get_cached_json(stale_key, local_ttl=STALE_TTL)
+        stale = self._get_cached_json(stale_key, local_ttl=CACHE_TTL_MOMENTUM_STALE)
         if stale is not None:
             if self._try_acquire_lock(lock_key, 300):
                 self._refresh_cache_in_background(
                     self._build_weekly_momentum,
                     cache_key,
                     stale_key,
-                    CACHE_TTL,
-                    STALE_TTL,
+                    CACHE_TTL_MOMENTUM,
+                    CACHE_TTL_MOMENTUM_STALE,
                     lock_key
                 )
             return _slice(stale)
@@ -2472,13 +2471,13 @@ class FiDataService:
         if self._try_acquire_lock(lock_key, 600):
             try:
                 result = self._build_weekly_momentum()
-                self._set_cached_json(cache_key, result, CACHE_TTL, local_ttl=CACHE_TTL)
-                self._set_cached_json(stale_key, result, STALE_TTL, local_ttl=STALE_TTL)
+                self._set_cached_json(cache_key, result, CACHE_TTL_MOMENTUM, local_ttl=CACHE_TTL_MOMENTUM)
+                self._set_cached_json(stale_key, result, CACHE_TTL_MOMENTUM_STALE, local_ttl=CACHE_TTL_MOMENTUM_STALE)
                 return _slice(result)
             finally:
                 self._release_lock(lock_key)
 
-        waited = self._wait_for_cache(cache_key, stale_key, wait_seconds=10, local_ttl=CACHE_TTL)
+        waited = self._wait_for_cache(cache_key, stale_key, wait_seconds=10, local_ttl=CACHE_TTL_MOMENTUM)
         if waited is not None:
             return _slice(waited)
 

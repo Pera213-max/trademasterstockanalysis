@@ -803,18 +803,25 @@ class FiEventService:
 
         since = datetime.utcnow() - timedelta(days=days)
 
+        # Extend search to 30 days to find more news
+        extended_since = datetime.utcnow() - timedelta(days=max(days, 30))
+
         with _db_session() as db:
             query = db.query(FiNewsEvent)
             # Only events with a ticker (company-specific)
             query = query.filter(FiNewsEvent.ticker.isnot(None))
             query = query.filter(FiNewsEvent.ticker != "")
-            query = query.filter(FiNewsEvent.event_type.notin_(["NEWS", "COMPANY_NEWS"]))
             # Only recent events
-            query = query.filter(FiNewsEvent.published_at >= since)
+            query = query.filter(FiNewsEvent.published_at >= extended_since)
             # Order by date and importance
             query = query.order_by(FiNewsEvent.published_at.desc().nullslast(), FiNewsEvent.id.desc())
             # Fetch more than needed for filtering
-            events = query.limit(limit * 5).all()
+            events = query.limit(limit * 10).all()
+
+        # Filter by type - only show actual news, exclude SHORT_POSITION entirely from dashboard
+        priority_types = {"NEWS", "COMPANY_NEWS", "PRESS_RELEASE", "INSIDER_TRADE",
+                         "EARNINGS", "MANAGERS_TRANSACTIONS", "DIVIDEND"}
+        events = [e for e in events if e.event_type in priority_types]
 
         # Filter out generic market notices
         filtered = []

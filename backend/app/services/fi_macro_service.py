@@ -78,15 +78,28 @@ class FiMacroService:
         # Fetch fresh data
         indicators = self._fetch_all_indicators()
 
-        # Cache result
-        if self.redis_cache and self.redis_cache.is_connected():
-            try:
-                data_json = json.dumps(indicators)
-                self.redis_cache.redis_client.setex(cache_key, CACHE_TTL, data_json)
-                self.redis_cache.redis_client.setex(stale_key, STALE_CACHE_TTL, data_json)
-                logger.info(f"FI macro: cached {len(indicators['indices'])} indices, {len(indicators['currencies'])} currencies, {len(indicators['rates'])} rates")
-            except Exception as e:
-                logger.warning(f"FI macro cache write error: {e}")
+        # If fetch failed (empty results), try stale cache
+        if not indicators.get("indices") and not indicators.get("currencies"):
+            logger.warning("FI macro: fresh fetch returned empty, trying stale cache")
+            if self.redis_cache and self.redis_cache.is_connected():
+                try:
+                    stale = self.redis_cache.redis_client.get(stale_key)
+                    if stale:
+                        logger.info("FI macro: using stale cache as fallback")
+                        return json.loads(stale)
+                except Exception as e:
+                    logger.warning(f"FI macro stale cache read error: {e}")
+
+        # Cache result if we have data
+        if indicators.get("indices") or indicators.get("currencies"):
+            if self.redis_cache and self.redis_cache.is_connected():
+                try:
+                    data_json = json.dumps(indicators)
+                    self.redis_cache.redis_client.setex(cache_key, CACHE_TTL, data_json)
+                    self.redis_cache.redis_client.setex(stale_key, STALE_CACHE_TTL, data_json)
+                    logger.info(f"FI macro: cached {len(indicators['indices'])} indices, {len(indicators['currencies'])} currencies, {len(indicators['rates'])} rates")
+                except Exception as e:
+                    logger.warning(f"FI macro cache write error: {e}")
 
         return indicators
 
