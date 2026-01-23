@@ -302,6 +302,9 @@ class BackgroundScheduler:
             # Warm FI macro indicators cache on startup
             await self.refresh_fi_macro_cache_task()
 
+            # Warm FI momentum cache on startup
+            await self.refresh_fi_momentum_cache_task()
+
             # Kick off a full FI cache warm (quotes + fundamentals + history)
             try:
                 from app.services.fi_data import get_fi_data_service
@@ -335,6 +338,22 @@ class BackgroundScheduler:
             logger.info("FI macro cache refreshed: %s indicators", result.get("count", 0))
         except Exception as e:
             logger.error("FI macro cache refresh failed: %s", e)
+
+    async def refresh_fi_momentum_cache_task(self):
+        """Background task to refresh Finnish weekly momentum cache."""
+        try:
+            logger.info("Refreshing FI momentum cache...")
+            from app.services.fi_data import get_fi_data_service
+
+            fi_service = get_fi_data_service()
+            # This builds and caches momentum data
+            result = fi_service.get_weekly_momentum(limit=10)
+            gainers = len(result.get("weekly_gainers", []))
+            losers = len(result.get("weekly_losers", []))
+            volume = len(result.get("unusual_volume", []))
+            logger.info("FI momentum cache refreshed: %s gainers, %s losers, %s volume signals", gainers, losers, volume)
+        except Exception as e:
+            logger.error("FI momentum cache refresh failed: %s", e)
 
     async def refresh_us_analysis_cache_task(self, reason: str = "interval"):
         """Background task to precompute US stock analysis caches."""
@@ -415,6 +434,15 @@ class BackgroundScheduler:
             trigger=IntervalTrigger(minutes=5),
             id='refresh_fi_macro_cache',
             name='Refresh FI Macro Indicators Every 5 Minutes',
+            replace_existing=True
+        )
+
+        # Finnish momentum - every 15 minutes (weekly gainers/losers, volume, RSI)
+        self.scheduler.add_job(
+            self.refresh_fi_momentum_cache_task,
+            trigger=IntervalTrigger(minutes=15),
+            id='refresh_fi_momentum_cache',
+            name='Refresh FI Momentum Every 15 Minutes',
             replace_existing=True
         )
 
