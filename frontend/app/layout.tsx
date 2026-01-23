@@ -3,7 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 
 const defaultDescription =
-  "Data-driven stock analysis for Finnish and US markets with real-time data and technical insights.";
+  "OsakedataX - Suomalaisten osakkeiden data ja analyysi. Reaaliaikainen markkinadata, tekninen analyysi ja sijoitustyökalut Helsingin pörssiin.";
 
 export const viewport = {
   width: "device-width",

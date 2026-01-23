@@ -1,7 +1,7 @@
 {
-  "name": "TradeMaster Pro",
-  "short_name": "TradeMaster",
-  "description": "AI-Powered Stock Analysis",
+  "name": "OsakedataX",
+  "short_name": "OsakedataX",
+  "description": "Suomalaisten osakkeiden data ja analyysi",
   "icons": [
     {
       "src": "/icon-192.png",
