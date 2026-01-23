@@ -13,6 +13,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import {
   getFiScreener,
   getFiMovers,
+  getFiMomentum,
   getFiSectors,
   getFiSignificantEvents,
   getFiMacro,
@@ -21,6 +22,7 @@ import {
   FiRankedStock,
   FiStock,
   FiMover,
+  FiMomentumStock,
   FiNewsEvent,
   FiMacroIndicator,
   FiPotentialStock,
@@ -36,6 +38,13 @@ const t = {
   movers: 'Päivän Liikkujat',
   gainers: 'Nousijat',
   losers: 'Laskijat',
+  momentum: 'Viikon Momentum',
+  weeklyGainers: 'Viikon nousijat',
+  weeklyLosers: 'Viikon laskijat',
+  unusualVolume: 'Epätavallinen volyymi',
+  overbought: 'Yliostetut (RSI>70)',
+  oversold: 'Ylimyydyt (RSI<30)',
+  weekReturn: 'Vko tuotto',
   sectors: 'Toimialat',
   events: 'Tiedotteet & Uutiset',
   eventsDesc: '2 viikon merkittävimmät pörssitiedotteet',
@@ -242,6 +251,17 @@ export default function FiDashboardPage() {
     queryKey: ['fi-movers'],
     queryFn: () => getFiMovers(10),
     staleTime: 60 * 1000, // 1 minute
+  });
+
+  // Fetch weekly momentum
+  const {
+    data: momentumData,
+    isLoading: momentumLoading,
+    error: momentumError
+  } = useQuery({
+    queryKey: ['fi-momentum'],
+    queryFn: () => getFiMomentum(10),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
   // Fetch sectors
@@ -603,6 +623,133 @@ export default function FiDashboardPage() {
                 </div>
               )}
             </div>
+          </section>
+
+          {/* Weekly Momentum Section */}
+          <section className="bg-gradient-to-br from-orange-900/30 to-amber-900/30 border border-orange-700/40 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
+            <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4 mb-4 sm:mb-6 2xl:mb-10">
+              <div className="p-1.5 sm:p-2 lg:p-2.5 2xl:p-4 bg-orange-500/20 rounded-lg 2xl:rounded-xl">
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 2xl:w-10 2xl:h-10 text-orange-400" />
+              </div>
+              <div>
+                <h2 className="text-lg sm:text-xl lg:text-2xl 2xl:text-5xl font-bold text-white">{t.momentum}</h2>
+                <p className="text-xs sm:text-sm 2xl:text-xl text-slate-400">Viikon parhaat ja heikommat, volyymipiikit, RSI-signaalit</p>
+              </div>
+            </div>
+
+            {momentumLoading ? (
+              <div className="text-slate-400 text-sm 2xl:text-2xl">{t.loading}</div>
+            ) : momentumError ? (
+              <div className="text-red-400 text-sm 2xl:text-2xl">{t.error}</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 2xl:gap-6">
+                {/* Weekly Gainers */}
+                <div className="bg-slate-900/50 rounded-xl 2xl:rounded-2xl p-4 2xl:p-6">
+                  <div className="flex items-center gap-2 mb-3 2xl:mb-5">
+                    <TrendingUp className="w-4 h-4 2xl:w-6 2xl:h-6 text-green-400" />
+                    <span className="text-sm 2xl:text-xl font-semibold text-white">{t.weeklyGainers}</span>
+                  </div>
+                  <div className="space-y-2 2xl:space-y-3">
+                    {(momentumData?.weekly_gainers || []).slice(0, 5).map((stock: FiMomentumStock) => (
+                      <Link
+                        key={stock.ticker}
+                        href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
+                        className="flex items-center justify-between p-2 2xl:p-4 bg-slate-800/50 hover:bg-slate-800 rounded-lg 2xl:rounded-xl transition-colors"
+                      >
+                        <span className="text-sm 2xl:text-lg text-white font-medium">{stock.ticker.replace('.HE', '')}</span>
+                        <span className="text-sm 2xl:text-lg text-green-400 font-semibold">+{stock.weeklyReturn.toFixed(1)}%</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Weekly Losers */}
+                <div className="bg-slate-900/50 rounded-xl 2xl:rounded-2xl p-4 2xl:p-6">
+                  <div className="flex items-center gap-2 mb-3 2xl:mb-5">
+                    <TrendingDown className="w-4 h-4 2xl:w-6 2xl:h-6 text-red-400" />
+                    <span className="text-sm 2xl:text-xl font-semibold text-white">{t.weeklyLosers}</span>
+                  </div>
+                  <div className="space-y-2 2xl:space-y-3">
+                    {(momentumData?.weekly_losers || []).slice(0, 5).map((stock: FiMomentumStock) => (
+                      <Link
+                        key={stock.ticker}
+                        href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
+                        className="flex items-center justify-between p-2 2xl:p-4 bg-slate-800/50 hover:bg-slate-800 rounded-lg 2xl:rounded-xl transition-colors"
+                      >
+                        <span className="text-sm 2xl:text-lg text-white font-medium">{stock.ticker.replace('.HE', '')}</span>
+                        <span className="text-sm 2xl:text-lg text-red-400 font-semibold">{stock.weeklyReturn.toFixed(1)}%</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Unusual Volume */}
+                <div className="bg-slate-900/50 rounded-xl 2xl:rounded-2xl p-4 2xl:p-6">
+                  <div className="flex items-center gap-2 mb-3 2xl:mb-5">
+                    <Activity className="w-4 h-4 2xl:w-6 2xl:h-6 text-yellow-400" />
+                    <span className="text-sm 2xl:text-xl font-semibold text-white">{t.unusualVolume}</span>
+                  </div>
+                  <div className="space-y-2 2xl:space-y-3">
+                    {(momentumData?.unusual_volume || []).slice(0, 5).map((stock: FiMomentumStock) => (
+                      <Link
+                        key={stock.ticker}
+                        href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
+                        className="flex items-center justify-between p-2 2xl:p-4 bg-slate-800/50 hover:bg-slate-800 rounded-lg 2xl:rounded-xl transition-colors"
+                      >
+                        <span className="text-sm 2xl:text-lg text-white font-medium">{stock.ticker.replace('.HE', '')}</span>
+                        <span className="text-sm 2xl:text-lg text-yellow-400 font-semibold">{stock.volumeRatio.toFixed(1)}x</span>
+                      </Link>
+                    ))}
+                    {(momentumData?.unusual_volume || []).length === 0 && (
+                      <div className="text-slate-500 text-sm 2xl:text-lg">Ei volyymisignaaleja</div>
+                    )}
+                  </div>
+                </div>
+
+                {/* RSI Signals */}
+                <div className="bg-slate-900/50 rounded-xl 2xl:rounded-2xl p-4 2xl:p-6">
+                  <div className="flex items-center gap-2 mb-3 2xl:mb-5">
+                    <Target className="w-4 h-4 2xl:w-6 2xl:h-6 text-purple-400" />
+                    <span className="text-sm 2xl:text-xl font-semibold text-white">RSI-signaalit</span>
+                  </div>
+                  <div className="space-y-3 2xl:space-y-4">
+                    {(momentumData?.oversold || []).length > 0 && (
+                      <div>
+                        <div className="text-xs 2xl:text-sm text-green-400 mb-1 2xl:mb-2">Ylimyyty (osto?)</div>
+                        {(momentumData?.oversold || []).slice(0, 3).map((stock: FiMomentumStock) => (
+                          <Link
+                            key={stock.ticker}
+                            href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
+                            className="flex items-center justify-between p-2 2xl:p-3 bg-green-900/20 hover:bg-green-900/30 rounded-lg 2xl:rounded-xl transition-colors mb-1"
+                          >
+                            <span className="text-sm 2xl:text-lg text-white">{stock.ticker.replace('.HE', '')}</span>
+                            <span className="text-sm 2xl:text-lg text-green-400">RSI {stock.rsi}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                    {(momentumData?.overbought || []).length > 0 && (
+                      <div>
+                        <div className="text-xs 2xl:text-sm text-red-400 mb-1 2xl:mb-2">Yliostettu (myynti?)</div>
+                        {(momentumData?.overbought || []).slice(0, 3).map((stock: FiMomentumStock) => (
+                          <Link
+                            key={stock.ticker}
+                            href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
+                            className="flex items-center justify-between p-2 2xl:p-3 bg-red-900/20 hover:bg-red-900/30 rounded-lg 2xl:rounded-xl transition-colors mb-1"
+                          >
+                            <span className="text-sm 2xl:text-lg text-white">{stock.ticker.replace('.HE', '')}</span>
+                            <span className="text-sm 2xl:text-lg text-red-400">RSI {stock.rsi}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                    {(momentumData?.oversold || []).length === 0 && (momentumData?.overbought || []).length === 0 && (
+                      <div className="text-slate-500 text-sm 2xl:text-lg">Ei RSI-signaaleja</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
           </section>
 
           {/* Potential Picks Section */}

@@ -2416,6 +2416,176 @@ class FiDataService:
         }
 
 
+    def get_weekly_momentum(self, limit: int = 10) -> Dict[str, Any]:
+        """
+        Get weekly momentum data for Finnish stocks.
+
+        Returns:
+        - Weekly gainers (best 5-day performers)
+        - Weekly losers (worst 5-day performers)
+        - Unusual volume (stocks with volume > 2x average)
+        - RSI signals (overbought/oversold stocks)
+        """
+        cache_key = "fi:weekly_momentum"
+        stale_key = "fi:weekly_momentum:stale"
+        lock_key = "fi:weekly_momentum:lock"
+
+        CACHE_TTL = 900  # 15 minutes
+        STALE_TTL = 7200  # 2 hours
+
+        def _slice(result):
+            if not result:
+                return {
+                    "weekly_gainers": [],
+                    "weekly_losers": [],
+                    "unusual_volume": [],
+                    "overbought": [],
+                    "oversold": [],
+                    "updated_at": None
+                }
+            return {
+                "weekly_gainers": (result.get("weekly_gainers") or [])[:limit],
+                "weekly_losers": (result.get("weekly_losers") or [])[:limit],
+                "unusual_volume": (result.get("unusual_volume") or [])[:limit],
+                "overbought": (result.get("overbought") or [])[:5],
+                "oversold": (result.get("oversold") or [])[:5],
+                "updated_at": result.get("updated_at")
+            }
+
+        cached = self._get_cached_json(cache_key, local_ttl=CACHE_TTL)
+        if cached is not None:
+            return _slice(cached)
+
+        stale = self._get_cached_json(stale_key, local_ttl=STALE_TTL)
+        if stale is not None:
+            if self._try_acquire_lock(lock_key, 300):
+                self._refresh_cache_in_background(
+                    self._build_weekly_momentum,
+                    cache_key,
+                    stale_key,
+                    CACHE_TTL,
+                    STALE_TTL,
+                    lock_key
+                )
+            return _slice(stale)
+
+        if self._try_acquire_lock(lock_key, 600):
+            try:
+                result = self._build_weekly_momentum()
+                self._set_cached_json(cache_key, result, CACHE_TTL, local_ttl=CACHE_TTL)
+                self._set_cached_json(stale_key, result, STALE_TTL, local_ttl=STALE_TTL)
+                return _slice(result)
+            finally:
+                self._release_lock(lock_key)
+
+        waited = self._wait_for_cache(cache_key, stale_key, wait_seconds=10, local_ttl=CACHE_TTL)
+        if waited is not None:
+            return _slice(waited)
+
+        return {
+            "weekly_gainers": [],
+            "weekly_losers": [],
+            "unusual_volume": [],
+            "overbought": [],
+            "oversold": [],
+            "updated_at": None
+        }
+
+    def _build_weekly_momentum(self) -> Dict[str, Any]:
+        """Build weekly momentum data for all Finnish stocks"""
+        from datetime import datetime
+        import time
+
+        tickers = self.get_all_tickers()
+        weekly_data = []
+        unusual_volume = []
+        overbought = []
+        oversold = []
+
+        for i, ticker in enumerate(tickers):
+            try:
+                # Get 1 month of history for calculations
+                history = self.get_history(ticker, range="1mo", interval="1d")
+                if not history or len(history) < 6:
+                    continue
+
+                stock_info = self.get_stock_info(ticker)
+                name = stock_info.get("name") if stock_info else ticker
+
+                # Calculate weekly return (5 trading days)
+                current_price = history[-1].get("close", 0)
+                week_ago_price = history[-6].get("close", 0) if len(history) >= 6 else history[0].get("close", 0)
+
+                if week_ago_price and week_ago_price > 0:
+                    weekly_return = ((current_price - week_ago_price) / week_ago_price) * 100
+                else:
+                    weekly_return = 0
+
+                # Calculate average volume and current volume
+                volumes = [h.get("volume", 0) for h in history if h.get("volume")]
+                avg_volume = sum(volumes[:-1]) / len(volumes[:-1]) if len(volumes) > 1 else 0
+                current_volume = history[-1].get("volume", 0)
+                volume_ratio = current_volume / avg_volume if avg_volume > 0 else 0
+
+                # Calculate RSI
+                rsi = None
+                if len(history) >= 15:
+                    closes = pd.Series([h.get("close", 0) for h in history])
+                    delta = closes.diff()
+                    gain = delta.where(delta > 0, 0).rolling(window=14).mean()
+                    loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+                    rs = gain / loss
+                    rsi_series = 100 - (100 / (1 + rs))
+                    rsi = float(rsi_series.iloc[-1]) if not pd.isna(rsi_series.iloc[-1]) else None
+
+                stock_data = {
+                    "ticker": ticker,
+                    "name": name,
+                    "price": round(current_price, 2),
+                    "weeklyReturn": round(weekly_return, 2),
+                    "volume": current_volume,
+                    "avgVolume": int(avg_volume),
+                    "volumeRatio": round(volume_ratio, 2),
+                    "rsi": round(rsi, 1) if rsi else None
+                }
+
+                weekly_data.append(stock_data)
+
+                # Check for unusual volume (> 2x average)
+                if volume_ratio >= 2.0:
+                    unusual_volume.append(stock_data)
+
+                # Check for RSI signals
+                if rsi:
+                    if rsi >= 70:
+                        overbought.append(stock_data)
+                    elif rsi <= 30:
+                        oversold.append(stock_data)
+
+                # Rate limiting
+                if (i + 1) % 10 == 0:
+                    time.sleep(0.3)
+
+            except Exception as e:
+                logger.debug(f"Failed to get momentum for {ticker}: {e}")
+                continue
+
+        # Sort by weekly return
+        weekly_data.sort(key=lambda x: x["weeklyReturn"], reverse=True)
+        unusual_volume.sort(key=lambda x: x["volumeRatio"], reverse=True)
+        overbought.sort(key=lambda x: x.get("rsi", 0), reverse=True)
+        oversold.sort(key=lambda x: x.get("rsi", 100))
+
+        return {
+            "weekly_gainers": weekly_data,
+            "weekly_losers": weekly_data[::-1],
+            "unusual_volume": unusual_volume,
+            "overbought": overbought,
+            "oversold": oversold,
+            "updated_at": datetime.utcnow().isoformat()
+        }
+
+
 # Singleton instance
 _fi_data_service = None
 

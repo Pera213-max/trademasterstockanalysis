@@ -235,6 +235,36 @@ async def get_movers(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/momentum")
+async def get_weekly_momentum(
+    limit: int = Query(10, ge=1, le=20)
+):
+    """
+    Get weekly momentum data for Finnish stocks.
+
+    Returns:
+    - Weekly gainers (best 5-day performers)
+    - Weekly losers (worst 5-day performers)
+    - Unusual volume (stocks with volume > 2x average)
+    - RSI signals (overbought/oversold stocks)
+
+    Args:
+        limit: Number of stocks per category (1-20)
+    """
+    try:
+        fi_service = get_fi_data_service()
+        momentum = fi_service.get_weekly_momentum(limit=limit)
+
+        return {
+            "success": True,
+            **momentum
+        }
+
+    except Exception as e:
+        logger.error(f"Error getting momentum: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/potential")
 async def get_potential(
     timeframe: str = Query("short", regex="^(short|medium|long)$", description="Timeframe: short, medium, or long"),

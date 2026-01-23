@@ -1157,6 +1157,39 @@ export async function getFiMovers(limit: number = 10) {
 }
 
 /**
+ * Momentum stock data
+ */
+export interface FiMomentumStock {
+  ticker: string;
+  name: string;
+  price: number;
+  weeklyReturn: number;
+  volume: number;
+  avgVolume: number;
+  volumeRatio: number;
+  rsi: number | null;
+}
+
+export interface FiMomentumData {
+  weekly_gainers: FiMomentumStock[];
+  weekly_losers: FiMomentumStock[];
+  unusual_volume: FiMomentumStock[];
+  overbought: FiMomentumStock[];
+  oversold: FiMomentumStock[];
+  updated_at: string | null;
+}
+
+/**
+ * Get weekly momentum data for Finnish stocks
+ */
+export async function getFiMomentum(limit: number = 10) {
+  const params = new URLSearchParams({ limit: limit.toString() });
+  return apiCall<{ success: boolean } & FiMomentumData>(
+    `/api/fi/momentum?${params}`
+  );
+}
+
+/**
  * Potential stock data
  */
 export interface FiPotentialStock {
