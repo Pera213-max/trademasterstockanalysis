@@ -2503,33 +2503,36 @@ class FiDataService:
 
         for i, ticker in enumerate(tickers):
             try:
-                # Get 1 month of history for calculations
-                history = self.get_history(ticker, range="1mo", interval="1d")
-                if not history or len(history) < 6:
+                # Get daily history for weekly return and volume
+                daily_history = self.get_history(ticker, range="1mo", interval="1d")
+                if not daily_history or len(daily_history) < 6:
                     continue
 
                 stock_info = self.get_stock_info(ticker)
                 name = stock_info.get("name") if stock_info else ticker
 
                 # Calculate weekly return (5 trading days)
-                current_price = history[-1].get("close", 0)
-                week_ago_price = history[-6].get("close", 0) if len(history) >= 6 else history[0].get("close", 0)
+                current_price = daily_history[-1].get("close", 0)
+                week_ago_price = daily_history[-6].get("close", 0) if len(daily_history) >= 6 else daily_history[0].get("close", 0)
 
                 if week_ago_price and week_ago_price > 0:
                     weekly_return = ((current_price - week_ago_price) / week_ago_price) * 100
                 else:
                     weekly_return = 0
 
-                # Calculate average volume and current volume
-                volumes = [h.get("volume", 0) for h in history if h.get("volume")]
+                # Calculate average volume and current volume (from daily data)
+                volumes = [h.get("volume", 0) for h in daily_history if h.get("volume")]
                 avg_volume = sum(volumes[:-1]) / len(volumes[:-1]) if len(volumes) > 1 else 0
-                current_volume = history[-1].get("volume", 0)
+                current_volume = daily_history[-1].get("volume", 0)
                 volume_ratio = current_volume / avg_volume if avg_volume > 0 else 0
 
-                # Calculate RSI
+                # Calculate Weekly RSI 14 (using 6 months of weekly data)
+                # Weekly RSI is smoother and more reliable than daily RSI
+                # This matches what other financial sites show (e.g., TradingView weekly RSI)
                 rsi = None
-                if len(history) >= 15:
-                    closes = pd.Series([h.get("close", 0) for h in history])
+                weekly_history = self.get_history(ticker, range="6mo", interval="1wk")
+                if weekly_history and len(weekly_history) >= 15:
+                    closes = pd.Series([h.get("close", 0) for h in weekly_history])
                     delta = closes.diff()
                     gain = delta.where(delta > 0, 0).rolling(window=14).mean()
                     loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()

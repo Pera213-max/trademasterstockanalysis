@@ -42,8 +42,8 @@ const t = {
   weeklyGainers: 'Viikon nousijat',
   weeklyLosers: 'Viikon laskijat',
   unusualVolume: 'Epätavallinen volyymi',
-  overbought: 'Yliostetut (RSI>70)',
-  oversold: 'Ylimyydyt (RSI<30)',
+  overbought: 'Yliostetut (Viikko-RSI>70)',
+  oversold: 'Ylimyydyt (Viikko-RSI<30)',
   weekReturn: 'Vko tuotto',
   sectors: 'Toimialat',
   events: 'Tiedotteet & Uutiset',
@@ -633,7 +633,7 @@ export default function FiDashboardPage() {
               </div>
               <div>
                 <h2 className="text-lg sm:text-xl lg:text-2xl 2xl:text-5xl font-bold text-white">{t.momentum}</h2>
-                <p className="text-xs sm:text-sm 2xl:text-xl text-slate-400">Viikon parhaat ja heikommat, volyymipiikit, RSI-signaalit</p>
+                <p className="text-xs sm:text-sm 2xl:text-xl text-slate-400">Viikon parhaat ja heikommat, volyymipiikit, Viikko-RSI 14</p>
               </div>
             </div>
 
@@ -710,7 +710,7 @@ export default function FiDashboardPage() {
                 <div className="bg-slate-900/50 rounded-xl 2xl:rounded-2xl p-4 2xl:p-6">
                   <div className="flex items-center gap-2 mb-3 2xl:mb-5">
                     <Target className="w-4 h-4 2xl:w-6 2xl:h-6 text-purple-400" />
-                    <span className="text-sm 2xl:text-xl font-semibold text-white">RSI-signaalit</span>
+                    <span className="text-sm 2xl:text-xl font-semibold text-white">Viikko-RSI 14</span>
                   </div>
                   <div className="space-y-3 2xl:space-y-4">
                     {(momentumData?.oversold || []).length > 0 && (
