@@ -1,0 +1,202 @@
+[
+  {
+    "ticker": "NDA-FI.HE",
+    "name": "Nordea Bank Abp",
+    "marketCap": 56066976166.94879
+  },
+  {
+    "ticker": "KNEBV.HE",
+    "name": "KONE Oyj",
+    "marketCap": 31496161232.00209
+  },
+  {
+    "ticker": "NOKIA.HE",
+    "name": "Nokia Oyj",
+    "marketCap": 31287625218.867935
+  },
+  {
+    "ticker": "SAMPO.HE",
+    "name": "Sampo Oyj A",
+    "marketCap": 27448536081.144573
+  },
+  {
+    "ticker": "WRT1V.HE",
+    "name": "Wärtsilä Oyj Abp",
+    "marketCap": 18235661255.71747
+  },
+  {
+    "ticker": "FORTUM.HE",
+    "name": "Fortum Oyj",
+    "marketCap": 16689119409.87923
+  },
+  {
+    "ticker": "NESTE.HE",
+    "name": "Neste Oyj",
+    "marketCap": 15304019313.894659
+  },
+  {
+    "ticker": "TELIA1.HE",
+    "name": "Telia Company",
+    "marketCap": 14497767753.05649
+  },
+  {
+    "ticker": "UPM.HE",
+    "name": "UPM-Kymmene Oyj",
+    "marketCap": 13320205522.654896
+  },
+  {
+    "ticker": "METSO.HE",
+    "name": "Metso Oyj",
+    "marketCap": 12470215471.927763
+  },
+  {
+    "ticker": "ORNBV.HE",
+    "name": "Orion Oyj B",
+    "marketCap": 8969200042.5
+  },
+  {
+    "ticker": "ORNAV.HE",
+    "name": "Orion Oyj A",
+    "marketCap": 8939640871.0
+  },
+  {
+    "ticker": "STEAV.HE",
+    "name": "Stora Enso Oyj A",
+    "marketCap": 8595957557.46535
+  },
+  {
+    "ticker": "STERV.HE",
+    "name": "Stora Enso Oyj R",
+    "marketCap": 8591688698.204756
+  },
+  {
+    "ticker": "KESKOB.HE",
+    "name": "Kesko Oyj B",
+    "marketCap": 7645465380.701637
+  },
+  {
+    "ticker": "KESKOA.HE",
+    "name": "Kesko Oyj A",
+    "marketCap": 7635919223.356224
+  },
+  {
+    "ticker": "KCR.HE",
+    "name": "Konecranes Oyj",
+    "marketCap": 7414455551.128616
+  },
+  {
+    "ticker": "SSABBH.HE",
+    "name": "SSAB B",
+    "marketCap": 6789898039.782257
+  },
+  {
+    "ticker": "SSABAH.HE",
+    "name": "SSAB A",
+    "marketCap": 6780986507.421338
+  },
+  {
+    "ticker": "ELISA.HE",
+    "name": "Elisa Oyj",
+    "marketCap": 5983944351.580627
+  },
+  {
+    "ticker": "VALMT.HE",
+    "name": "Valmet Oyj",
+    "marketCap": 5213777628.441811
+  },
+  {
+    "ticker": "MANTA.HE",
+    "name": "Mandatum",
+    "marketCap": 3479666882.8265533
+  },
+  {
+    "ticker": "HUH1V.HE",
+    "name": "Huhtamäki Oyj",
+    "marketCap": 3136453044.5870876
+  },
+  {
+    "ticker": "KEMIRA.HE",
+    "name": "Kemira Oyj",
+    "marketCap": 2932141514.9005394
+  },
+  {
+    "ticker": "KOJAMO.HE",
+    "name": "Kojamo Oyj",
+    "marketCap": 2455794666.4230347
+  },
+  {
+    "ticker": "TIETO.HE",
+    "name": "TietoEVRY Oyj",
+    "marketCap": 2177404947.153412
+  },
+  {
+    "ticker": "OUT1V.HE",
+    "name": "Outokumpu Oyj",
+    "marketCap": 2164731421.363371
+  },
+  {
+    "ticker": "METSA.HE",
+    "name": "Metsä Board Oyj A",
+    "marketCap": 1633737355.3292742
+  },
+  {
+    "ticker": "VAIAS.HE",
+    "name": "Vaisala Oyj A",
+    "marketCap": 1595283272.0
+  },
+  {
+    "ticker": "SANOMA.HE",
+    "name": "Sanoma Oyj",
+    "marketCap": 1560992960.5771866
+  },
+  {
+    "ticker": "TYRES.HE",
+    "name": "Nokian Renkaat Oyj",
+    "marketCap": 1333914403.0220518
+  },
+  {
+    "ticker": "TTALO.HE",
+    "name": "Terveystalo Oyj",
+    "marketCap": 1233621063.8309383
+  },
+  {
+    "ticker": "ALMA.HE",
+    "name": "Alma Media Oyj",
+    "marketCap": 1179207234.6471672
+  },
+  {
+    "ticker": "METSB.HE",
+    "name": "Metsä Board Oyj B",
+    "marketCap": 1175519409.7010555
+  },
+  {
+    "ticker": "PUUILO.HE",
+    "name": "Puuilo Oyj",
+    "marketCap": 1065320731.0729122
+  },
+  {
+    "ticker": "FSKRS.HE",
+    "name": "Fiskars Oyj Abp",
+    "marketCap": 1028701725.0122833
+  },
+  {
+    "ticker": "BITTI.HE",
+    "name": "Bittium Oyj",
+    "marketCap": 1026412848.8517151
+  },
+  {
+    "ticker": "AKTIA.HE",
+    "name": "Aktia Bank Abp",
+    "marketCap": 922410467.2658558
+  },
+  {
+    "ticker": "QTCOM.HE",
+    "name": "Qt Group Oyj",
+    "marketCap": 827753472.4560852
+  },
+  {
+    "ticker": "HARVIA.HE",
+    "name": "Harvia Oyj",
+    "marketCap": 802754240.459671
+  }
+]

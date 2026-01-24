@@ -1,0 +1,302 @@
+[
+  {
+    "rank": 31,
+    "ticker": "TYRES.HE",
+    "name": "Nokian Renkaat Oyj",
+    "marketCap": 1339429289.2426414
+  },
+  {
+    "rank": 32,
+    "ticker": "TTALO.HE",
+    "name": "Terveystalo Oyj",
+    "marketCap": 1231088023.780572
+  },
+  {
+    "rank": 33,
+    "ticker": "ALMA.HE",
+    "name": "Alma Media Oyj",
+    "marketCap": 1179207234.6471672
+  },
+  {
+    "rank": 34,
+    "ticker": "METSB.HE",
+    "name": "Metsä Board Oyj B",
+    "marketCap": 1174034249.4781504
+  },
+  {
+    "rank": 35,
+    "ticker": "PUUILO.HE",
+    "name": "Puuilo Oyj",
+    "marketCap": 1062790300.576374
+  },
+  {
+    "rank": 36,
+    "ticker": "FSKRS.HE",
+    "name": "Fiskars Oyj Abp",
+    "marketCap": 1030314070.1523361
+  },
+  {
+    "rank": 37,
+    "ticker": "BITTI.HE",
+    "name": "Bittium Oyj",
+    "marketCap": 1028188690.2965698
+  },
+  {
+    "rank": 38,
+    "ticker": "AKTIA.HE",
+    "name": "Aktia Bank Abp",
+    "marketCap": 918011092.4048653
+  },
+  {
+    "rank": 39,
+    "ticker": "QTCOM.HE",
+    "name": "Qt Group Oyj",
+    "marketCap": 825214390.0
+  },
+  {
+    "rank": 40,
+    "ticker": "HARVIA.HE",
+    "name": "Harvia Oyj",
+    "marketCap": 803688748.0
+  },
+  {
+    "rank": 41,
+    "ticker": "ALBAV.HE",
+    "name": "Ålandsbanken Abp A",
+    "marketCap": 731951745.3363495
+  },
+  {
+    "rank": 42,
+    "ticker": "CTY1S.HE",
+    "name": "Citycon Oyj",
+    "marketCap": 730971826.4416761
+  },
+  {
+    "rank": 43,
+    "ticker": "PON1V.HE",
+    "name": "Ponsse Oyj 1",
+    "marketCap": 727879490.0
+  },
+  {
+    "rank": 44,
+    "ticker": "YIT.HE",
+    "name": "YIT Oyj",
+    "marketCap": 723306028.3793347
+  },
+  {
+    "rank": 45,
+    "ticker": "ALBBV.HE",
+    "name": "Ålandsbanken Abp B",
+    "marketCap": 718253918.5773087
+  },
+  {
+    "rank": 46,
+    "ticker": "SCANFL.HE",
+    "name": "Scanfil Oyj",
+    "marketCap": 666156365.870018
+  },
+  {
+    "rank": 47,
+    "ticker": "FIA1S.HE",
+    "name": "Finnair Oyj",
+    "marketCap": 657377689.3621397
+  },
+  {
+    "rank": 48,
+    "ticker": "OLVAS.HE",
+    "name": "Olvi Oyj A",
+    "marketCap": 648076312.4030991
+  },
+  {
+    "rank": 49,
+    "ticker": "EVLI.HE",
+    "name": "Evli Oyj",
+    "marketCap": 614449700.2063751
+  },
+  {
+    "rank": 50,
+    "ticker": "REG1V.HE",
+    "name": "Revenio Group Oyj",
+    "marketCap": 595906853.8517666
+  },
+  {
+    "rank": 51,
+    "ticker": "MUSTI.HE",
+    "name": "Musti Group Oyj",
+    "marketCap": 594304363.1270638
+  },
+  {
+    "rank": 52,
+    "ticker": "MEKKO.HE",
+    "name": "Marimekko Oyj",
+    "marketCap": 526616506.80789566
+  },
+  {
+    "rank": 53,
+    "ticker": "EQV1V.HE",
+    "name": "eQ Oyj",
+    "marketCap": 463760609.70220375
+  },
+  {
+    "rank": 54,
+    "ticker": "TALLINK.HE",
+    "name": "AS Tallink Grupp FDR",
+    "marketCap": 441680010.54266834
+  },
+  {
+    "rank": 55,
+    "ticker": "TOKMAN.HE",
+    "name": "Tokmanni Group Oyj",
+    "marketCap": 439654323.579319
+  },
+  {
+    "rank": 56,
+    "ticker": "ATRAV.HE",
+    "name": "Atria Oyj A",
+    "marketCap": 431520501.5794773
+  },
+  {
+    "rank": 57,
+    "ticker": "RAIVV.HE",
+    "name": "Raisio Oyj Vaihto-osake",
+    "marketCap": 425827118.87193775
+  },
+  {
+    "rank": 58,
+    "ticker": "OMASP.HE",
+    "name": "Oma Säästöpankki Oyj",
+    "marketCap": 411492623.3409691
+  },
+  {
+    "rank": 59,
+    "ticker": "LAT1V.HE",
+    "name": "Lassila & Tikanoja Oyj",
+    "marketCap": 405808515.1270151
+  },
+  {
+    "rank": 60,
+    "ticker": "LINDEX.HE",
+    "name": "Lindex Group Oyj",
+    "marketCap": 401901415.7721031
+  },
+  {
+    "rank": 61,
+    "ticker": "ENENTO.HE",
+    "name": "Enento Group Oyj",
+    "marketCap": 376341701.9708824
+  },
+  {
+    "rank": 62,
+    "ticker": "VIK1V.HE",
+    "name": "Viking Line Abp",
+    "marketCap": 357696013.18359375
+  },
+  {
+    "rank": 63,
+    "ticker": "CAPMAN.HE",
+    "name": "CapMan Oyj",
+    "marketCap": 347690850.11097586
+  },
+  {
+    "rank": 64,
+    "ticker": "FSECURE.HE",
+    "name": "F-Secure Oyj",
+    "marketCap": 339281135.4382503
+  },
+  {
+    "rank": 65,
+    "ticker": "PAMPALO.HE",
+    "name": "Endomines Finland Oyj",
+    "marketCap": 339233694.8146343
+  },
+  {
+    "rank": 66,
+    "ticker": "PIHLIS.HE",
+    "name": "Pihlajalinna Oyj",
+    "marketCap": 330456965.9122677
+  },
+  {
+    "rank": 67,
+    "ticker": "RELAIS.HE",
+    "name": "Relais Group Oyj",
+    "marketCap": 312482128.91518784
+  },
+  {
+    "rank": 68,
+    "ticker": "CANATU.HE",
+    "name": "Canatu Oyj",
+    "marketCap": 306212246.707077
+  },
+  {
+    "rank": 69,
+    "ticker": "WITH.HE",
+    "name": "WithSecure Oyj",
+    "marketCap": 301050569.5081136
+  },
+  {
+    "rank": 70,
+    "ticker": "ICP1V.HE",
+    "name": "Incap Oyj",
+    "marketCap": 293298366.0433378
+  },
+  {
+    "rank": 71,
+    "ticker": "FARON.HE",
+    "name": "Faron Pharmaceuticals Oyj",
+    "marketCap": 268404287.03197002
+  },
+  {
+    "rank": 72,
+    "ticker": "ANORA.HE",
+    "name": "Anora Group Oyj",
+    "marketCap": 261432521.01910114
+  },
+  {
+    "rank": 73,
+    "ticker": "ETTE.HE",
+    "name": "Etteplan Oyj",
+    "marketCap": 237348787.16793823
+  },
+  {
+    "rank": 74,
+    "ticker": "TAALA.HE",
+    "name": "Taaleri Oyj",
+    "marketCap": 220563228.70087624
+  },
+  {
+    "rank": 75,
+    "ticker": "KOSKI.HE",
+    "name": "Koskisen Oyj",
+    "marketCap": 220223272.13217258
+  },
+  {
+    "rank": 76,
+    "ticker": "GOFORE.HE",
+    "name": "Gofore Oyj",
+    "marketCap": 215097673.5
+  },
+  {
+    "rank": 77,
+    "ticker": "ASPO.HE",
+    "name": "Aspo Oyj",
+    "marketCap": 214833114.98124123
+  },
+  {
+    "rank": 78,
+    "ticker": "ADMCM.HE",
+    "name": "Admicom Oyj",
+    "marketCap": 214730035.77228928
+  },
+  {
+    "rank": 79,
+    "ticker": "REMEDY.HE",
+    "name": "Remedy Entertainment Oyj",
+    "marketCap": 211739241.1231308
+  },
+  {
+    "rank": 80,
+    "ticker": "UNITED.HE",
+    "name": "United Bankers Oyj",
+    "marketCap": 207395379.54395676
+  }
+]
