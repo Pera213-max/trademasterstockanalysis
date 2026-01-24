@@ -2501,75 +2501,77 @@ class FiDataService:
         overbought = []
         oversold = []
 
-        for i, ticker in enumerate(tickers):
-            try:
-                # Get 3 months of daily history (enough for RSI 14 + volume analysis)
-                # Using single API call per stock to avoid rate limits
-                history = self.get_history(ticker, range="3mo", interval="1d")
-                if not history or len(history) < 15:
+        # Allow external fetch for momentum build (needed when FI_CACHE_ONLY=True)
+        with self._external_fetch_allowed():
+            for i, ticker in enumerate(tickers):
+                try:
+                    # Get 3 months of daily history (enough for RSI 14 + volume analysis)
+                    # Using single API call per stock to avoid rate limits
+                    history = self.get_history(ticker, range="3mo", interval="1d")
+                    if not history or len(history) < 15:
+                        continue
+
+                    stock_info = self.get_stock_info(ticker)
+                    name = stock_info.get("name") if stock_info else ticker
+
+                    # Calculate weekly return (5 trading days)
+                    current_price = history[-1].get("close", 0)
+                    week_ago_price = history[-6].get("close", 0) if len(history) >= 6 else history[0].get("close", 0)
+
+                    if week_ago_price and week_ago_price > 0:
+                        weekly_return = ((current_price - week_ago_price) / week_ago_price) * 100
+                    else:
+                        weekly_return = 0
+
+                    # Calculate average volume and current volume
+                    volumes = [h.get("volume", 0) for h in history if h.get("volume")]
+                    avg_volume = sum(volumes[:-1]) / len(volumes[:-1]) if len(volumes) > 1 else 0
+                    current_volume = history[-1].get("volume", 0)
+                    volume_ratio = current_volume / avg_volume if avg_volume > 0 else 0
+
+                    # Calculate RSI 14 (standard 14-period RSI on daily data)
+                    # Using 3 months of data for more stable calculation
+                    rsi = None
+                    if len(history) >= 15:
+                        closes = pd.Series([h.get("close", 0) for h in history])
+                        delta = closes.diff()
+                        gain = delta.where(delta > 0, 0).rolling(window=14).mean()
+                        loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+                        rs = gain / loss
+                        rsi_series = 100 - (100 / (1 + rs))
+                        rsi = float(rsi_series.iloc[-1]) if not pd.isna(rsi_series.iloc[-1]) else None
+
+                    stock_data = {
+                        "ticker": ticker,
+                        "name": name,
+                        "price": round(current_price, 2),
+                        "weeklyReturn": round(weekly_return, 2),
+                        "volume": current_volume,
+                        "avgVolume": int(avg_volume),
+                        "volumeRatio": round(volume_ratio, 2),
+                        "rsi": round(rsi, 1) if rsi else None
+                    }
+
+                    weekly_data.append(stock_data)
+
+                    # Check for unusual volume (> 2x average)
+                    if volume_ratio >= 2.0:
+                        unusual_volume.append(stock_data)
+
+                    # Check for RSI signals
+                    if rsi:
+                        if rsi >= 70:
+                            overbought.append(stock_data)
+                        elif rsi <= 30:
+                            oversold.append(stock_data)
+
+                    # Rate limiting
+                    if (i + 1) % 10 == 0:
+                        time.sleep(0.3)
+
+                except Exception as e:
+                    logger.debug(f"Failed to get momentum for {ticker}: {e}")
                     continue
-
-                stock_info = self.get_stock_info(ticker)
-                name = stock_info.get("name") if stock_info else ticker
-
-                # Calculate weekly return (5 trading days)
-                current_price = history[-1].get("close", 0)
-                week_ago_price = history[-6].get("close", 0) if len(history) >= 6 else history[0].get("close", 0)
-
-                if week_ago_price and week_ago_price > 0:
-                    weekly_return = ((current_price - week_ago_price) / week_ago_price) * 100
-                else:
-                    weekly_return = 0
-
-                # Calculate average volume and current volume
-                volumes = [h.get("volume", 0) for h in history if h.get("volume")]
-                avg_volume = sum(volumes[:-1]) / len(volumes[:-1]) if len(volumes) > 1 else 0
-                current_volume = history[-1].get("volume", 0)
-                volume_ratio = current_volume / avg_volume if avg_volume > 0 else 0
-
-                # Calculate RSI 14 (standard 14-period RSI on daily data)
-                # Using 3 months of data for more stable calculation
-                rsi = None
-                if len(history) >= 15:
-                    closes = pd.Series([h.get("close", 0) for h in history])
-                    delta = closes.diff()
-                    gain = delta.where(delta > 0, 0).rolling(window=14).mean()
-                    loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
-                    rs = gain / loss
-                    rsi_series = 100 - (100 / (1 + rs))
-                    rsi = float(rsi_series.iloc[-1]) if not pd.isna(rsi_series.iloc[-1]) else None
-
-                stock_data = {
-                    "ticker": ticker,
-                    "name": name,
-                    "price": round(current_price, 2),
-                    "weeklyReturn": round(weekly_return, 2),
-                    "volume": current_volume,
-                    "avgVolume": int(avg_volume),
-                    "volumeRatio": round(volume_ratio, 2),
-                    "rsi": round(rsi, 1) if rsi else None
-                }
-
-                weekly_data.append(stock_data)
-
-                # Check for unusual volume (> 2x average)
-                if volume_ratio >= 2.0:
-                    unusual_volume.append(stock_data)
-
-                # Check for RSI signals
-                if rsi:
-                    if rsi >= 70:
-                        overbought.append(stock_data)
-                    elif rsi <= 30:
-                        oversold.append(stock_data)
-
-                # Rate limiting
-                if (i + 1) % 10 == 0:
-                    time.sleep(0.3)
-
-            except Exception as e:
-                logger.debug(f"Failed to get momentum for {ticker}: {e}")
-                continue
 
         # Sort by weekly return
         weekly_data.sort(key=lambda x: x["weeklyReturn"], reverse=True)
