@@ -91,6 +91,19 @@ class BackgroundScheduler:
         except Exception as e:
             logger.error("FI IR headlines refresh failed: %s", e)
 
+    async def refresh_kauppalehti_news_task(self):
+        """Background task to refresh Kauppalehti stock market news."""
+        try:
+            logger.info("Refreshing Kauppalehti news...")
+            from app.services.fi_event_service import get_fi_event_service
+
+            event_service = get_fi_event_service()
+            added = event_service.ingest_kauppalehti_news(analyze_new=True, limit=15)
+            if added:
+                logger.info("Kauppalehti news added: %s", added)
+        except Exception as e:
+            logger.error("Kauppalehti news refresh failed: %s", e)
+
     async def refresh_fi_shorts_task(self):
         """Background task to refresh Finnish short positions (FIVA)"""
         try:
@@ -286,6 +299,7 @@ class BackgroundScheduler:
             # Finnish disclosures and news
             await self.refresh_fi_disclosures_task()
             await self.refresh_fi_ir_headlines_task()
+            await self.refresh_kauppalehti_news_task()
 
             logger.info("Startup cache warm completed")
         except Exception as e:
@@ -384,6 +398,22 @@ class BackgroundScheduler:
             replace_existing=True
         )
 
+        # Kauppalehti news - twice daily (morning and afternoon)
+        self.scheduler.add_job(
+            self.refresh_kauppalehti_news_task,
+            trigger=CronTrigger(hour=7, minute=0, timezone=ZoneInfo("Europe/Helsinki")),
+            id='refresh_kauppalehti_news_morning',
+            name='Refresh Kauppalehti News 07:00',
+            replace_existing=True
+        )
+        self.scheduler.add_job(
+            self.refresh_kauppalehti_news_task,
+            trigger=CronTrigger(hour=14, minute=0, timezone=ZoneInfo("Europe/Helsinki")),
+            id='refresh_kauppalehti_news_afternoon',
+            name='Refresh Kauppalehti News 14:00',
+            replace_existing=True
+        )
+
         # Full Finnish cache warm - once daily after market close (18:30)
         self.scheduler.add_job(
             self.refresh_fi_full_cache_task,
@@ -441,6 +471,7 @@ class BackgroundScheduler:
 
         logger.info("FI Disclosures: Daily 06:30")
         logger.info("FI IR Headlines: Daily 06:45")
+        logger.info("Kauppalehti News: Daily 07:00 + 14:00")
         logger.info("FI Short Positions: Daily 06:00")
         logger.info("FI Macro Indicators: Every 5 minutes")
         logger.info("FI Momentum: Every hour")

@@ -662,6 +662,137 @@ class FiEventService:
 
         return total_new
 
+    def ingest_kauppalehti_news(self, analyze_new: bool = True, limit: int = 10) -> int:
+        """
+        Scrape stock market news headlines from Kauppalehti.
+        Returns news with source attribution and links to original articles.
+        """
+        KAUPPALEHTI_URL = "https://www.kauppalehti.fi/porssi/porssitiedotteet"
+
+        total_new = 0
+        new_events: List[FiNewsEvent] = []
+
+        try:
+            resp = requests.get(KAUPPALEHTI_URL, timeout=20, headers={
+                **REQUEST_HEADERS,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "fi-FI,fi;q=0.9,en;q=0.8",
+            })
+            resp.raise_for_status()
+        except Exception as exc:
+            logger.warning("Failed to fetch Kauppalehti news: %s", exc)
+            return 0
+
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        # Find article/news items - Kauppalehti uses various container patterns
+        articles_found = []
+
+        # Try different patterns for finding news items
+        # Pattern 1: Article tags
+        for article in soup.find_all("article"):
+            link = article.find("a", href=True)
+            if not link:
+                continue
+            title = link.get_text(" ", strip=True)
+            href = link.get("href", "")
+            if title and href:
+                articles_found.append({"title": title, "href": href, "element": article})
+
+        # Pattern 2: Links with news-like hrefs
+        if len(articles_found) < limit:
+            for link in soup.find_all("a", href=True):
+                href = link.get("href", "")
+                # Look for news/uutiset/porssi links
+                if any(kw in href for kw in ["/uutiset/", "/porssi/", "/tiedote", "/news/"]):
+                    title = link.get_text(" ", strip=True)
+                    if title and len(title) > 20 and len(title) < 300:
+                        # Avoid duplicates
+                        if not any(a["title"] == title for a in articles_found):
+                            articles_found.append({"title": title, "href": href})
+
+        # Pattern 3: Div containers with news class patterns
+        if len(articles_found) < limit:
+            news_patterns = ["news", "article", "tiedote", "release", "headline"]
+            for div in soup.find_all("div"):
+                classes = " ".join(div.get("class", [])).lower()
+                if not any(p in classes for p in news_patterns):
+                    continue
+                link = div.find("a", href=True)
+                if not link:
+                    continue
+                title = link.get_text(" ", strip=True)
+                href = link.get("href", "")
+                if title and href and len(title) > 20:
+                    if not any(a["title"] == title for a in articles_found):
+                        articles_found.append({"title": title, "href": href})
+
+        # Process found articles
+        processed_count = 0
+        for item in articles_found:
+            if processed_count >= limit:
+                break
+
+            title = item.get("title", "").strip()
+            href = item.get("href", "")
+
+            # Skip navigation/generic items
+            if not title or len(title) < 20:
+                continue
+
+            # Build full URL
+            if href.startswith("/"):
+                source_url = f"https://www.kauppalehti.fi{href}"
+            elif href.startswith("http"):
+                source_url = href
+            else:
+                continue
+
+            # Try to extract ticker from title
+            ticker = None
+            title_matches = infer_tickers_from_text(title)
+            if len(title_matches) == 1:
+                ticker = title_matches[0]
+
+            company = lookup_company(ticker) if ticker else None
+
+            # Try to extract date from article element if available
+            published_at = None
+            element = item.get("element")
+            if element:
+                time_tag = element.find("time")
+                if time_tag:
+                    dt_str = time_tag.get("datetime") or time_tag.get_text(" ", strip=True)
+                    published_at = _parse_iso_date(dt_str) or _parse_headline_date(dt_str)
+
+            # Default to now if no date found
+            if not published_at:
+                published_at = datetime.utcnow()
+
+            event = {
+                "ticker": ticker,
+                "company": company,
+                "event_type": "NEWS",
+                "title": title,
+                "body": "",  # We don't scrape article body to be polite
+                "source": "Kauppalehti",
+                "source_url": source_url,
+                "published_at": published_at,
+                "raw_payload": {"scraped_from": KAUPPALEHTI_URL},
+            }
+
+            saved = self._save_event(event)
+            if saved:
+                total_new += 1
+                new_events.append(saved)
+                processed_count += 1
+
+        if analyze_new and new_events:
+            self.analyze_events(new_events, limit=self.analysis_batch_limit)
+
+        logger.info("Ingested %d new Kauppalehti news items", total_new)
+        return total_new
+
     def ingest_yfinance_news_for_ticker(self, ticker: str, limit: int = 10) -> int:
         if not ticker:
             return 0
