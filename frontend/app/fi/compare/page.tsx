@@ -167,22 +167,22 @@ export default function FiComparePage() {
   const chartLoading = historyQueries.some((query) => query.isLoading);
 
   const rows = [
-    { label: 'Hinta', get: (a: FiAnalysis) => formatEur(a.quote?.price), tone: 'neutral' },
-    { label: 'Päivän muutos', get: (a: FiAnalysis) => formatPercent(a.quote?.changePercent), tone: 'change' },
-    { label: '3kk tuotto', get: (a: FiAnalysis) => formatPercent(a.metrics?.return3m), tone: 'change' },
-    { label: '12kk tuotto', get: (a: FiAnalysis) => formatPercent(a.metrics?.return12m), tone: 'change' },
-    { label: 'Volatiliteetti', get: (a: FiAnalysis) => formatPercent(a.metrics?.volatility), tone: 'neutral' },
-    { label: 'Markkina-arvo', get: (a: FiAnalysis) => formatEur(a.fundamentals?.marketCap, true), tone: 'neutral' },
-    { label: 'P/E', get: (a: FiAnalysis) => formatNumber(a.fundamentals?.peRatio, 1), tone: 'neutral' },
-    { label: 'P/B', get: (a: FiAnalysis) => formatNumber(a.fundamentals?.priceToBook, 2), tone: 'neutral' },
-    { label: 'Osinkotuotto', get: (a: FiAnalysis) => formatPercentFromDecimal(a.fundamentals?.dividendYield), tone: 'neutral' },
-    { label: 'ROE', get: (a: FiAnalysis) => formatPercentFromDecimal(a.fundamentals?.returnOnEquity), tone: 'neutral' },
-    { label: 'Velkaantumisaste', get: (a: FiAnalysis) => formatPercent(a.fundamentals?.debtToEquity, 0), tone: 'neutral' },
-    { label: 'Riskitaso', get: (a: FiAnalysis) => a.riskLevel, tone: 'neutral' },
+    { label: 'Hinta', get: (a: FiAnalysis) => formatEur(a.quote?.price), tone: 'neutral', getValue: () => null },
+    { label: 'Päivän muutos', get: (a: FiAnalysis) => formatPercent(a.quote?.changePercent), tone: 'change', getValue: (a: FiAnalysis) => a.quote?.changePercent },
+    { label: '3kk tuotto', get: (a: FiAnalysis) => formatPercent(a.metrics?.return3m), tone: 'change', getValue: (a: FiAnalysis) => a.metrics?.return3m },
+    { label: '12kk tuotto', get: (a: FiAnalysis) => formatPercent(a.metrics?.return12m), tone: 'change', getValue: (a: FiAnalysis) => a.metrics?.return12m },
+    { label: 'Volatiliteetti', get: (a: FiAnalysis) => formatPercent(a.metrics?.volatility), tone: 'neutral', getValue: () => null },
+    { label: 'Markkina-arvo', get: (a: FiAnalysis) => formatEur(a.fundamentals?.marketCap, true), tone: 'neutral', getValue: () => null },
+    { label: 'P/E', get: (a: FiAnalysis) => formatNumber(a.fundamentals?.peRatio, 1), tone: 'neutral', getValue: () => null },
+    { label: 'P/B', get: (a: FiAnalysis) => formatNumber(a.fundamentals?.priceToBook, 2), tone: 'neutral', getValue: () => null },
+    { label: 'Osinkotuotto', get: (a: FiAnalysis) => formatPercentFromDecimal(a.fundamentals?.dividendYield), tone: 'neutral', getValue: () => null },
+    { label: 'ROE', get: (a: FiAnalysis) => formatPercentFromDecimal(a.fundamentals?.returnOnEquity), tone: 'neutral', getValue: () => null },
+    { label: 'Velkaantumisaste', get: (a: FiAnalysis) => formatPercent(a.fundamentals?.debtToEquity, 0), tone: 'neutral', getValue: () => null },
+    { label: 'Riskitaso', get: (a: FiAnalysis) => a.riskLevel, tone: 'neutral', getValue: () => null },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-slate-900">
       <header className="border-b border-slate-800/50 bg-slate-950/70 backdrop-blur">
         <div className="max-w-[2400px] mx-auto px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-40 py-5 2xl:py-8 flex flex-col sm:flex-row gap-4 2xl:gap-6 sm:items-center sm:justify-between">
           <div className="flex items-center gap-3 2xl:gap-5">
@@ -382,10 +382,13 @@ export default function FiComparePage() {
                       <div className="mt-3 2xl:mt-5 grid grid-cols-2 gap-2 2xl:gap-4 text-xs 2xl:text-base">
                         {rows.map((row) => {
                           const value = analysis ? row.get(analysis) : '—';
+                          const isChangeRow = row.tone === 'change';
+                          const rowValue = analysis && row.getValue ? row.getValue(analysis) : null;
+                          const isPositive = rowValue !== null ? rowValue >= 0 : true;
                           return (
                             <div key={`${ticker}-${row.label}`} className="rounded-lg 2xl:rounded-xl border border-slate-800/70 bg-slate-950/40 p-2 2xl:p-4">
                               <div className="text-[11px] 2xl:text-sm text-slate-500">{row.label}</div>
-                              <div className="text-sm 2xl:text-xl text-slate-100 mt-1 2xl:mt-2">{value}</div>
+                              <div className={`text-sm 2xl:text-xl mt-1 2xl:mt-2 ${isChangeRow ? (isPositive ? 'text-emerald-400' : 'text-red-400') : 'text-slate-100'}`}>{value}</div>
                             </div>
                           );
                         })}
@@ -416,12 +419,12 @@ export default function FiComparePage() {
                           const analysis = analysisByTicker[ticker];
                           const value = analysis ? row.get(analysis) : '—';
                           const isChangeRow = row.tone === 'change';
-                          const changeValue = analysis?.quote?.changePercent ?? analysis?.metrics?.return3m ?? 0;
-                          const isPositive = changeValue >= 0;
+                          const rowValue = analysis && row.getValue ? row.getValue(analysis) : null;
+                          const isPositive = rowValue !== null ? rowValue >= 0 : true;
                           return (
                             <td key={`${row.label}-${ticker}`} className="py-3 2xl:py-5 px-4 2xl:px-8">
                               <div className={`inline-flex items-center gap-1 2xl:gap-2 ${isChangeRow ? (isPositive ? 'text-emerald-400' : 'text-red-400') : 'text-slate-100'}`}>
-                                {isChangeRow ? (
+                                {isChangeRow && rowValue !== null ? (
                                   isPositive ? <ArrowUpRight className="w-3 h-3 2xl:w-5 2xl:h-5" /> : <ArrowDownRight className="w-3 h-3 2xl:w-5 2xl:h-5" />
                                 ) : null}
                                 <span>{value}</span>
