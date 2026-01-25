@@ -66,12 +66,12 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex flex-col">
+    <main className="min-h-screen bg-slate-900 flex flex-col">
       {/* Pääsisältö */}
       <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 2xl:px-20 py-8 sm:py-12 2xl:py-20">
         {/* Logo & Otsikko */}
         <div className="text-center mb-8 sm:mb-12 2xl:mb-20">
-          <div className="inline-flex p-3 sm:p-4 2xl:p-6 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-xl sm:rounded-2xl 2xl:rounded-3xl mb-4 sm:mb-6 2xl:mb-10 shadow-2xl">
+          <div className="inline-flex p-3 sm:p-4 2xl:p-6 bg-sky-600 rounded-xl sm:rounded-2xl 2xl:rounded-3xl mb-4 sm:mb-6 2xl:mb-10">
             <BarChart3 className="w-12 h-12 sm:w-16 sm:h-16 2xl:w-24 2xl:h-24 text-white" />
           </div>
 
@@ -100,24 +100,22 @@ export default function Home() {
             <Link
               href="/fi/dashboard"
               onClick={() => handleMarketSelect("fi")}
-              className="group relative overflow-hidden bg-gradient-to-br from-cyan-900/40 to-blue-900/40 hover:from-cyan-900/60 hover:to-blue-900/60 border-2 border-cyan-500/50 hover:border-cyan-400 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10 transition-all duration-300 hover:shadow-xl hover:shadow-cyan-500/30 block"
+              className="group relative bg-slate-800/60 hover:bg-slate-800 border border-sky-500/40 hover:border-sky-500/60 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10 transition-all block"
             >
-              <div className="absolute top-0 right-0 w-32 h-32 2xl:w-48 2xl:h-48 bg-cyan-500/20 rounded-full blur-3xl group-hover:bg-cyan-500/30 transition-all" />
-
               {/* Suositeltava badge */}
-              <div className="absolute top-3 right-3 2xl:top-6 2xl:right-6 px-2 2xl:px-4 py-1 2xl:py-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full text-[10px] 2xl:text-base font-semibold text-white shadow-lg flex items-center gap-1 2xl:gap-2">
+              <div className="absolute top-3 right-3 2xl:top-6 2xl:right-6 px-2 2xl:px-4 py-1 2xl:py-2 bg-sky-600 rounded-full text-[10px] 2xl:text-base font-semibold text-white flex items-center gap-1 2xl:gap-2">
                 <Sparkles className="w-3 h-3 2xl:w-5 2xl:h-5" />
                 Toiminnassa
               </div>
 
-              <div className="relative">
+              <div>
                 <div className="flex items-center gap-2 sm:gap-3 2xl:gap-5 mb-3 sm:mb-4 2xl:mb-6">
-                  <div className="p-2 sm:p-3 2xl:p-5 bg-cyan-500/30 rounded-lg sm:rounded-xl 2xl:rounded-2xl border border-cyan-500/30">
-                    <Flag className="w-5 h-5 sm:w-7 sm:h-7 2xl:w-12 2xl:h-12 text-cyan-300" />
+                  <div className="p-2 sm:p-3 2xl:p-5 bg-sky-500/20 rounded-lg sm:rounded-xl 2xl:rounded-2xl border border-sky-500/30">
+                    <Flag className="w-5 h-5 sm:w-7 sm:h-7 2xl:w-12 2xl:h-12 text-sky-300" />
                   </div>
                   <div>
                     <h3 className="text-xl sm:text-2xl 2xl:text-5xl font-bold text-white">Suomi</h3>
-                    <p className="text-xs sm:text-sm 2xl:text-xl text-cyan-300">Nasdaq Helsinki</p>
+                    <p className="text-xs sm:text-sm 2xl:text-xl text-sky-400">Nasdaq Helsinki</p>
                   </div>
                 </div>
 
@@ -133,24 +131,24 @@ export default function Home() {
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 2xl:gap-4 mb-3 sm:mb-4 2xl:mb-6 text-[11px] sm:text-xs 2xl:text-lg">
                   <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-3 text-slate-300">
-                    <Sparkles className="w-3 h-3 2xl:w-6 2xl:h-6 text-yellow-400 flex-shrink-0" />
+                    <Sparkles className="w-3 h-3 2xl:w-6 2xl:h-6 text-sky-400 flex-shrink-0" />
                     <span>Pisteytys</span>
                   </div>
                   <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-3 text-slate-300">
-                    <Newspaper className="w-3 h-3 2xl:w-6 2xl:h-6 text-cyan-400 flex-shrink-0" />
+                    <Newspaper className="w-3 h-3 2xl:w-6 2xl:h-6 text-sky-400 flex-shrink-0" />
                     <span>Tiedotteet</span>
                   </div>
                   <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-3 text-slate-300">
-                    <LineChart className="w-3 h-3 2xl:w-6 2xl:h-6 text-emerald-400 flex-shrink-0" />
+                    <LineChart className="w-3 h-3 2xl:w-6 2xl:h-6 text-sky-400 flex-shrink-0" />
                     <span>Analyysit</span>
                   </div>
                   <div className="flex items-center gap-1 sm:gap-1.5 2xl:gap-3 text-slate-300">
-                    <Activity className="w-3 h-3 2xl:w-6 2xl:h-6 text-purple-400 flex-shrink-0" />
+                    <Activity className="w-3 h-3 2xl:w-6 2xl:h-6 text-sky-400 flex-shrink-0" />
                     <span>Seulonta</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 2xl:gap-4 text-sm sm:text-base 2xl:text-2xl text-cyan-300 font-semibold group-hover:gap-3 2xl:group-hover:gap-5 transition-all">
+                <div className="flex items-center gap-2 2xl:gap-4 text-sm sm:text-base 2xl:text-2xl text-sky-400 font-semibold group-hover:gap-3 2xl:group-hover:gap-5 transition-all">
                   <span>Avaa Suomen osakkeet</span>
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8" />
                 </div>
@@ -160,14 +158,12 @@ export default function Home() {
             {/* Indeksisijoittaminen */}
             <Link
                 href="/indeksit"
-                className="group relative overflow-hidden bg-gradient-to-r from-emerald-900/30 to-teal-900/30 hover:from-emerald-900/50 hover:to-teal-900/50 border border-emerald-700/40 hover:border-emerald-500/60 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-5 2xl:p-8 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/20 block"
+                className="group bg-slate-800/40 hover:bg-slate-800/60 border border-slate-700/50 hover:border-slate-600 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-5 2xl:p-8 transition-all block"
               >
-                <div className="absolute top-0 right-0 w-24 h-24 2xl:w-40 2xl:h-40 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all" />
-
-                <div className="relative">
+                <div>
                   <div className="flex items-center gap-2 sm:gap-3 2xl:gap-5 mb-2 sm:mb-3 2xl:mb-5">
-                    <div className="p-1.5 sm:p-2 2xl:p-4 bg-emerald-500/20 rounded-lg 2xl:rounded-xl">
-                      <PiggyBank className="w-5 h-5 sm:w-6 sm:h-6 2xl:w-10 2xl:h-10 text-emerald-400" />
+                    <div className="p-1.5 sm:p-2 2xl:p-4 bg-sky-500/20 rounded-lg 2xl:rounded-xl">
+                      <PiggyBank className="w-5 h-5 sm:w-6 sm:h-6 2xl:w-10 2xl:h-10 text-sky-400" />
                     </div>
                     <div>
                       <h3 className="text-lg sm:text-xl 2xl:text-4xl font-bold text-white">Indeksit</h3>
@@ -177,12 +173,12 @@ export default function Home() {
 
                   <div className="space-y-1 2xl:space-y-2 mb-2 sm:mb-3 2xl:mb-5 text-[11px] sm:text-xs 2xl:text-lg">
                     <div className="flex items-center gap-2 2xl:gap-3 text-slate-300">
-                      <Calculator className="w-3 h-3 2xl:w-5 2xl:h-5 text-emerald-400" />
+                      <Calculator className="w-3 h-3 2xl:w-5 2xl:h-5 text-sky-400" />
                       <span>Tuottolaskuri & 8 indeksiä</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 2xl:gap-3 text-emerald-400 font-medium text-xs sm:text-sm 2xl:text-xl group-hover:gap-3 2xl:group-hover:gap-4 transition-all">
+                  <div className="flex items-center gap-2 2xl:gap-3 text-sky-400 font-medium text-xs sm:text-sm 2xl:text-xl group-hover:gap-3 2xl:group-hover:gap-4 transition-all">
                     <span>Avaa</span>
                     <ChevronRight className="w-4 h-4 2xl:w-6 2xl:h-6" />
                   </div>
@@ -198,7 +194,7 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 2xl:gap-6">
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
                 <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-yellow-400 flex-shrink-0" />
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-sky-400 flex-shrink-0" />
                   <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Pisteytys</h4>
                 </div>
                 <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
@@ -207,7 +203,7 @@ export default function Home() {
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
                 <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
-                  <Newspaper className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-cyan-400 flex-shrink-0" />
+                  <Newspaper className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-sky-400 flex-shrink-0" />
                   <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Tiedotteet</h4>
                 </div>
                 <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
@@ -216,7 +212,7 @@ export default function Home() {
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
                 <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-emerald-400 flex-shrink-0" />
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-sky-400 flex-shrink-0" />
                   <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Momentum</h4>
                 </div>
                 <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
@@ -225,7 +221,7 @@ export default function Home() {
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
                 <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
-                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-blue-400 flex-shrink-0" />
+                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-sky-400 flex-shrink-0" />
                   <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Markkinat</h4>
                 </div>
                 <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
@@ -243,7 +239,7 @@ export default function Home() {
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
                 <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
-                  <Activity className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-purple-400 flex-shrink-0" />
+                  <Activity className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-sky-400 flex-shrink-0" />
                   <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Seulonta</h4>
                 </div>
                 <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
@@ -264,72 +260,72 @@ export default function Home() {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 2xl:gap-10">
               {/* Analyysikriteerit */}
-              <div className="bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border border-cyan-700/40 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10">
-                <h4 className="text-base sm:text-lg 2xl:text-3xl font-bold text-cyan-300 mb-3 sm:mb-4 2xl:mb-6 flex items-center gap-2 2xl:gap-4">
+              <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10">
+                <h4 className="text-base sm:text-lg 2xl:text-3xl font-bold text-sky-400 mb-3 sm:mb-4 2xl:mb-6 flex items-center gap-2 2xl:gap-4">
                   <Calculator className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8" />
                   Pisteytyksen perusteet
                 </h4>
                 <div className="space-y-2 sm:space-y-3 2xl:space-y-5 text-xs sm:text-sm 2xl:text-xl">
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">P/E</span>
+                    <span className="text-sky-400 font-bold">P/E</span>
                     <span className="text-slate-300">Price-to-Earnings - osakkeen hinta suhteessa tulokseen</span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">P/B</span>
+                    <span className="text-sky-400 font-bold">P/B</span>
                     <span className="text-slate-300">Price-to-Book - hinta suhteessa tasearvoon</span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">ROE</span>
+                    <span className="text-sky-400 font-bold">ROE</span>
                     <span className="text-slate-300">Return on Equity - oman pääoman tuotto</span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">Osinko-%</span>
+                    <span className="text-sky-400 font-bold">Osinko-%</span>
                     <span className="text-slate-300">Osinkotuotto suhteessa hintaan</span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">Kasvu</span>
+                    <span className="text-sky-400 font-bold">Kasvu</span>
                     <span className="text-slate-300">Liikevaihdon ja tuloksen kasvuvauhti</span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">Velka</span>
+                    <span className="text-sky-400 font-bold">Velka</span>
                     <span className="text-slate-300">Velkaantumisaste (D/E) ja maksuvalmius</span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">Beta</span>
+                    <span className="text-sky-400 font-bold">Beta</span>
                     <span className="text-slate-300">Volatiliteetti suhteessa markkinaan</span>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-cyan-400 font-bold">Momentti</span>
+                    <span className="text-sky-400 font-bold">Momentti</span>
                     <span className="text-slate-300">3kk ja 12kk hintakehitys</span>
                   </div>
                 </div>
               </div>
 
               {/* Mitä dataa sivulla on */}
-              <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-700/40 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10">
-                <h4 className="text-base sm:text-lg 2xl:text-3xl font-bold text-purple-300 mb-3 sm:mb-4 2xl:mb-6 flex items-center gap-2 2xl:gap-4">
+              <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10">
+                <h4 className="text-base sm:text-lg 2xl:text-3xl font-bold text-sky-400 mb-3 sm:mb-4 2xl:mb-6 flex items-center gap-2 2xl:gap-4">
                   <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8" />
                   Mitä dataa OsakedataX tarjoaa
                 </h4>
                 <div className="space-y-3 sm:space-y-4 2xl:space-y-6 text-xs sm:text-sm 2xl:text-xl">
                   <div>
-                    <span className="text-yellow-400 font-semibold">173 Suomiosaketta</span>
+                    <span className="text-sky-400 font-semibold">173 Suomiosaketta</span>
                     <p className="text-slate-400 mt-1">Kaikki Nasdaq Helsingin osakkeet pisteytettyinä ja analysoituna. Löydä parhaat sijoituskohteet.</p>
                   </div>
                   <div>
-                    <span className="text-emerald-400 font-semibold">Viikon Momentum</span>
+                    <span className="text-sky-400 font-semibold">Viikon Momentum</span>
                     <p className="text-slate-400 mt-1">Nousijat, laskijat, volyymisignaalit ja RSI-indikaattorit. Näe mihin markkinat liikkuvat.</p>
                   </div>
                   <div>
-                    <span className="text-cyan-400 font-semibold">Pörssitiedotteet</span>
+                    <span className="text-sky-400 font-semibold">Pörssitiedotteet</span>
                     <p className="text-slate-400 mt-1">Tuoreimmat yhtiötiedotteet, sisäpiirikaupat ja IR-uutiset suoraan Nasdaqilta ja Kauppalehdestä.</p>
                   </div>
                   <div>
-                    <span className="text-orange-400 font-semibold">Jalometallit</span>
+                    <span className="text-sky-400 font-semibold">Jalometallit</span>
                     <p className="text-slate-400 mt-1">Kullan ja hopean reaaliaikaiset hinnat, chartit ja tunnusluvut USD:ssa.</p>
                   </div>
                   <div>
-                    <span className="text-blue-400 font-semibold">Markkinakatsaus</span>
+                    <span className="text-sky-400 font-semibold">Markkinakatsaus</span>
                     <p className="text-slate-400 mt-1">OMXH25, Euro Stoxx, DAX, valuutat, korot ja VIX - kaikki yhdessä näkymässä.</p>
                   </div>
                 </div>
@@ -344,21 +340,21 @@ export default function Home() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 2xl:gap-8">
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8 text-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-cyan-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-sky-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl text-sky-400">
                   1
                 </div>
                 <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Seulo osakkeet</h4>
                 <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Käytä seulontaa löytääksesi osakkeet, jotka täyttävät kriteerisi (P/E, osinko, kasvu jne.)</p>
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8 text-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-sky-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl text-sky-400">
                   2
                 </div>
                 <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Analysoi</h4>
                 <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Tutki osakkeen tunnusluvut, tekninen analyysi ja viimeisimmät tiedotteet osakkeen sivulla</p>
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8 text-center">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-purple-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-sky-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl text-sky-400">
                   3
                 </div>
                 <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Seuraa markkinoita</h4>
@@ -368,7 +364,7 @@ export default function Home() {
           </div>
 
           {/* Erottautuminen */}
-          <div className="mt-8 sm:mt-12 2xl:mt-20 bg-gradient-to-r from-cyan-900/20 via-purple-900/20 to-pink-900/20 border border-slate-700/50 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10 text-center">
+          <div className="mt-8 sm:mt-12 2xl:mt-20 bg-slate-800/50 border border-slate-700/50 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10 text-center">
             <h4 className="text-base sm:text-lg 2xl:text-3xl font-bold text-white mb-2 sm:mb-3 2xl:mb-6">
               Kaikki yhdessä paikassa
             </h4>

@@ -155,15 +155,15 @@ const MetalCard = ({ code, name }: { code: string; name: string }) => {
   }
 
   return (
-    <div className="bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700/50 overflow-hidden">
+    <div className="bg-slate-800/50 rounded-xl border border-slate-700/50 overflow-hidden">
       {/* Header */}
       <div className="p-6 border-b border-slate-700/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
               code === 'GOLD'
-                ? 'bg-gradient-to-br from-yellow-500 to-amber-600'
-                : 'bg-gradient-to-br from-slate-400 to-slate-500'
+                ? 'bg-yellow-500/20 border border-yellow-500/30'
+                : 'bg-slate-500/20 border border-slate-500/30'
             }`}>
               <span className="text-2xl">{code === 'GOLD' ? '🥇' : '🥈'}</span>
             </div>
@@ -209,7 +209,7 @@ const MetalCard = ({ code, name }: { code: string; name: string }) => {
                 onClick={() => setSelectedPeriod(period.value)}
                 className={`px-3 py-1 text-sm rounded-md transition-colors ${
                   selectedPeriod === period.value
-                    ? 'bg-cyan-500 text-white'
+                    ? 'bg-sky-600 text-white'
                     : 'text-slate-400 hover:text-white hover:bg-slate-600/50'
                 }`}
               >
@@ -303,7 +303,7 @@ const MetalCard = ({ code, name }: { code: string; name: string }) => {
 
 export default function MetalsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div className="min-h-screen bg-slate-900">
       {/* Header */}
       <header className="bg-slate-900/80 backdrop-blur-md border-b border-slate-700/50 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

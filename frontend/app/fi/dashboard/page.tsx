@@ -153,9 +153,8 @@ const MacroRow = ({ indicator, kind }: { indicator: FiMacroIndicator; kind: 'ind
   const Icon = config.icon;
   const barWidth = Math.min(100, Math.max(12, Math.abs(changeValue) * 12));
   return (
-    <div className="group relative overflow-hidden rounded-xl 2xl:rounded-2xl border border-slate-700/50 bg-slate-900/60 p-3 2xl:p-5 transition-all hover:border-slate-600/70">
-      <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r ${config.accent}`} />
-      <div className="relative flex items-center gap-3 2xl:gap-5">
+    <div className="group rounded-xl 2xl:rounded-2xl border border-slate-700/50 bg-slate-900/60 p-3 2xl:p-5 transition-all hover:border-slate-600 hover:bg-slate-800/60">
+      <div className="flex items-center gap-3 2xl:gap-5">
         <div className={`w-11 h-11 2xl:w-16 2xl:h-16 rounded-xl 2xl:rounded-2xl border ${config.border} bg-slate-900/70 flex items-center justify-center shadow-sm`}>
           <Icon className="w-5 h-5 2xl:w-8 2xl:h-8 text-slate-100" />
         </div>
@@ -354,7 +353,7 @@ export default function FiDashboardPage() {
   }, [stockSearch, allStocks]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen bg-slate-900">
       {/* Header */}
       <header className="border-b border-slate-800/50 bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-[2400px] mx-auto px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-40 py-4 lg:py-5 2xl:py-6">
@@ -370,16 +369,13 @@ export default function FiDashboardPage() {
               </Link>
 
               {/* Logo */}
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl blur-lg opacity-50"></div>
-                <div className="relative p-2 md:p-3 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-xl">
-                  <BarChart3 className="w-6 h-6 md:w-7 md:h-7 text-white" />
-                </div>
+              <div className="p-2 md:p-3 bg-sky-600 rounded-xl">
+                <BarChart3 className="w-6 h-6 md:w-7 md:h-7 text-white" />
               </div>
 
               {/* Brand */}
               <div>
-                <h1 className="text-xl md:text-2xl lg:text-3xl 2xl:text-5xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                <h1 className="text-xl md:text-2xl lg:text-3xl 2xl:text-5xl font-bold text-white">
                   {t.title}
                 </h1>
                 <div className="flex items-center gap-2 text-xs md:text-sm lg:text-base 2xl:text-xl text-slate-400">
@@ -392,45 +388,41 @@ export default function FiDashboardPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-end">
+            <div className="flex items-center gap-2 flex-wrap justify-end">
               <Link
                 href="/fi/screener"
-                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/30 rounded-lg text-cyan-400 transition-colors"
+                className="flex items-center gap-2 px-3 py-2 bg-sky-500/20 hover:bg-sky-500/30 border border-sky-500/30 rounded-lg text-sky-400 transition-colors"
               >
-                <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <Filter className="w-4 h-4" />
                 <span className="hidden sm:inline text-sm font-medium">Seulonta</span>
               </Link>
               <Link
                 href="/fi/compare"
-                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/50 rounded-lg text-slate-200 transition-colors"
+                className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 hover:bg-slate-700 border border-slate-600/50 rounded-lg text-slate-200 transition-colors"
               >
-                <BarChart3 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-300" />
+                <BarChart3 className="w-4 h-4" />
                 <span className="hidden sm:inline text-sm font-medium">Vertailu</span>
               </Link>
               <Link
                 href="/fi/portfolio"
-                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-200 transition-colors"
+                className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 hover:bg-slate-700 border border-slate-600/50 rounded-lg text-slate-200 transition-colors"
               >
-                <PieChart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300" />
-                <span className="hidden sm:inline text-sm font-medium">Salkkuanalyysi</span>
+                <PieChart className="w-4 h-4" />
+                <span className="hidden sm:inline text-sm font-medium">Salkku</span>
               </Link>
               <Link
                 href="/fi/technicals"
-                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-200 transition-colors"
+                className="flex items-center gap-2 px-3 py-2 bg-slate-700/50 hover:bg-slate-700 border border-slate-600/50 rounded-lg text-slate-200 transition-colors"
               >
-                <Activity className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300" />
+                <Activity className="w-4 h-4" />
                 <span className="hidden sm:inline text-sm font-medium">Tekninen</span>
               </Link>
-              <div className="hidden lg:flex items-center gap-2 px-3 py-2 bg-slate-800/60 border border-slate-700/50 rounded-lg">
-                <div className={`w-2 h-2 rounded-full ${marketStatus.isOpen ? 'bg-emerald-400 animate-pulse' : 'bg-red-400'}`}></div>
-                <span className="text-xs text-slate-200">Helsinki {marketStatus.timeLabel}</span>
-                <span className={`text-xs font-semibold ${marketStatus.isOpen ? 'text-emerald-400' : 'text-red-400'}`}>
-                  {marketStatus.isOpen ? 'AUKI' : 'SULJETTU'}
+              <div className="hidden lg:flex items-center gap-2 px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg">
+                <div className={`w-2 h-2 rounded-full ${marketStatus.isOpen ? 'bg-emerald-400' : 'bg-red-400'}`}></div>
+                <span className="text-xs text-slate-300">Helsinki {marketStatus.timeLabel}</span>
+                <span className={`text-xs font-medium ${marketStatus.isOpen ? 'text-emerald-400' : 'text-red-400'}`}>
+                  {marketStatus.isOpen ? 'AUKI' : 'KIINNI'}
                 </span>
-              </div>
-              <div className="hidden lg:flex items-center gap-2 px-3 py-2 bg-green-500/10 rounded-lg border border-green-500/20">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-green-400">{t.liveData}</span>
               </div>
               <ThemeToggle />
             </div>
@@ -444,10 +436,8 @@ export default function FiDashboardPage() {
 
           {/* Macro Indicators Section */}
           {!macroLoading && macro && (
-            <section className="relative overflow-hidden bg-gradient-to-br from-slate-900/70 via-slate-900/40 to-slate-950/70 border border-slate-700/50 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-3 sm:p-4 md:p-6 lg:p-8 2xl:p-12">
-              <div className="absolute -top-20 -right-20 w-48 h-48 rounded-full bg-cyan-500/10 blur-3xl"></div>
-              <div className="absolute -bottom-24 -left-16 w-56 h-56 rounded-full bg-emerald-500/10 blur-3xl"></div>
-              <div className="relative">
+            <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8">
+              <div>
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-4 sm:mb-5 lg:mb-6 2xl:mb-10">
                   <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4">
                     <Globe className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 2xl:w-8 2xl:h-8 text-blue-400" />
@@ -634,10 +624,10 @@ export default function FiDashboardPage() {
           </section>
 
           {/* Weekly Momentum Section */}
-          <section className="bg-gradient-to-br from-orange-900/30 to-amber-900/30 border border-orange-700/40 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
-            <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4 mb-4 sm:mb-6 2xl:mb-10">
-              <div className="p-1.5 sm:p-2 lg:p-2.5 2xl:p-4 bg-orange-500/20 rounded-lg 2xl:rounded-xl">
-                <Zap className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 2xl:w-10 2xl:h-10 text-orange-400" />
+          <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 sm:p-6 lg:p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-slate-700/50 rounded-lg">
+                <Zap className="w-5 h-5 lg:w-6 lg:h-6 text-sky-400" />
               </div>
               <div>
                 <h2 className="text-lg sm:text-xl lg:text-2xl 2xl:text-5xl font-bold text-white">{t.momentum}</h2>
@@ -717,7 +707,7 @@ export default function FiDashboardPage() {
                 {/* RSI Signals */}
                 <div className="bg-slate-900/50 rounded-xl 2xl:rounded-2xl p-4 2xl:p-6">
                   <div className="flex items-center gap-2 mb-3 2xl:mb-5">
-                    <Target className="w-4 h-4 2xl:w-6 2xl:h-6 text-purple-400" />
+                    <Target className="w-4 h-4 2xl:w-6 2xl:h-6 text-sky-400" />
                     <span className="text-sm 2xl:text-xl font-semibold text-white">RSI 14</span>
                   </div>
                   <div className="space-y-3 2xl:space-y-4">
@@ -761,10 +751,10 @@ export default function FiDashboardPage() {
           </section>
 
           {/* Potential Picks Section */}
-          <section className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-700/40 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 lg:mb-6 2xl:mb-8">
-              <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4">
-                <Target className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 2xl:w-10 2xl:h-10 text-purple-400" />
+          <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 sm:p-6 lg:p-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+              <div className="flex items-center gap-3">
+                <Target className="w-5 h-5 lg:w-6 lg:h-6 text-sky-400" />
                 <div>
                   <h3 className="text-base sm:text-lg lg:text-xl 2xl:text-4xl font-semibold text-white">Potentiaali</h3>
                   <p className="text-[11px] sm:text-xs lg:text-sm 2xl:text-xl text-slate-400">Parhaan tuottopotentiaalin osakkeet</p>
@@ -774,7 +764,7 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('short')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'short'
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-sky-600 text-white'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
@@ -784,7 +774,7 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('medium')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'medium'
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-sky-600 text-white'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
@@ -794,7 +784,7 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('long')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'long'
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-sky-600 text-white'
                       : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
@@ -818,15 +808,15 @@ export default function FiDashboardPage() {
                   <Link
                     key={stock.ticker}
                     href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
-                    className="group bg-slate-900/60 hover:bg-slate-900 border border-slate-700/40 hover:border-purple-500/50 rounded-lg lg:rounded-xl 2xl:rounded-2xl p-3 lg:p-4 2xl:p-6 transition-all"
+                    className="group bg-slate-900/60 hover:bg-slate-900 border border-slate-700/40 hover:border-sky-500/50 rounded-lg lg:rounded-xl 2xl:rounded-2xl p-3 lg:p-4 2xl:p-6 transition-all"
                   >
                     <div className="flex items-start justify-between mb-2 2xl:mb-4">
                       <div>
                         <div className="flex items-center gap-1.5 2xl:gap-3 mb-1">
-                          <span className="text-[10px] sm:text-xs 2xl:text-base px-1.5 2xl:px-3 py-0.5 2xl:py-1 bg-purple-500/30 text-purple-300 rounded 2xl:rounded-lg font-bold">
+                          <span className="text-[10px] sm:text-xs 2xl:text-base px-1.5 2xl:px-3 py-0.5 2xl:py-1 bg-sky-500/30 text-sky-300 rounded 2xl:rounded-lg font-bold">
                             #{index + 1}
                           </span>
-                          <span className="font-semibold text-white text-sm lg:text-base 2xl:text-2xl group-hover:text-purple-400 transition-colors">
+                          <span className="font-semibold text-white text-sm lg:text-base 2xl:text-2xl group-hover:text-sky-400 transition-colors">
                             {stock.ticker.replace('.HE', '')}
                           </span>
                         </div>
@@ -835,7 +825,7 @@ export default function FiDashboardPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-purple-400 font-bold text-sm lg:text-base 2xl:text-2xl">
+                        <div className="text-sky-400 font-bold text-sm lg:text-base 2xl:text-2xl">
                           {stock.potentialScore.toFixed(0)}
                         </div>
                         <div className="text-[9px] sm:text-[10px] 2xl:text-sm text-slate-500">pistettä</div>
@@ -851,7 +841,7 @@ export default function FiDashboardPage() {
                       <div className="space-y-1 2xl:space-y-2">
                         {stock.reasons.slice(0, 2).map((reason, i) => (
                           <div key={i} className="text-[9px] sm:text-[10px] 2xl:text-sm text-slate-400 flex items-start gap-1 2xl:gap-2">
-                            <span className="text-purple-400 mt-0.5">•</span>
+                            <span className="text-sky-400 mt-0.5">•</span>
                             <span className="line-clamp-1">{reason}</span>
                           </div>
                         ))}
@@ -1180,7 +1170,7 @@ export default function FiDashboardPage() {
           {sectors.length > 0 && (
             <section className="bg-slate-900/60 border border-slate-700/60 rounded-lg sm:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 2xl:p-10">
               <div className="flex items-center gap-2 2xl:gap-4 mb-3 sm:mb-4 2xl:mb-8">
-                <Building2 className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-purple-400" />
+                <Building2 className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-sky-400" />
                 <h3 className="text-base sm:text-lg 2xl:text-4xl font-semibold text-white">{t.sectors}</h3>
                 <span className="text-[10px] sm:text-xs 2xl:text-xl text-slate-500">• {sectors.length} toimialaa</span>
               </div>
@@ -1204,7 +1194,7 @@ export default function FiDashboardPage() {
                       type="button"
                       onClick={() => setTopSector(sector.sector)}
                       className={`p-2 sm:p-3 2xl:p-5 rounded-lg sm:rounded-xl 2xl:rounded-2xl border text-left transition ${active
-                          ? 'bg-purple-500/15 border-purple-500/40 text-purple-200'
+                          ? 'bg-sky-500/15 border-sky-500/40 text-sky-200'
                           : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
                         }`}
                     >
