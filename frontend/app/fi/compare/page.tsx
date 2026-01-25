@@ -383,8 +383,8 @@ export default function FiComparePage() {
                         {rows.map((row) => {
                           const value = analysis ? row.get(analysis) : '—';
                           const isChangeRow = row.tone === 'change';
-                          const rowValue = analysis && row.getValue ? row.getValue(analysis) : null;
-                          const isPositive = rowValue !== null ? rowValue >= 0 : true;
+                          const rowValue = analysis ? row.getValue(analysis) : null;
+                          const isPositive = rowValue != null ? rowValue >= 0 : true;
                           return (
                             <div key={`${ticker}-${row.label}`} className="rounded-lg 2xl:rounded-xl border border-slate-800/70 bg-slate-950/40 p-2 2xl:p-4">
                               <div className="text-[11px] 2xl:text-sm text-slate-500">{row.label}</div>
@@ -419,12 +419,12 @@ export default function FiComparePage() {
                           const analysis = analysisByTicker[ticker];
                           const value = analysis ? row.get(analysis) : '—';
                           const isChangeRow = row.tone === 'change';
-                          const rowValue = analysis && row.getValue ? row.getValue(analysis) : null;
-                          const isPositive = rowValue !== null ? rowValue >= 0 : true;
+                          const rowValue = analysis ? row.getValue(analysis) : null;
+                          const isPositive = rowValue != null ? rowValue >= 0 : true;
                           return (
                             <td key={`${row.label}-${ticker}`} className="py-3 2xl:py-5 px-4 2xl:px-8">
                               <div className={`inline-flex items-center gap-1 2xl:gap-2 ${isChangeRow ? (isPositive ? 'text-emerald-400' : 'text-red-400') : 'text-slate-100'}`}>
-                                {isChangeRow && rowValue !== null ? (
+                                {isChangeRow && rowValue != null ? (
                                   isPositive ? <ArrowUpRight className="w-3 h-3 2xl:w-5 2xl:h-5" /> : <ArrowDownRight className="w-3 h-3 2xl:w-5 2xl:h-5" />
                                 ) : null}
                                 <span>{value}</span>
