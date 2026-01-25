@@ -402,12 +402,12 @@ class BackgroundScheduler:
             replace_existing=True
         )
 
-        # Finnish momentum - every 15 minutes (weekly gainers/losers, volume, RSI)
+        # Finnish momentum - every hour (weekly gainers/losers, volume, RSI)
         self.scheduler.add_job(
             self.refresh_fi_momentum_cache_task,
-            trigger=IntervalTrigger(minutes=15),
+            trigger=IntervalTrigger(hours=1),
             id='refresh_fi_momentum_cache',
-            name='Refresh FI Momentum Every 15 Minutes',
+            name='Refresh FI Momentum Every Hour',
             replace_existing=True
         )
 
@@ -443,7 +443,7 @@ class BackgroundScheduler:
         logger.info("FI IR Headlines: Daily 06:45")
         logger.info("FI Short Positions: Daily 06:00")
         logger.info("FI Macro Indicators: Every 5 minutes")
-        logger.info("FI Momentum: Every 15 minutes")
+        logger.info("FI Momentum: Every hour")
         logger.info("FI Full Cache: Daily 18:50")
         logger.info("FI Fundamental Insights: Daily 19:00")
         logger.info("=" * 60)
