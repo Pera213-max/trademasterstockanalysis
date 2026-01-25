@@ -436,18 +436,37 @@ class FiDataService:
         lock_key: str
     ):
         import threading
+        import time as time_module
 
         def _task():
             try:
-                data = builder()
-                # Validate history data before caching
                 is_history = "history:" in cache_key
-                if is_history and data and not self._is_valid_history(data):
-                    logger.warning(f"Background refresh got invalid data for {cache_key}, not caching")
-                    return
-                self._set_cached_json(cache_key, data, ttl, local_ttl=ttl)
-                if stale_key and stale_ttl:
-                    self._set_cached_json(stale_key, data, stale_ttl, local_ttl=stale_ttl)
+                max_retries = 3 if is_history else 1
+                retry_delay = 5  # seconds between retries
+
+                for attempt in range(max_retries):
+                    try:
+                        data = builder()
+                        # Validate history data before caching
+                        if is_history and data and not self._is_valid_history(data):
+                            if attempt < max_retries - 1:
+                                logger.debug(f"Background refresh got invalid data for {cache_key}, retrying in {retry_delay}s (attempt {attempt + 1}/{max_retries})")
+                                time_module.sleep(retry_delay)
+                                continue
+                            else:
+                                logger.warning(f"Background refresh got invalid data for {cache_key} after {max_retries} attempts, not caching")
+                                return
+                        # Data is valid, cache it
+                        self._set_cached_json(cache_key, data, ttl, local_ttl=ttl)
+                        if stale_key and stale_ttl:
+                            self._set_cached_json(stale_key, data, stale_ttl, local_ttl=stale_ttl)
+                        return  # Success, exit retry loop
+                    except Exception as e:
+                        if attempt < max_retries - 1:
+                            logger.debug(f"Background refresh failed for {cache_key}, retrying: {e}")
+                            time_module.sleep(retry_delay)
+                        else:
+                            raise
             except Exception as e:
                 logger.error(f"Background cache refresh failed for {cache_key}: {e}")
             finally:
