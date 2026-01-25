@@ -457,6 +457,14 @@ export default function FiDashboardPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
+                    <Link
+                      href="/fi/metals"
+                      className="flex items-center gap-1.5 text-[10px] sm:text-[11px] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border border-yellow-500/30 bg-yellow-500/10 text-yellow-300 hover:bg-yellow-500/20 transition-colors"
+                    >
+                      <span>🥇</span>
+                      <span>Jalometallit</span>
+                      <ChevronRight className="w-3 h-3" />
+                    </Link>
                     <span className={`text-[10px] sm:text-[11px] px-2 sm:px-3 py-0.5 sm:py-1 rounded-full border ${macroSignal.color}`}>
                       {macroSignal.label}
                     </span>

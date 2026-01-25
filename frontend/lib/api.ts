@@ -1319,6 +1319,71 @@ export async function getFiMacro() {
 }
 
 /**
+ * Precious metal type
+ */
+export interface FiMetal {
+  symbol: string;
+  code: string;
+  name: string;
+  name_en: string;
+  unit: string;
+  description: string;
+  price: number;
+  previousClose: number | null;
+  change: number;
+  changePercent: number;
+  high: number | null;
+  low: number | null;
+  open: number | null;
+  fiftyTwoWeekHigh: number | null;
+  fiftyTwoWeekLow: number | null;
+  fiftyDayAverage: number | null;
+  twoHundredDayAverage: number | null;
+  volume: number | null;
+}
+
+export interface FiMetalHistory {
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+export interface FiMetalDetail extends FiMetal {
+  history: FiMetalHistory[];
+  timestamp: string;
+}
+
+export interface FiMetalsOverview {
+  metals: FiMetal[];
+  timestamp: string;
+}
+
+/**
+ * Get precious metals overview (gold, silver)
+ */
+export async function getFiMetals() {
+  return apiCall<{ success: boolean; data: FiMetalsOverview }>('/api/fi/metals');
+}
+
+/**
+ * Get detailed data for a specific metal including history
+ */
+export async function getFiMetalDetail(code: string) {
+  return apiCall<{ success: boolean; data: FiMetalDetail }>(`/api/fi/metals/${code}`);
+}
+
+/**
+ * Get metal price history
+ */
+export async function getFiMetalHistory(code: string, period: string = '1y', interval: string = '1d') {
+  const params = new URLSearchParams({ period, interval });
+  return apiCall<{ success: boolean; data: FiMetalHistory[] }>(`/api/fi/metals/${code}/history?${params}`);
+}
+
+/**
  * IR headline type
  */
 export interface FiIrHeadline {

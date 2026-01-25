@@ -195,41 +195,59 @@ export default function Home() {
             <h3 className="text-center text-base sm:text-lg 2xl:text-3xl text-slate-300 mb-4 sm:mb-6 2xl:mb-10">
               Keskeiset ominaisuudet
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 2xl:gap-8">
-              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8">
-                <div className="flex items-center gap-2 sm:gap-3 2xl:gap-4 mb-2 sm:mb-3 2xl:mb-5">
-                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-yellow-400 flex-shrink-0" />
-                  <h4 className="text-white font-semibold text-xs sm:text-base 2xl:text-2xl">Älykäs pisteytys</h4>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 2xl:gap-6">
+              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
+                <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-yellow-400 flex-shrink-0" />
+                  <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Pisteytys</h4>
                 </div>
-                <p className="text-[11px] sm:text-sm 2xl:text-xl text-slate-400 line-clamp-3 sm:line-clamp-none">
-                  Automaattinen osakkeiden ranking tuotto-, riski- ja fundamenttianalyysillä.
+                <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
+                  173 osaketta pisteytettynä
                 </p>
               </div>
-              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8">
-                <div className="flex items-center gap-2 sm:gap-3 2xl:gap-4 mb-2 sm:mb-3 2xl:mb-5">
-                  <Newspaper className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-cyan-400 flex-shrink-0" />
-                  <h4 className="text-white font-semibold text-xs sm:text-base 2xl:text-2xl">Tiedotteet</h4>
+              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
+                <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
+                  <Newspaper className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-cyan-400 flex-shrink-0" />
+                  <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Tiedotteet</h4>
                 </div>
-                <p className="text-[11px] sm:text-sm 2xl:text-xl text-slate-400 line-clamp-3 sm:line-clamp-none">
-                  Pörssitiedotteet, sisäpiirikaupat ja uutiset yhdessä näkymässä.
+                <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
+                  Nasdaq & Kauppalehti
                 </p>
               </div>
-              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8">
-                <div className="flex items-center gap-2 sm:gap-3 2xl:gap-4 mb-2 sm:mb-3 2xl:mb-5">
-                  <LineChart className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-emerald-400 flex-shrink-0" />
-                  <h4 className="text-white font-semibold text-xs sm:text-base 2xl:text-2xl">Markkinakatsaus</h4>
+              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
+                <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-emerald-400 flex-shrink-0" />
+                  <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Momentum</h4>
                 </div>
-                <p className="text-[11px] sm:text-sm 2xl:text-xl text-slate-400 line-clamp-3 sm:line-clamp-none">
-                  Indeksit, valuutat, korot ja päivän suurimmat liikkujat.
+                <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
+                  RSI, volyymi, nousijat
                 </p>
               </div>
-              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8">
-                <div className="flex items-center gap-2 sm:gap-3 2xl:gap-4 mb-2 sm:mb-3 2xl:mb-5">
-                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-purple-400 flex-shrink-0" />
-                  <h4 className="text-white font-semibold text-xs sm:text-base 2xl:text-2xl">Riskianalyysi</h4>
+              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
+                <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
+                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-blue-400 flex-shrink-0" />
+                  <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Markkinat</h4>
                 </div>
-                <p className="text-[11px] sm:text-sm 2xl:text-xl text-slate-400 line-clamp-3 sm:line-clamp-none">
-                  Volatiliteetti, drawdown ja fundamentit helposti nähtävillä.
+                <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
+                  Indeksit, valuutat, korot
+                </p>
+              </div>
+              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
+                <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
+                  <span className="text-lg 2xl:text-2xl">🥇</span>
+                  <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Jalometallit</h4>
+                </div>
+                <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
+                  Kulta & hopea chartit
+                </p>
+              </div>
+              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-4 2xl:p-6">
+                <div className="flex items-center gap-2 2xl:gap-3 mb-2 2xl:mb-4">
+                  <Activity className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-7 2xl:h-7 text-purple-400 flex-shrink-0" />
+                  <h4 className="text-white font-semibold text-xs sm:text-sm 2xl:text-xl">Seulonta</h4>
+                </div>
+                <p className="text-[10px] sm:text-xs 2xl:text-lg text-slate-400">
+                  Suodata kriteereilläsi
                 </p>
               </div>
             </div>
@@ -287,53 +305,64 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Listausperusteet */}
+              {/* Mitä dataa sivulla on */}
               <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-700/40 rounded-xl sm:rounded-2xl 2xl:rounded-3xl p-4 sm:p-6 2xl:p-10">
                 <h4 className="text-base sm:text-lg 2xl:text-3xl font-bold text-purple-300 mb-3 sm:mb-4 2xl:mb-6 flex items-center gap-2 2xl:gap-4">
                   <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8" />
-                  Näin osakkeet valitaan listoille
+                  Mitä dataa OsakedataX tarjoaa
                 </h4>
                 <div className="space-y-3 sm:space-y-4 2xl:space-y-6 text-xs sm:text-sm 2xl:text-xl">
                   <div>
-                    <span className="text-yellow-400 font-semibold">Top Suositukset</span>
-                    <p className="text-slate-400 mt-1">Korkein kokonaispisteet yhdistäen arvostuksen, laadun ja kasvun. Painotetaan tasapainoisesti kaikkia mittareita.</p>
+                    <span className="text-yellow-400 font-semibold">173 Suomiosaketta</span>
+                    <p className="text-slate-400 mt-1">Kaikki Nasdaq Helsingin osakkeet pisteytettyinä ja analysoituna. Löydä parhaat sijoituskohteet.</p>
                   </div>
                   <div>
-                    <span className="text-emerald-400 font-semibold">Piilotetut Helmet</span>
-                    <p className="text-slate-400 mt-1">Matala P/E ja P/B, mutta vahva ROE ja tuloskasvu. Aliarvostettuja laatuyhtiöitä.</p>
+                    <span className="text-emerald-400 font-semibold">Viikon Momentum</span>
+                    <p className="text-slate-400 mt-1">Nousijat, laskijat, volyymisignaalit ja RSI-indikaattorit. Näe mihin markkinat liikkuvat.</p>
                   </div>
                   <div>
-                    <span className="text-orange-400 font-semibold">Nopeat Voitot</span>
-                    <p className="text-slate-400 mt-1">Vahva lyhyen aikavälin momentti (3kk tuotto), korkea volyymi ja nouseva trendi.</p>
+                    <span className="text-cyan-400 font-semibold">Pörssitiedotteet</span>
+                    <p className="text-slate-400 mt-1">Tuoreimmat yhtiötiedotteet, sisäpiirikaupat ja IR-uutiset suoraan Nasdaqilta ja Kauppalehdestä.</p>
                   </div>
                   <div>
-                    <span className="text-blue-400 font-semibold">Osinko-osakkeet</span>
-                    <p className="text-slate-400 mt-1">Korkea ja vakaa osinkotuotto, matala velkaantuminen ja pitkä osinkohistoria.</p>
+                    <span className="text-orange-400 font-semibold">Jalometallit</span>
+                    <p className="text-slate-400 mt-1">Kullan ja hopean reaaliaikaiset hinnat, chartit ja tunnusluvut USD:ssa.</p>
+                  </div>
+                  <div>
+                    <span className="text-blue-400 font-semibold">Markkinakatsaus</span>
+                    <p className="text-slate-400 mt-1">OMXH25, Euro Stoxx, DAX, valuutat, korot ja VIX - kaikki yhdessä näkymässä.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Kehityssuunnitelma */}
+          {/* Miten käyttää dataa */}
           <div className="mt-8 sm:mt-12 2xl:mt-20">
             <h3 className="text-center text-lg sm:text-xl 2xl:text-4xl font-bold text-white mb-4 sm:mb-6 2xl:mb-10">
-              Tulossa seuraavaksi
+              Miten käyttää OsakedataX:ää
             </h3>
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 2xl:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 2xl:gap-8">
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8 text-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-emerald-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-cyan-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl">
+                  1
                 </div>
-                <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Salkkuanalyysi</h4>
-                <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Salkun hajauttaminen, riskit ja vertailu indekseihin</p>
+                <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Seulo osakkeet</h4>
+                <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Käytä seulontaa löytääksesi osakkeet, jotka täyttävät kriteerisi (P/E, osinko, kasvu jne.)</p>
               </div>
               <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8 text-center">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-orange-500/20 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-orange-400" />
+                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-emerald-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl">
+                  2
                 </div>
-                <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Viikon momentum</h4>
-                <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Viikon parhaat ja heikoimmat osakkeet, momentum-signaalit</p>
+                <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Analysoi</h4>
+                <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Tutki osakkeen tunnusluvut, tekninen analyysi ja viimeisimmät tiedotteet osakkeen sivulla</p>
+              </div>
+              <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl 2xl:rounded-2xl p-3 sm:p-5 2xl:p-8 text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 2xl:w-16 2xl:h-16 mx-auto mb-2 sm:mb-3 2xl:mb-5 rounded-full bg-purple-500/20 flex items-center justify-center text-xl sm:text-2xl 2xl:text-3xl">
+                  3
+                </div>
+                <h4 className="text-white font-semibold text-sm sm:text-base 2xl:text-2xl mb-1 sm:mb-2 2xl:mb-4">Seuraa markkinoita</h4>
+                <p className="text-[11px] sm:text-xs 2xl:text-lg text-slate-400">Pidä silmällä momenttia, tiedotteita ja makrodataa - pysyt ajan tasalla markkinoista</p>
               </div>
             </div>
           </div>

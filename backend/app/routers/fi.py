@@ -23,6 +23,7 @@ from app.services.fi_data import get_fi_data_service
 from app.services.fi_event_service import get_fi_event_service
 from app.services.fi_insight_service import get_fi_insight_service
 from app.services.fi_macro_service import get_fi_macro_service
+from app.services.fi_metals_service import get_fi_metals_service
 from app.utils.admin_auth import is_force_refresh_allowed
 
 logger = logging.getLogger(__name__)
@@ -345,6 +346,94 @@ async def get_macro_indicators():
 
     except Exception as e:
         logger.error(f"Error getting macro indicators: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/metals")
+async def get_metals_overview():
+    """
+    Get precious metals overview (gold, silver)
+
+    Returns:
+        List of metals with current prices and key metrics
+    """
+    try:
+        metals_service = get_fi_metals_service()
+        result = metals_service.get_metals_overview()
+
+        return {
+            "success": True,
+            "data": result
+        }
+
+    except Exception as e:
+        logger.error(f"Error getting metals overview: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/metals/{code}")
+async def get_metal_detail(code: str):
+    """
+    Get detailed data for a specific metal including history
+
+    Args:
+        code: Metal code (GOLD or SILVER)
+
+    Returns:
+        Metal details with price, metrics, and 1-year history
+    """
+    try:
+        metals_service = get_fi_metals_service()
+        result = metals_service.get_metal_detail(code)
+
+        if not result:
+            raise HTTPException(status_code=404, detail=f"Metal {code} not found")
+
+        return {
+            "success": True,
+            "data": result
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting metal detail for {code}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/metals/{code}/history")
+async def get_metal_history(
+    code: str,
+    period: str = Query("1y", description="Time period: 1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y"),
+    interval: str = Query("1d", description="Data interval: 1m, 5m, 15m, 1h, 1d, 1wk, 1mo")
+):
+    """
+    Get historical data for a metal
+
+    Args:
+        code: Metal code (GOLD or SILVER)
+        period: Time period (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y)
+        interval: Data interval (1m, 5m, 15m, 1h, 1d, 1wk, 1mo)
+
+    Returns:
+        Historical OHLCV data for charts
+    """
+    try:
+        metals_service = get_fi_metals_service()
+        result = metals_service.get_metal_history(code, period=period, interval=interval)
+
+        if not result:
+            raise HTTPException(status_code=404, detail=f"Metal history for {code} not found")
+
+        return {
+            "success": True,
+            "data": result
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting metal history for {code}: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
