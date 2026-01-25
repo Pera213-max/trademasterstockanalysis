@@ -369,7 +369,7 @@ export default function FiDashboardPage() {
               </Link>
 
               {/* Logo */}
-              <div className="p-2 md:p-3 bg-sky-600 rounded-xl">
+              <div className="p-2 md:p-3 bg-sky-600 rounded-xl animate-glow">
                 <BarChart3 className="w-6 h-6 md:w-7 md:h-7 text-white" />
               </div>
 
@@ -418,7 +418,7 @@ export default function FiDashboardPage() {
                 <span className="hidden sm:inline text-sm font-medium">Tekninen</span>
               </Link>
               <div className="hidden lg:flex items-center gap-2 px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg">
-                <div className={`w-2 h-2 rounded-full ${marketStatus.isOpen ? 'bg-emerald-400' : 'bg-red-400'}`}></div>
+                <div className={`w-2 h-2 rounded-full ${marketStatus.isOpen ? 'bg-emerald-400 animate-live-pulse' : 'bg-red-400'}`}></div>
                 <span className="text-xs text-slate-300">Helsinki {marketStatus.timeLabel}</span>
                 <span className={`text-xs font-medium ${marketStatus.isOpen ? 'text-emerald-400' : 'text-red-400'}`}>
                   {marketStatus.isOpen ? 'AUKI' : 'KIINNI'}
@@ -436,7 +436,7 @@ export default function FiDashboardPage() {
 
           {/* Macro Indicators Section */}
           {!macroLoading && macro && (
-            <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8">
+            <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 animate-fade-in">
               <div>
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 sm:gap-4 mb-4 sm:mb-5 lg:mb-6 2xl:mb-10">
                   <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4">
@@ -466,7 +466,7 @@ export default function FiDashboardPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 2xl:gap-6 mb-4 sm:mb-6 lg:mb-8 2xl:mb-12">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 2xl:gap-6 mb-4 sm:mb-6 lg:mb-8 2xl:mb-12 stagger-children">
                   <div className="rounded-lg sm:rounded-xl 2xl:rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-2 sm:p-3 lg:p-4 2xl:p-6">
                     <div className="text-[10px] sm:text-xs lg:text-sm 2xl:text-xl text-emerald-200">Nousussa</div>
                     <div className="text-xl sm:text-2xl lg:text-3xl 2xl:text-6xl font-semibold text-white">{macroPositive}</div>
@@ -543,7 +543,7 @@ export default function FiDashboardPage() {
           )}
 
           {/* Top Movers Section */}
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 2xl:gap-12">
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 2xl:gap-12 animate-slide-up" style={{ animationDelay: '100ms' }}>
             {/* Gainers */}
             <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
               <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4 mb-3 sm:mb-4 lg:mb-5 2xl:mb-8">
@@ -562,7 +562,7 @@ export default function FiDashboardPage() {
                     <Link
                       key={stock.ticker}
                       href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
-                      className="flex items-center justify-between p-3 lg:p-4 2xl:p-6 bg-slate-900/50 hover:bg-slate-900 rounded-lg lg:rounded-xl 2xl:rounded-2xl transition-colors group"
+                      className="flex items-center justify-between p-3 lg:p-4 2xl:p-6 bg-slate-900/50 hover:bg-slate-900 rounded-lg lg:rounded-xl 2xl:rounded-2xl transition-all hover:translate-y-[-2px] hover:shadow-lg group"
                     >
                       <div>
                         <div className="font-medium text-white text-sm lg:text-base 2xl:text-3xl group-hover:text-cyan-400 transition-colors">
@@ -601,7 +601,7 @@ export default function FiDashboardPage() {
                     <Link
                       key={stock.ticker}
                       href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
-                      className="flex items-center justify-between p-3 lg:p-4 2xl:p-6 bg-slate-900/50 hover:bg-slate-900 rounded-lg lg:rounded-xl 2xl:rounded-2xl transition-colors group"
+                      className="flex items-center justify-between p-3 lg:p-4 2xl:p-6 bg-slate-900/50 hover:bg-slate-900 rounded-lg lg:rounded-xl 2xl:rounded-2xl transition-all hover:translate-y-[-2px] hover:shadow-lg group"
                     >
                       <div>
                         <div className="font-medium text-white text-sm lg:text-base 2xl:text-3xl group-hover:text-cyan-400 transition-colors">
@@ -624,7 +624,7 @@ export default function FiDashboardPage() {
           </section>
 
           {/* Weekly Momentum Section */}
-          <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 sm:p-6 lg:p-8">
+          <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 sm:p-6 lg:p-8 animate-slide-up" style={{ animationDelay: '200ms' }}>
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-slate-700/50 rounded-lg">
                 <Zap className="w-5 h-5 lg:w-6 lg:h-6 text-sky-400" />
@@ -751,7 +751,7 @@ export default function FiDashboardPage() {
           </section>
 
           {/* Potential Picks Section */}
-          <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 sm:p-6 lg:p-8">
+          <section className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4 sm:p-6 lg:p-8 animate-slide-up" style={{ animationDelay: '300ms' }}>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
               <div className="flex items-center gap-3">
                 <Target className="w-5 h-5 lg:w-6 lg:h-6 text-sky-400" />
@@ -803,12 +803,12 @@ export default function FiDashboardPage() {
             ) : potentialStocks.length === 0 ? (
               <div className="text-slate-400 text-sm 2xl:text-2xl">{t.noData}</div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 2xl:gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 2xl:gap-6 stagger-children">
                 {potentialStocks.slice(0, 8).map((stock: FiPotentialStock, index: number) => (
                   <Link
                     key={stock.ticker}
                     href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
-                    className="group bg-slate-900/60 hover:bg-slate-900 border border-slate-700/40 hover:border-sky-500/50 rounded-lg lg:rounded-xl 2xl:rounded-2xl p-3 lg:p-4 2xl:p-6 transition-all"
+                    className="group bg-slate-900/60 hover:bg-slate-900 border border-slate-700/40 hover:border-sky-500/50 rounded-lg lg:rounded-xl 2xl:rounded-2xl p-3 lg:p-4 2xl:p-6 transition-all hover:translate-y-[-3px] hover:shadow-xl"
                   >
                     <div className="flex items-start justify-between mb-2 2xl:mb-4">
                       <div>
@@ -854,7 +854,7 @@ export default function FiDashboardPage() {
           </section>
 
           {/* Latest Disclosures */}
-          <section className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
+          <section className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10 animate-slide-up" style={{ animationDelay: '400ms' }}>
             <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4 mb-3 sm:mb-4 lg:mb-5 2xl:mb-8">
               <Star className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 2xl:w-9 2xl:h-9 text-yellow-400" />
               <div>
@@ -926,7 +926,7 @@ export default function FiDashboardPage() {
           </section>
 
           {/* Top Ranked Stocks */}
-          <section className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 md:p-6 lg:p-8 2xl:p-12">
+          <section className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 md:p-6 lg:p-8 2xl:p-12 animate-slide-up" style={{ animationDelay: '500ms' }}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 lg:gap-6 2xl:gap-10 mb-4 sm:mb-6 lg:mb-8 2xl:mb-12">
               <div>
                 <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4 mb-1 2xl:mb-3">
@@ -1092,7 +1092,7 @@ export default function FiDashboardPage() {
                     <Link
                       key={stock.ticker}
                       href={`/fi/stocks/${stock.ticker.replace('.HE', '')}`}
-                      className={`block w-full group rounded-2xl 2xl:rounded-3xl border border-slate-700/60 border-l-4 ${accentBorder} bg-slate-900/70 p-4 2xl:p-8 transition-all hover:border-cyan-500/40`}
+                      className={`block w-full group rounded-2xl 2xl:rounded-3xl border border-slate-700/60 border-l-4 ${accentBorder} bg-slate-900/70 p-4 2xl:p-8 transition-all hover:border-cyan-500/40 hover:translate-y-[-2px] hover:shadow-lg`}
                     >
                       <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,240px)] lg:grid-cols-[minmax(0,1fr)_minmax(0,320px)] 2xl:grid-cols-[minmax(0,1fr)_minmax(0,500px)] gap-4 2xl:gap-8 items-start">
                         <div className="flex items-start gap-4 2xl:gap-6 min-w-0">
@@ -1168,7 +1168,7 @@ export default function FiDashboardPage() {
 
           {/* Sectors */}
           {sectors.length > 0 && (
-            <section className="bg-slate-900/60 border border-slate-700/60 rounded-lg sm:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 2xl:p-10">
+            <section className="bg-slate-900/60 border border-slate-700/60 rounded-lg sm:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 2xl:p-10 animate-slide-up" style={{ animationDelay: '600ms' }}>
               <div className="flex items-center gap-2 2xl:gap-4 mb-3 sm:mb-4 2xl:mb-8">
                 <Building2 className="w-4 h-4 sm:w-5 sm:h-5 2xl:w-8 2xl:h-8 text-sky-400" />
                 <h3 className="text-base sm:text-lg 2xl:text-4xl font-semibold text-white">{t.sectors}</h3>

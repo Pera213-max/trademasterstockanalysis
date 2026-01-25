@@ -44,7 +44,9 @@
       "Bash(git reset:*)",
       "Bash(ssh root@69.62.66.81 \"cd /opt/trademaster-pro && git pull && docker-compose up -d --build\")",
       "WebFetch(domain:www.tradingview.com)",
-      "WebFetch(domain:www.kauppalehti.fi)"
+      "WebFetch(domain:www.kauppalehti.fi)",
+      "Bash(docker compose:*)",
+      "Bash(ssh root@213.255.227.95 \"cd /opt/trademaster-pro && git pull && cd deployment && docker compose up -d --build frontend\")"
     ]
   }
 }
