@@ -424,6 +424,60 @@ class YFinanceDataManager:
             if not info:
                 return None
 
+            # Get EV, EBITDA and calculate EV/EBIT
+            enterprise_value = info.get('enterpriseValue', 0) or 0
+            ebitda = info.get('ebitda', 0) or 0
+            ev_ebitda = info.get('enterpriseToEbitda', None)
+
+            # EBIT: try 'ebit' first, then 'operatingIncome', then estimate from EBITDA
+            ebit = info.get('ebit') or info.get('operatingIncome') or 0
+            if not ebit and ebitda > 0:
+                ebit = ebitda * 0.85
+
+            # Calculate EV/EBIT
+            ev_ebit = None
+            if enterprise_value and enterprise_value > 0 and ebit and ebit > 0:
+                ev_ebit = round(enterprise_value / ebit, 2)
+            elif ev_ebitda:
+                ev_ebit = round(ev_ebitda * 1.18, 2)
+
+            # ROIC calculation
+            roic = None
+            operating_income = info.get('operatingIncome') or info.get('ebit') or 0
+            if not operating_income and ebitda > 0:
+                operating_income = ebitda * 0.85
+
+            total_debt = info.get('totalDebt', 0) or 0
+            total_equity = info.get('totalStockholderEquity') or info.get('bookValue', 0) or 0
+            total_cash = info.get('totalCash', 0) or 0
+            market_cap = info.get('marketCap', 0) or 0
+
+            # Method 1: Invested Capital = Equity + Debt - Excess Cash
+            invested_capital = total_equity + total_debt - (total_cash * 0.5)
+
+            # Method 2: Fallback - use market cap + debt - cash as proxy
+            if invested_capital <= 0 and market_cap > 0:
+                invested_capital = market_cap + total_debt - total_cash
+
+            # Method 3: Fallback to Total Assets - Current Liabilities
+            if invested_capital <= 0:
+                total_assets = info.get('totalAssets', 0) or 0
+                current_liabilities = info.get('totalCurrentLiabilities', 0) or 0
+                invested_capital = total_assets - current_liabilities
+
+            if operating_income and operating_income > 0 and invested_capital and invested_capital > 0:
+                nopat = operating_income * 0.80  # Assume 20% tax rate
+                calculated_roic = nopat / invested_capital
+                # Sanity check: ROIC should be between -50% and +50%
+                if -0.5 <= calculated_roic <= 0.5:
+                    roic = round(calculated_roic, 4)
+
+            # Fallback: use ROE as proxy for ROIC
+            if roic is None:
+                roe = info.get('returnOnEquity', 0)
+                if roe and isinstance(roe, (int, float)) and -1 <= roe <= 1:
+                    roic = round(roe * 0.85, 4)
+
             fundamentals = {
                 'marketCap': info.get('marketCap', 0),
                 'peRatio': info.get('trailingPE', info.get('forwardPE', 0)),
@@ -435,15 +489,29 @@ class YFinanceDataManager:
                 'revenueGrowth': info.get('revenueGrowth', 0),
                 'earningsGrowth': info.get('earningsGrowth', 0),
                 'returnOnEquity': info.get('returnOnEquity', 0),
+                'returnOnAssets': info.get('returnOnAssets', 0),
+                'roic': roic,
                 'debtToEquity': info.get('debtToEquity', 0),
                 'currentRatio': info.get('currentRatio', 0),
                 'beta': info.get('beta', 1),
                 'fiftyTwoWeekHigh': info.get('fiftyTwoWeekHigh', 0),
                 'fiftyTwoWeekLow': info.get('fiftyTwoWeekLow', 0),
                 'averageVolume': info.get('averageVolume', 0),
+                'shortPercentOfFloat': info.get('shortPercentOfFloat', 0),
+                'shortRatio': info.get('shortRatio', 0),
+                'sharesFloat': info.get('floatShares', info.get('sharesFloat', 0)),
+                'sharesOutstanding': info.get('sharesOutstanding', 0),
                 'shortName': info.get('shortName', ticker),
+                'currency': info.get('currency'),
                 'sector': info.get('sector', 'Unknown'),
                 'industry': info.get('industry', 'Unknown'),
+                'institutionalOwnership': info.get('heldPercentInstitutions', 0),
+                'insiderOwnership': info.get('heldPercentInsiders', 0),
+                'enterpriseValue': enterprise_value,
+                'ebitda': ebitda,
+                'ebit': ebit,
+                'evEbitda': ev_ebitda,
+                'evEbit': ev_ebit,
             }
 
             self.set_cached_data(ticker, "fundamentals", fundamentals)
