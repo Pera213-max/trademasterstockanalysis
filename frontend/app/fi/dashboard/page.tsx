@@ -584,7 +584,7 @@ export default function FiDashboardPage() {
             </div>
 
             {/* Losers */}
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
+            <div className="bg-gradient-to-br from-red-900/30 to-slate-800/40 border border-red-500/30 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
               <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4 mb-3 sm:mb-4 lg:mb-5 2xl:mb-8">
                 <TrendingDown className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 2xl:w-9 2xl:h-9 text-red-400" />
                 <h3 className="text-base sm:text-lg lg:text-xl 2xl:text-4xl font-semibold text-white">{t.losers}</h3>
@@ -764,8 +764,8 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('short')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'short'
-                      ? 'bg-sky-600 text-white'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-sky-600 text-white'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
                   <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 2xl:w-5 2xl:h-5" />
@@ -774,8 +774,8 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('medium')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'medium'
-                      ? 'bg-sky-600 text-white'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-sky-600 text-white'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
                   <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 2xl:w-5 2xl:h-5" />
@@ -784,8 +784,8 @@ export default function FiDashboardPage() {
                 <button
                   onClick={() => setPotentialTimeframe('long')}
                   className={`flex items-center gap-1 2xl:gap-2 px-2 sm:px-3 2xl:px-5 py-1 sm:py-1.5 2xl:py-3 rounded-md 2xl:rounded-lg text-xs sm:text-sm 2xl:text-xl font-medium transition-all ${potentialTimeframe === 'long'
-                      ? 'bg-sky-600 text-white'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                    ? 'bg-sky-600 text-white'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
                     }`}
                 >
                   <TrendingUp className="w-3 h-3 sm:w-3.5 sm:h-3.5 2xl:w-5 2xl:h-5" />
@@ -888,9 +888,9 @@ export default function FiDashboardPage() {
                           )}
                           {event.impact && (
                             <span className={`text-xs 2xl:text-lg px-2 2xl:px-4 py-0.5 2xl:py-1.5 rounded 2xl:rounded-lg ${event.impact === 'POSITIVE' ? 'bg-green-500/20 text-green-400' :
-                                event.impact === 'NEGATIVE' ? 'bg-red-500/20 text-red-400' :
-                                  event.impact === 'MIXED' ? 'bg-yellow-500/20 text-yellow-400' :
-                                    'bg-slate-500/20 text-slate-400'
+                              event.impact === 'NEGATIVE' ? 'bg-red-500/20 text-red-400' :
+                                event.impact === 'MIXED' ? 'bg-yellow-500/20 text-yellow-400' :
+                                  'bg-slate-500/20 text-slate-400'
                               }`}>
                               {event.impact === 'POSITIVE' ? 'Positiivinen' :
                                 event.impact === 'NEGATIVE' ? 'Negatiivinen' :
@@ -941,8 +941,8 @@ export default function FiDashboardPage() {
                   <button
                     onClick={() => setTopMode('best')}
                     className={`px-2 sm:px-3 2xl:px-5 py-0.5 sm:py-1 2xl:py-2 rounded-full transition ${topMode === 'best'
-                        ? 'bg-cyan-600 text-white'
-                        : 'text-slate-300 hover:text-white'
+                      ? 'bg-cyan-600 text-white'
+                      : 'text-slate-300 hover:text-white'
                       }`}
                   >
                     <span className="hidden sm:inline">Top 25 </span>parhaat
@@ -950,8 +950,8 @@ export default function FiDashboardPage() {
                   <button
                     onClick={() => setTopMode('worst')}
                     className={`px-2 sm:px-3 2xl:px-5 py-0.5 sm:py-1 2xl:py-2 rounded-full transition ${topMode === 'worst'
-                        ? 'bg-cyan-600 text-white'
-                        : 'text-slate-300 hover:text-white'
+                      ? 'bg-cyan-600 text-white'
+                      : 'text-slate-300 hover:text-white'
                       }`}
                   >
                     <span className="hidden sm:inline">Top 25 </span>heikoimmat
@@ -1179,8 +1179,8 @@ export default function FiDashboardPage() {
                   type="button"
                   onClick={() => setTopSector('')}
                   className={`p-2 sm:p-3 2xl:p-5 rounded-lg sm:rounded-xl 2xl:rounded-2xl border text-left transition ${topSector === ''
-                      ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-200'
-                      : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
+                    ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-200'
+                    : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
                     }`}
                 >
                   <div className="font-medium text-xs sm:text-sm 2xl:text-2xl">Kaikki</div>
@@ -1194,8 +1194,8 @@ export default function FiDashboardPage() {
                       type="button"
                       onClick={() => setTopSector(sector.sector)}
                       className={`p-2 sm:p-3 2xl:p-5 rounded-lg sm:rounded-xl 2xl:rounded-2xl border text-left transition ${active
-                          ? 'bg-sky-500/15 border-sky-500/40 text-sky-200'
-                          : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
+                        ? 'bg-sky-500/15 border-sky-500/40 text-sky-200'
+                        : 'bg-slate-950/60 border-slate-700/60 text-slate-300 hover:border-slate-500/70'
                         }`}
                     >
                       <div className="font-medium text-xs sm:text-sm 2xl:text-2xl truncate">{sector.sector}</div>
