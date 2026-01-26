@@ -593,6 +593,25 @@ class YFinanceService:
 
             range_52w = self._normalize_52_week_range(ticker, stock, info)
 
+            # Calculate EV/EBIT if data available
+            enterprise_value = info.get('enterpriseValue', 0)
+            ebit = info.get('ebit', 0)
+            ev_ebit = None
+            if enterprise_value and ebit and ebit > 0:
+                ev_ebit = enterprise_value / ebit
+
+            # ROIC = NOPAT / Invested Capital (approximation using available data)
+            # If not directly available, we can estimate from operating income and invested capital
+            roic = info.get('returnOnCapital', None)  # Some stocks have this
+            if roic is None:
+                # Try to calculate: ROIC ≈ Operating Income / (Total Assets - Current Liabilities)
+                operating_income = info.get('operatingIncome', 0)
+                total_assets = info.get('totalAssets', 0)
+                current_liabilities = info.get('totalCurrentLiabilities', 0)
+                invested_capital = total_assets - current_liabilities if total_assets and current_liabilities else 0
+                if operating_income and invested_capital and invested_capital > 0:
+                    roic = operating_income / invested_capital
+
             fundamentals = {
                 'marketCap': info.get('marketCap', 0),
                 'peRatio': info.get('trailingPE', info.get('forwardPE', 0)),
@@ -604,6 +623,8 @@ class YFinanceService:
                 'revenueGrowth': info.get('revenueGrowth', 0),
                 'earningsGrowth': info.get('earningsGrowth', 0),
                 'returnOnEquity': info.get('returnOnEquity', 0),
+                'returnOnAssets': info.get('returnOnAssets', 0),
+                'roic': roic,
                 'debtToEquity': info.get('debtToEquity', 0),
                 'currentRatio': info.get('currentRatio', 0),
                 'beta': info.get('beta', 1),
@@ -619,7 +640,10 @@ class YFinanceService:
                 'sector': info.get('sector', 'Unknown'),
                 'industry': info.get('industry', 'Unknown'),
                 'institutionalOwnership': info.get('heldPercentInstitutions', 0),
-                'insiderOwnership': info.get('heldPercentInsiders', 0)
+                'insiderOwnership': info.get('heldPercentInsiders', 0),
+                'enterpriseValue': enterprise_value,
+                'ebit': ebit,
+                'evEbit': ev_ebit
             }
 
             # Cache the result

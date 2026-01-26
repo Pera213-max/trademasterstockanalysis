@@ -545,7 +545,7 @@ export default function FiDashboardPage() {
           {/* Top Movers Section */}
           <section className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 2xl:gap-12 animate-slide-up" style={{ animationDelay: '100ms' }}>
             {/* Gainers */}
-            <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
+            <div className="bg-gradient-to-br from-green-900/30 to-slate-800/40 border border-green-500/30 rounded-lg sm:rounded-xl lg:rounded-2xl 2xl:rounded-3xl p-3 sm:p-5 lg:p-6 2xl:p-10">
               <div className="flex items-center gap-2 lg:gap-3 2xl:gap-4 mb-3 sm:mb-4 lg:mb-5 2xl:mb-8">
                 <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 2xl:w-9 2xl:h-9 text-green-400" />
                 <h3 className="text-base sm:text-lg lg:text-xl 2xl:text-4xl font-semibold text-white">{t.gainers}</h3>

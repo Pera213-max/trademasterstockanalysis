@@ -925,11 +925,16 @@ class FiDataService:
                 "revenueGrowth": fundamentals.get("revenueGrowth", None),
                 "earningsGrowth": fundamentals.get("earningsGrowth", None),
                 "returnOnEquity": fundamentals.get("returnOnEquity", None),
+                "returnOnAssets": fundamentals.get("returnOnAssets", None),
+                "roic": fundamentals.get("roic", None),
                 "debtToEquity": fundamentals.get("debtToEquity", None),
                 "beta": fundamentals.get("beta", None),
                 "fiftyTwoWeekHigh": fundamentals.get("fiftyTwoWeekHigh", None),
                 "fiftyTwoWeekLow": fundamentals.get("fiftyTwoWeekLow", None),
                 "averageVolume": fundamentals.get("averageVolume", None),
+                "enterpriseValue": fundamentals.get("enterpriseValue", None),
+                "ebit": fundamentals.get("ebit", None),
+                "evEbit": fundamentals.get("evEbit", None),
                 "timestamp": datetime.now().isoformat()
             }
 

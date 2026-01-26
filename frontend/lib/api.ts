@@ -920,11 +920,16 @@ export interface FiFundamentals {
   revenueGrowth: number | null;
   earningsGrowth: number | null;
   returnOnEquity: number | null;
+  returnOnAssets: number | null;
+  roic: number | null;
   debtToEquity: number | null;
   beta: number | null;
   fiftyTwoWeekHigh: number | null;
   fiftyTwoWeekLow: number | null;
   averageVolume: number | null;
+  enterpriseValue: number | null;
+  ebit: number | null;
+  evEbit: number | null;
   timestamp: string;
 }
 

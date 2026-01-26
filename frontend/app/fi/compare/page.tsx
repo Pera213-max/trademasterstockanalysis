@@ -224,7 +224,7 @@ export default function FiComparePage() {
             </div>
           </div>
 
-          <div className="mt-4 2xl:mt-8 flex flex-wrap gap-2 2xl:gap-4">
+          <div className="mt-4 2xl:mt-8 flex flex-wrap items-center gap-2 2xl:gap-4">
             {selected.length === 0 && (
               <span className="text-xs 2xl:text-xl text-slate-500">Ei valittuja osakkeita.</span>
             )}
@@ -243,6 +243,16 @@ export default function FiComparePage() {
                 </button>
               </span>
             ))}
+            {selected.length > 1 && (
+              <button
+                type="button"
+                onClick={() => setSelected([])}
+                className="inline-flex items-center gap-2 px-3 2xl:px-5 py-1 2xl:py-2 rounded-full bg-red-500/20 border border-red-500/40 text-xs 2xl:text-xl text-red-300 hover:bg-red-500/30 hover:text-red-200 transition-colors"
+              >
+                Tyhjennä kaikki
+                <X className="w-3 h-3 2xl:w-5 2xl:h-5" />
+              </button>
+            )}
           </div>
 
           <div className="mt-5 2xl:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 2xl:gap-5">

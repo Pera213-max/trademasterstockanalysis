@@ -61,9 +61,11 @@ const t = {
   priceToBook: 'P/B',
   pegRatio: 'PEG',
   dividendYield: 'Osinkotuotto',
+  evEbit: 'EV/EBIT',
   profitability: 'Kannattavuus',
   profitMargin: 'Voittomarginaali',
   returnOnEquity: 'ROE',
+  roic: 'ROIC',
   growth: 'Kasvu',
   revenueGrowth: 'Liikevaihdon kasvu',
   earningsGrowth: 'Tuloksen kasvu',
@@ -1075,6 +1077,10 @@ export default function FiStockPage() {
                       {fundamentals.dividendYield ? formatPercent(fundamentals.dividendYield) : '—'}
                     </span>
                   </div>
+                  <div className="flex justify-between text-sm 2xl:text-2xl">
+                    <span className="text-slate-400">{t.evEbit}</span>
+                    <span className="text-white">{formatNumber(fundamentals.evEbit, 1, true)}</span>
+                  </div>
                 </div>
               </div>
 
@@ -1092,6 +1098,12 @@ export default function FiStockPage() {
                     <span className="text-slate-400">{t.returnOnEquity}</span>
                     <span className="text-white">
                       {fundamentals.returnOnEquity ? formatPercent(fundamentals.returnOnEquity * 100) : '—'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm 2xl:text-2xl">
+                    <span className="text-slate-400">{t.roic}</span>
+                    <span className="text-white">
+                      {fundamentals.roic ? formatPercent(fundamentals.roic * 100) : '—'}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm 2xl:text-2xl">
