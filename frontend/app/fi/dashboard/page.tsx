@@ -7,7 +7,7 @@ import {
   BarChart3, TrendingUp, TrendingDown, ArrowLeft, Globe, Flag,
   Sparkles, Building2, Activity, ChevronRight, Star, AlertTriangle,
   ArrowUpRight, ArrowDownRight, Filter, Search, RefreshCw, PieChart,
-  Target, Zap, Clock
+  Target, Zap, Clock, ExternalLink
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import {
