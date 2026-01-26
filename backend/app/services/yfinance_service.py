@@ -664,12 +664,16 @@ class YFinanceService:
 
             if operating_income and operating_income > 0 and invested_capital and invested_capital > 0:
                 nopat = operating_income * 0.80  # Assume 20% tax rate
-                roic = round(nopat / invested_capital, 4)
+                calculated_roic = nopat / invested_capital
+                # Sanity check: ROIC should be between -50% and +50% for most companies
+                # Values outside this range usually indicate calculation errors
+                if -0.5 <= calculated_roic <= 0.5:
+                    roic = round(calculated_roic, 4)
 
-            # Fallback: use ROE as proxy for ROIC if calculation failed
+            # Fallback: use ROE as proxy for ROIC if calculation failed or was unrealistic
             if roic is None:
                 roe = info.get('returnOnEquity', 0)
-                if roe and roe > 0:
+                if roe and isinstance(roe, (int, float)) and -1 <= roe <= 1:
                     # ROE is typically higher than ROIC, adjust down slightly
                     roic = round(roe * 0.85, 4)
 

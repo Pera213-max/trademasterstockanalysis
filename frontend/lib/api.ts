@@ -1350,6 +1350,13 @@ export async function getFiMacro() {
 }
 
 /**
+ * Get macro indicator history
+ */
+export async function getFiMacroHistory(code: string, period: string = '1y', interval: string = '1d') {
+  return apiCall<{ success: boolean; data: any }>(`/api/fi/macro/${encodeURIComponent(code)}/history?period=${period}&interval=${interval}`);
+}
+
+/**
  * Precious metal type
  */
 export interface FiMetal {

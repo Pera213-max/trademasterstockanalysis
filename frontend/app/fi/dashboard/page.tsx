@@ -7,7 +7,7 @@ import {
   BarChart3, TrendingUp, TrendingDown, ArrowLeft, Globe, Flag,
   Sparkles, Building2, Activity, ChevronRight, Star, AlertTriangle,
   ArrowUpRight, ArrowDownRight, Filter, Search, RefreshCw, PieChart,
-  Target, Zap, Clock, ExternalLink
+  Target, Zap, Clock
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 import {
@@ -145,23 +145,6 @@ const macroKindConfig = {
   },
 } as const;
 
-// Map indicator symbols to TradingView chart symbols
-const getTradingViewUrl = (symbol: string): string => {
-  const symbolMap: Record<string, string> = {
-    '^OMXH25': 'OMXHEX:OMXH25',
-    '^STOXX50E': 'EUREX:FESX1!',
-    '^GDAXI': 'XETR:DAX',
-    '^VIX': 'TVC:VIX',
-    'EURUSD=X': 'FX:EURUSD',
-    'EURSEK=X': 'FX:EURSEK',
-    'GC=F': 'COMEX:GC1!',
-    'BZ=F': 'NYMEX:BZ1!',
-    '^TNX': 'TVC:US10Y',
-  };
-  const tvSymbol = symbolMap[symbol] || symbol.replace('^', '').replace('=X', '').replace('=F', '');
-  return `https://www.tradingview.com/chart/?symbol=${encodeURIComponent(tvSymbol)}`;
-};
-
 const MacroRow = ({ indicator, kind }: { indicator: FiMacroIndicator; kind: 'index' | 'currency' | 'rate' }) => {
   const changeValue = indicator.changePercent ?? indicator.change ?? 0;
   const isUp = changeValue >= 0;
@@ -169,13 +152,10 @@ const MacroRow = ({ indicator, kind }: { indicator: FiMacroIndicator; kind: 'ind
   const config = macroKindConfig[kind];
   const Icon = config.icon;
   const barWidth = Math.min(100, Math.max(12, Math.abs(changeValue) * 12));
-  const chartUrl = getTradingViewUrl(indicator.symbol);
 
   return (
-    <a
-      href={chartUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      href={`/fi/macro/${encodeURIComponent(indicator.code)}`}
       className="group block rounded-xl 2xl:rounded-2xl border border-slate-700/50 bg-slate-900/60 p-3 2xl:p-5 transition-all hover:border-slate-500 hover:bg-slate-800/60 cursor-pointer"
     >
       <div className="flex items-center gap-3 2xl:gap-5">
@@ -188,7 +168,7 @@ const MacroRow = ({ indicator, kind }: { indicator: FiMacroIndicator; kind: 'ind
               {indicator.code}
             </span>
             <span className="text-sm 2xl:text-2xl text-white font-semibold truncate">{indicator.name}</span>
-            <ExternalLink className="w-3 h-3 2xl:w-4 2xl:h-4 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <ChevronRight className="w-3 h-3 2xl:w-4 2xl:h-4 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
           <div className="flex items-center gap-2 mt-1 2xl:mt-2 text-[11px] 2xl:text-lg text-slate-400">
             <span>{indicator.symbol}</span>
@@ -213,7 +193,7 @@ const MacroRow = ({ indicator, kind }: { indicator: FiMacroIndicator; kind: 'ind
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
