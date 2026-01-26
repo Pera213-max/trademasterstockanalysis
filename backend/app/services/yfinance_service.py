@@ -30,6 +30,7 @@ import importlib
 from typing import Dict, List, Optional
 from datetime import datetime, timedelta
 from collections import deque
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
 import os
 import re
 
@@ -45,6 +46,22 @@ _DELISTED_HINTS = ("delisted", "no price data found", "no data found, symbol may
 _RATE_LIMIT_HINTS = ("rate limited", "too many requests")
 # Extended pattern to support Finnish tickers (e.g., FORTUM.HE, STOCKA.HE)
 _TICKER_PATTERN = re.compile(r"^[A-Z0-9]{1,10}(-[A-Z]{1,2})?(\.[A-Z]{1,4})?$")
+# Default timeout for yfinance calls in seconds
+_YFINANCE_TIMEOUT = 15
+
+
+def _with_timeout(func, timeout: int = _YFINANCE_TIMEOUT, default=None):
+    """Execute a function with timeout. Returns default if timeout occurs."""
+    try:
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(func)
+            return future.result(timeout=timeout)
+    except FuturesTimeoutError:
+        logger.warning(f"yfinance call timed out after {timeout}s")
+        return default
+    except Exception as e:
+        logger.debug(f"yfinance call failed: {e}")
+        return default
 _SPECIAL_TICKERS = {
     "^VIX",
     "^GSPC",
@@ -349,9 +366,10 @@ class YFinanceService:
                 return None
 
             stock = yf.Ticker(normalized)
-            data = stock.history(period=period)
+            # Use timeout to prevent hanging on slow tickers
+            data = _with_timeout(lambda: stock.history(period=period), timeout=_YFINANCE_TIMEOUT, default=None)
 
-            if data.empty:
+            if data is None or data.empty:
                 logger.debug(f"No data found for {ticker}")
                 return None
 
@@ -421,14 +439,15 @@ class YFinanceService:
             info = {}
             fast_info = {}
             try:
-                info = stock.info or {}
+                # Use timeout to prevent hanging on slow tickers
+                info = _with_timeout(lambda: stock.info, timeout=_YFINANCE_TIMEOUT, default={}) or {}
             except Exception as exc:
                 if self._handle_rate_limit_error(exc):
                     return self._data_manager.get_quote(normalized) if self._data_manager else None
                 logger.debug("Failed to read yfinance info for %s: %s", normalized, exc)
                 info = {}
             try:
-                fast_info = getattr(stock, "fast_info", None) or {}
+                fast_info = _with_timeout(lambda: getattr(stock, "fast_info", None), timeout=5, default={}) or {}
             except Exception as exc:
                 logger.debug("Failed to read yfinance fast_info for %s: %s", normalized, exc)
                 fast_info = {}
@@ -467,7 +486,8 @@ class YFinanceService:
             )
 
             if not current_price:
-                history = stock.history(period="5d")
+                # Use timeout to prevent hanging
+                history = _with_timeout(lambda: stock.history(period="5d"), timeout=10, default=None)
                 if history is not None and not history.empty:
                     current_price = float(history['Close'].iloc[-1])
                     if len(history) > 1:
@@ -526,7 +546,8 @@ class YFinanceService:
             or current_price < low_52 * 0.98
         ):
             try:
-                history = stock.history(period="1y")
+                # Use timeout to prevent hanging
+                history = _with_timeout(lambda: stock.history(period="1y"), timeout=10, default=None)
                 if history is not None and not history.empty:
                     hist_high = float(history['High'].max())
                     hist_low = float(history['Low'].min())
@@ -586,43 +607,56 @@ class YFinanceService:
             self._wait_for_rate_limit()
 
             stock = yf.Ticker(normalized)
-            info = stock.info
+            # Use timeout to prevent hanging on slow tickers
+            info = _with_timeout(lambda: stock.info, timeout=_YFINANCE_TIMEOUT, default=None)
 
             if not info:
+                logger.debug(f"No info available for {ticker} (timeout or no data)")
                 return None
 
             range_52w = self._normalize_52_week_range(ticker, stock, info)
 
-            # Calculate EV/EBIT if data available
-            # EV = Enterprise Value, EBIT = Operating Income (Earnings Before Interest and Taxes)
+            # Get EV, EBITDA and calculate EV/EBIT
+            # yfinance provides enterpriseToEbitda directly which is very similar to EV/EBIT
             enterprise_value = info.get('enterpriseValue', 0) or 0
-            # EBIT: try 'ebit' first, then 'operatingIncome', then calculate from EBITDA - D&A
-            ebit = info.get('ebit') or info.get('operatingIncome') or 0
-            if not ebit:
-                # Try to get EBIT from EBITDA - Depreciation & Amortization
-                ebitda = info.get('ebitda', 0) or 0
-                # If we have EBITDA but no EBIT, use EBITDA as approximation (conservative)
-                if ebitda > 0:
-                    ebit = ebitda * 0.85  # Rough approximation: EBIT ≈ 85% of EBITDA
+            ebitda = info.get('ebitda', 0) or 0
+            ev_ebitda = info.get('enterpriseToEbitda', None)  # Directly from yfinance
 
+            # EBIT: try 'ebit' first, then 'operatingIncome', then estimate from EBITDA
+            ebit = info.get('ebit') or info.get('operatingIncome') or 0
+            if not ebit and ebitda > 0:
+                # Estimate EBIT from EBITDA (EBIT ≈ 85% of EBITDA for typical companies)
+                ebit = ebitda * 0.85
+
+            # Calculate EV/EBIT
             ev_ebit = None
             if enterprise_value and enterprise_value > 0 and ebit and ebit > 0:
                 ev_ebit = round(enterprise_value / ebit, 2)
+            elif ev_ebitda:
+                # If we have EV/EBITDA, estimate EV/EBIT (EV/EBIT ≈ EV/EBITDA * 1.18)
+                ev_ebit = round(ev_ebitda * 1.18, 2)
 
+            # ROIC calculation
             # ROIC = NOPAT / Invested Capital
-            # NOPAT ≈ Operating Income * (1 - tax rate), assume ~20% tax
-            # Invested Capital = Total Equity + Total Debt - Excess Cash
             roic = None
             operating_income = info.get('operatingIncome') or info.get('ebit') or 0
+            if not operating_income and ebitda > 0:
+                operating_income = ebitda * 0.85  # Estimate operating income from EBITDA
 
-            # Method 1: Use totalDebt and totalStockholderEquity
+            # Get balance sheet items for invested capital
             total_debt = info.get('totalDebt', 0) or 0
             total_equity = info.get('totalStockholderEquity') or info.get('bookValue', 0) or 0
             total_cash = info.get('totalCash', 0) or 0
+            market_cap = info.get('marketCap', 0) or 0
 
-            invested_capital = total_equity + total_debt - (total_cash * 0.5)  # Keep some cash as operating
+            # Method 1: Invested Capital = Equity + Debt - Excess Cash
+            invested_capital = total_equity + total_debt - (total_cash * 0.5)
 
-            # Method 2: Fallback to Total Assets - Current Liabilities
+            # Method 2: Fallback - use market cap + debt - cash as proxy
+            if invested_capital <= 0 and market_cap > 0:
+                invested_capital = market_cap + total_debt - total_cash
+
+            # Method 3: Fallback to Total Assets - Current Liabilities
             if invested_capital <= 0:
                 total_assets = info.get('totalAssets', 0) or 0
                 current_liabilities = info.get('totalCurrentLiabilities', 0) or 0
@@ -630,7 +664,14 @@ class YFinanceService:
 
             if operating_income and operating_income > 0 and invested_capital and invested_capital > 0:
                 nopat = operating_income * 0.80  # Assume 20% tax rate
-                roic = round(nopat / invested_capital, 4)  # Keep as decimal (0.15 = 15%)
+                roic = round(nopat / invested_capital, 4)
+
+            # Fallback: use ROE as proxy for ROIC if calculation failed
+            if roic is None:
+                roe = info.get('returnOnEquity', 0)
+                if roe and roe > 0:
+                    # ROE is typically higher than ROIC, adjust down slightly
+                    roic = round(roe * 0.85, 4)
 
             fundamentals = {
                 'marketCap': info.get('marketCap', 0),
@@ -662,7 +703,9 @@ class YFinanceService:
                 'institutionalOwnership': info.get('heldPercentInstitutions', 0),
                 'insiderOwnership': info.get('heldPercentInsiders', 0),
                 'enterpriseValue': enterprise_value,
+                'ebitda': ebitda,
                 'ebit': ebit,
+                'evEbitda': ev_ebitda,
                 'evEbit': ev_ebit
             }
 
@@ -855,13 +898,18 @@ class YFinanceService:
         self._wait_for_rate_limit()
 
         try:
-            df = yf.download(
-                normalized,
-                period=period,
-                interval=interval,
-                progress=False,
-                auto_adjust=False,
-                threads=False,
+            # Use timeout to prevent hanging on slow tickers
+            df = _with_timeout(
+                lambda: yf.download(
+                    normalized,
+                    period=period,
+                    interval=interval,
+                    progress=False,
+                    auto_adjust=False,
+                    threads=False,
+                ),
+                timeout=_YFINANCE_TIMEOUT,
+                default=None
             )
 
             if df is None or df.empty:
@@ -895,7 +943,11 @@ class YFinanceService:
                 time.sleep(60)
                 self._wait_for_rate_limit()
                 try:
-                    df = yf.download(normalized, period=period, interval=interval, progress=False, threads=False)
+                    df = _with_timeout(
+                        lambda: yf.download(normalized, period=period, interval=interval, progress=False, threads=False),
+                        timeout=_YFINANCE_TIMEOUT,
+                        default=None
+                    )
                     if df is not None and not df.empty:
                         # Handle MultiIndex columns
                         if isinstance(df.columns, pd.MultiIndex):

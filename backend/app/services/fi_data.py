@@ -156,12 +156,14 @@ class FiDataService:
         try:
             with self._external_fetch_allowed():
                 all_tickers = self.get_all_tickers()
-                logger.info(f"=== Starting Finnish stocks cache warming for {len(all_tickers)} stocks ===")
+                # Filter for Finnish stocks just in case
+                fi_tickers = [t for t in all_tickers if t.endswith(".HE")]
+                logger.info(f"=== Starting Finnish stocks cache warming for {len(fi_tickers)} stocks (filtered from {len(all_tickers)}) ===")
                 logger.info("This may take 5-10 minutes on first run...")
 
                 logger.info("Step 1/6: Warming quotes cache...")
                 quotes_ok = 0
-                for i, ticker in enumerate(all_tickers):
+                for i, ticker in enumerate(fi_tickers):
                     try:
                         quote = self.get_quote(ticker)
                         if quote and quote.get("price", 0) > 0:
@@ -169,14 +171,14 @@ class FiDataService:
                         if (i + 1) % 5 == 0:
                             time.sleep(0.5)
                         if (i + 1) % 30 == 0:
-                            logger.info(f"Quotes: {i + 1}/{len(all_tickers)} ({quotes_ok} OK)")
+                            logger.info(f"Quotes: {i + 1}/{len(fi_tickers)} ({quotes_ok} OK)")
                     except Exception as e:
                         logger.debug(f"Quote failed for {ticker}: {e}")
-                logger.info(f"Step 1/6: Quotes done ({quotes_ok}/{len(all_tickers)} OK)")
+                logger.info(f"Step 1/6: Quotes done ({quotes_ok}/{len(fi_tickers)} OK)")
 
                 logger.info("Step 2/6: Warming fundamentals cache...")
                 funds_ok = 0
-                for i, ticker in enumerate(all_tickers):
+                for i, ticker in enumerate(fi_tickers):
                     try:
                         fund = self.get_fundamentals(ticker)
                         if fund and (fund.get("peRatio") or fund.get("marketCap")):
@@ -933,7 +935,9 @@ class FiDataService:
                 "fiftyTwoWeekLow": fundamentals.get("fiftyTwoWeekLow", None),
                 "averageVolume": fundamentals.get("averageVolume", None),
                 "enterpriseValue": fundamentals.get("enterpriseValue", None),
+                "ebitda": fundamentals.get("ebitda", None),
                 "ebit": fundamentals.get("ebit", None),
+                "evEbitda": fundamentals.get("evEbitda", None),
                 "evEbit": fundamentals.get("evEbit", None),
                 "timestamp": datetime.now().isoformat()
             }
@@ -2221,6 +2225,7 @@ class FiDataService:
         roe = self._safe_float(fundamentals.get("returnOnEquity") if fundamentals else None)
         debt_to_equity = self._safe_float(fundamentals.get("debtToEquity") if fundamentals else None)
         ev_ebit = self._safe_float(fundamentals.get("evEbit") if fundamentals else None)
+        ev_ebitda = self._safe_float(fundamentals.get("evEbitda") if fundamentals else None)
         roic = self._safe_float(fundamentals.get("roic") if fundamentals else None)
 
         # Calculate dividend amount in EUR (annual dividend per share)
@@ -2238,6 +2243,7 @@ class FiDataService:
             "peRatio": pe_ratio,
             "pbRatio": pb_ratio,
             "evEbit": ev_ebit,
+            "evEbitda": ev_ebitda,
             "roic": roic,
             "dividendYield": round(div_yield, 2) if div_yield else 0,
             "dividendAmount": dividend_amount,
