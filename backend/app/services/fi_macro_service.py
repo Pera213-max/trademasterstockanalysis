@@ -168,6 +168,91 @@ class FiMacroService:
             logger.warning(f"FI macro: failed to get indicator {symbol}: {e}")
             return None
 
+    def get_indicator_history(
+        self,
+        code: str,
+        period: str = "1y",
+        interval: str = "1d"
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Get historical data for a macro indicator.
+
+        Args:
+            code: Indicator code (e.g., OMXH25, VIX, EUR/USD)
+            period: Time period (1mo, 3mo, 6mo, 1y, 2y, 5y)
+            interval: Data interval (1d, 1wk, 1mo)
+        """
+        # Find the indicator config
+        indicator_config = None
+        for config in MACRO_INDICATORS:
+            if config["code"] == code or config["symbol"] == code:
+                indicator_config = config
+                break
+
+        if not indicator_config:
+            logger.warning(f"FI macro history: unknown indicator {code}")
+            return None
+
+        cache_key = f"fi:macro:history:{code}:{period}:{interval}"
+
+        # Check cache
+        if self.redis_cache and self.redis_cache.is_connected():
+            try:
+                cached = self.redis_cache.redis_client.get(cache_key)
+                if cached:
+                    return json.loads(cached)
+            except Exception as e:
+                logger.debug(f"FI macro history cache read error: {e}")
+
+        # Fetch history from yfinance
+        try:
+            df = self.yfinance.get_historical_data(
+                indicator_config["symbol"],
+                period=period,
+                interval=interval,
+                allow_external=True
+            )
+
+            if df is None or df.empty:
+                logger.warning(f"FI macro history: no data for {code}")
+                return None
+
+            # Convert to list of dicts
+            history = []
+            for idx, row in df.iterrows():
+                history.append({
+                    "date": idx.isoformat() if hasattr(idx, "isoformat") else str(idx),
+                    "open": round(float(row.get("Open", 0)), 4),
+                    "high": round(float(row.get("High", 0)), 4),
+                    "low": round(float(row.get("Low", 0)), 4),
+                    "close": round(float(row.get("Close", 0)), 4),
+                    "volume": int(row.get("Volume", 0)),
+                })
+
+            result = {
+                "code": indicator_config["code"],
+                "name": indicator_config["name"],
+                "symbol": indicator_config["symbol"],
+                "category": indicator_config["category"],
+                "period": period,
+                "interval": interval,
+                "history": history,
+                "timestamp": datetime.now().isoformat()
+            }
+
+            # Cache for 1 hour
+            if self.redis_cache and self.redis_cache.is_connected():
+                try:
+                    self.redis_cache.redis_client.setex(cache_key, 3600, json.dumps(result))
+                except Exception as e:
+                    logger.debug(f"FI macro history cache write error: {e}")
+
+            return result
+
+        except Exception as e:
+            logger.error(f"FI macro history: error fetching {code}: {e}")
+            return None
+
     def warm_cache(self) -> Dict[str, int]:
         """
         Warm the macro indicators cache.

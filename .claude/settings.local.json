@@ -46,7 +46,14 @@
       "WebFetch(domain:www.tradingview.com)",
       "WebFetch(domain:www.kauppalehti.fi)",
       "Bash(docker compose:*)",
-      "Bash(ssh root@213.255.227.95 \"cd /opt/trademaster-pro && git pull && cd deployment && docker compose up -d --build frontend\")"
+      "Bash(ssh root@213.255.227.95 \"cd /opt/trademaster-pro && git pull && cd deployment && docker compose up -d --build frontend\")",
+      "WebFetch(domain:site.financialmodelingprep.com)",
+      "WebFetch(domain:financialmodelingprep.com)",
+      "WebFetch(domain:www.inderes.fi)",
+      "WebFetch(domain:www.nordnet.fi)",
+      "WebFetch(domain:massiveapi.com)",
+      "Bash(docker logs:*)",
+      "Bash(ssh:*)"
     ]
   }
 }

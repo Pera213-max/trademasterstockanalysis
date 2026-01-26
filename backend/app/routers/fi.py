@@ -349,6 +349,45 @@ async def get_macro_indicators():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/macro/{code}/history")
+async def get_macro_history(
+    code: str,
+    period: str = Query("1y", regex="^(1mo|3mo|6mo|1y|2y|5y)$"),
+    interval: str = Query("1d", regex="^(1d|1wk|1mo)$")
+):
+    """
+    Get historical data for a macro indicator
+
+    Args:
+        code: Indicator code (OMXH25, VIX, EUR/USD, etc.)
+        period: Time period (1mo, 3mo, 6mo, 1y, 2y, 5y)
+        interval: Data interval (1d, 1wk, 1mo)
+
+    Returns:
+        Historical OHLCV data for the indicator
+    """
+    try:
+        macro_service = get_fi_macro_service()
+        result = macro_service.get_indicator_history(code, period, interval)
+
+        if not result:
+            raise HTTPException(
+                status_code=404,
+                detail=f"History not found for indicator: {code}"
+            )
+
+        return {
+            "success": True,
+            "data": result
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting macro history for {code}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/metals")
 async def get_metals_overview():
     """

@@ -164,16 +164,42 @@ export interface Fundamentals {
   peRatio?: number;
   forwardPE?: number;
   dividendYield?: number;
+  dividendAmount?: number;
   eps?: number;
   beta?: number;
   revenue?: number;
   profitMargin?: number;
   debtToEquity?: number;
   roe?: number;
+  roic?: number;
   bookValue?: number;
   priceToBook?: number;
   revenueGrowth?: number;
   earningsGrowth?: number;
+  evEbit?: number;
+  evEbitda?: number;
+  enterpriseValue?: number;
+}
+
+export interface FiRankedStock {
+  ticker: string;
+  name: string;
+  sector: string;
+  score: number;
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+  price: number;
+  change: number;
+  return3m: number | null;
+  return12m: number | null;
+  volatility: number | null;
+  peRatio?: number | null;
+  pbRatio?: number | null;
+  dividendYield?: number | null;
+  dividendAmount?: number | null;
+  evEbit?: number | null;
+  roic?: number | null;
+  beta?: number | null;
+  marketCap?: number | null;
 }
 
 export interface BaseScoreBreakdown {
