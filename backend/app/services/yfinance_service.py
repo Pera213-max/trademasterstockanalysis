@@ -594,23 +594,43 @@ class YFinanceService:
             range_52w = self._normalize_52_week_range(ticker, stock, info)
 
             # Calculate EV/EBIT if data available
-            enterprise_value = info.get('enterpriseValue', 0)
-            ebit = info.get('ebit', 0)
-            ev_ebit = None
-            if enterprise_value and ebit and ebit > 0:
-                ev_ebit = enterprise_value / ebit
+            # EV = Enterprise Value, EBIT = Operating Income (Earnings Before Interest and Taxes)
+            enterprise_value = info.get('enterpriseValue', 0) or 0
+            # EBIT: try 'ebit' first, then 'operatingIncome', then calculate from EBITDA - D&A
+            ebit = info.get('ebit') or info.get('operatingIncome') or 0
+            if not ebit:
+                # Try to get EBIT from EBITDA - Depreciation & Amortization
+                ebitda = info.get('ebitda', 0) or 0
+                # If we have EBITDA but no EBIT, use EBITDA as approximation (conservative)
+                if ebitda > 0:
+                    ebit = ebitda * 0.85  # Rough approximation: EBIT ≈ 85% of EBITDA
 
-            # ROIC = NOPAT / Invested Capital (approximation using available data)
-            # If not directly available, we can estimate from operating income and invested capital
-            roic = info.get('returnOnCapital', None)  # Some stocks have this
-            if roic is None:
-                # Try to calculate: ROIC ≈ Operating Income / (Total Assets - Current Liabilities)
-                operating_income = info.get('operatingIncome', 0)
-                total_assets = info.get('totalAssets', 0)
-                current_liabilities = info.get('totalCurrentLiabilities', 0)
-                invested_capital = total_assets - current_liabilities if total_assets and current_liabilities else 0
-                if operating_income and invested_capital and invested_capital > 0:
-                    roic = operating_income / invested_capital
+            ev_ebit = None
+            if enterprise_value and enterprise_value > 0 and ebit and ebit > 0:
+                ev_ebit = round(enterprise_value / ebit, 2)
+
+            # ROIC = NOPAT / Invested Capital
+            # NOPAT ≈ Operating Income * (1 - tax rate), assume ~20% tax
+            # Invested Capital = Total Equity + Total Debt - Excess Cash
+            roic = None
+            operating_income = info.get('operatingIncome') or info.get('ebit') or 0
+
+            # Method 1: Use totalDebt and totalStockholderEquity
+            total_debt = info.get('totalDebt', 0) or 0
+            total_equity = info.get('totalStockholderEquity') or info.get('bookValue', 0) or 0
+            total_cash = info.get('totalCash', 0) or 0
+
+            invested_capital = total_equity + total_debt - (total_cash * 0.5)  # Keep some cash as operating
+
+            # Method 2: Fallback to Total Assets - Current Liabilities
+            if invested_capital <= 0:
+                total_assets = info.get('totalAssets', 0) or 0
+                current_liabilities = info.get('totalCurrentLiabilities', 0) or 0
+                invested_capital = total_assets - current_liabilities
+
+            if operating_income and operating_income > 0 and invested_capital and invested_capital > 0:
+                nopat = operating_income * 0.80  # Assume 20% tax rate
+                roic = round(nopat / invested_capital, 4)  # Keep as decimal (0.15 = 15%)
 
             fundamentals = {
                 'marketCap': info.get('marketCap', 0),

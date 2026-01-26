@@ -175,6 +175,8 @@ export default function FiComparePage() {
     { label: 'Markkina-arvo', get: (a: FiAnalysis) => formatEur(a.fundamentals?.marketCap, true), tone: 'neutral', getValue: () => null },
     { label: 'P/E', get: (a: FiAnalysis) => formatNumber(a.fundamentals?.peRatio, 1), tone: 'neutral', getValue: () => null },
     { label: 'P/B', get: (a: FiAnalysis) => formatNumber(a.fundamentals?.priceToBook, 2), tone: 'neutral', getValue: () => null },
+    { label: 'EV/EBIT', get: (a: FiAnalysis) => formatNumber(a.fundamentals?.evEbit, 1), tone: 'neutral', getValue: () => null },
+    { label: 'ROIC', get: (a: FiAnalysis) => a.fundamentals?.roic != null ? `${(a.fundamentals.roic * 100).toFixed(1)}%` : '—', tone: 'neutral', getValue: () => null },
     { label: 'Osinkotuotto', get: (a: FiAnalysis) => formatPercentFromDecimal(a.fundamentals?.dividendYield), tone: 'neutral', getValue: () => null },
     { label: 'ROE', get: (a: FiAnalysis) => formatPercentFromDecimal(a.fundamentals?.returnOnEquity), tone: 'neutral', getValue: () => null },
     { label: 'Velkaantumisaste', get: (a: FiAnalysis) => formatPercent(a.fundamentals?.debtToEquity, 0), tone: 'neutral', getValue: () => null },

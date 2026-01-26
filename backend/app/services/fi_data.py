@@ -2220,6 +2220,8 @@ class FiDataService:
         revenue_growth = self._safe_float(fundamentals.get("revenueGrowth") if fundamentals else None)
         roe = self._safe_float(fundamentals.get("returnOnEquity") if fundamentals else None)
         debt_to_equity = self._safe_float(fundamentals.get("debtToEquity") if fundamentals else None)
+        ev_ebit = self._safe_float(fundamentals.get("evEbit") if fundamentals else None)
+        roic = self._safe_float(fundamentals.get("roic") if fundamentals else None)
 
         # Calculate dividend amount in EUR (annual dividend per share)
         dividend_amount = None
@@ -2235,6 +2237,8 @@ class FiDataService:
             "change": change_pct,
             "peRatio": pe_ratio,
             "pbRatio": pb_ratio,
+            "evEbit": ev_ebit,
+            "roic": roic,
             "dividendYield": round(div_yield, 2) if div_yield else 0,
             "dividendAmount": dividend_amount,
             "marketCap": market_cap,
@@ -2384,6 +2388,8 @@ class FiDataService:
             "dividend_amount": "dividendAmount",
             "pe": "peRatio",
             "pb": "pbRatio",
+            "ev_ebit": "evEbit",
+            "roic": "roic",
             "market_cap": "marketCap",
             "change": "change",
             "return_3m": "return3m",

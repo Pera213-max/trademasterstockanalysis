@@ -374,6 +374,8 @@ export default function ScreenerPage() {
                 <option value="dividend_amount">Osinko €</option>
                 <option value="pe">P/E-luku</option>
                 <option value="pb">P/B-luku</option>
+                <option value="ev_ebit">EV/EBIT</option>
+                <option value="roic">ROIC</option>
                 <option value="return_12m">12kk tuotto</option>
                 <option value="return_3m">3kk tuotto</option>
                 <option value="change">Päivän muutos</option>
@@ -439,6 +441,8 @@ export default function ScreenerPage() {
                       <SortableHeader label="Muutos" sortKey="change" className="text-right font-semibold" />
                       <SortableHeader label="P/E" sortKey="pe" className="text-right hidden sm:table-cell font-semibold" />
                       <SortableHeader label="P/B" sortKey="pb" className="text-right hidden lg:table-cell font-semibold" />
+                      <SortableHeader label="EV/EBIT" sortKey="ev_ebit" className="text-right hidden xl:table-cell font-semibold" />
+                      <SortableHeader label="ROIC" sortKey="roic" className="text-right hidden xl:table-cell font-semibold" />
                       <SortableHeader label="Osinko %" sortKey="dividend_yield" className="text-right hidden md:table-cell font-semibold" />
                       <SortableHeader label="Osinko €" sortKey="dividend_amount" className="text-right hidden xl:table-cell font-semibold" />
                       <SortableHeader label="12kk" sortKey="return_12m" className="text-right hidden lg:table-cell font-semibold" />
@@ -471,6 +475,12 @@ export default function ScreenerPage() {
                         </td>
                         <td className="px-3 lg:px-4 xl:px-5 2xl:px-8 py-3 lg:py-4 xl:py-5 2xl:py-7 text-right text-slate-300 text-sm lg:text-base xl:text-lg 2xl:text-3xl hidden lg:table-cell">
                           {stock.pbRatio != null && Number(stock.pbRatio) > 0 ? Number(stock.pbRatio).toFixed(2) : '—'}
+                        </td>
+                        <td className="px-3 lg:px-4 xl:px-5 2xl:px-8 py-3 lg:py-4 xl:py-5 2xl:py-7 text-right text-slate-300 text-sm lg:text-base xl:text-lg 2xl:text-3xl hidden xl:table-cell">
+                          {stock.evEbit != null && Number(stock.evEbit) > 0 ? Number(stock.evEbit).toFixed(1) : '—'}
+                        </td>
+                        <td className="px-3 lg:px-4 xl:px-5 2xl:px-8 py-3 lg:py-4 xl:py-5 2xl:py-7 text-right text-cyan-400 text-sm lg:text-base xl:text-lg 2xl:text-3xl hidden xl:table-cell">
+                          {stock.roic != null && Number(stock.roic) > 0 ? `${(Number(stock.roic) * 100).toFixed(1)}%` : '—'}
                         </td>
                         <td className="px-3 lg:px-4 xl:px-5 2xl:px-8 py-3 lg:py-4 xl:py-5 2xl:py-7 text-right text-green-400 text-sm lg:text-base xl:text-lg 2xl:text-3xl font-medium hidden md:table-cell">
                           {stock.dividendYield != null && Number(stock.dividendYield) > 0 ? `${Number(stock.dividendYield).toFixed(1)}%` : '—'}
