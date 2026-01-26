@@ -47,7 +47,7 @@ _RATE_LIMIT_HINTS = ("rate limited", "too many requests")
 # Extended pattern to support Finnish tickers (e.g., FORTUM.HE, STOCKA.HE)
 _TICKER_PATTERN = re.compile(r"^[A-Z0-9]{1,10}(-[A-Z]{1,2})?(\.[A-Z]{1,4})?$")
 # Default timeout for yfinance calls in seconds
-_YFINANCE_TIMEOUT = 15
+_YFINANCE_TIMEOUT = 30
 
 
 def _with_timeout(func, timeout: int = _YFINANCE_TIMEOUT, default=None):
