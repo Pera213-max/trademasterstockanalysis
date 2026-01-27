@@ -1439,3 +1439,431 @@ export async function getFiIrHeadlines(ticker: string, limit: number = 5) {
     `/api/fi/ir-headlines/${ticker}?${params}`
   );
 }
+
+// ============================================================================
+// UNITED STATES (NYSE/NASDAQ) API
+// ============================================================================
+
+export interface UsStock {
+  ticker: string;
+  name: string;
+  sector: string;
+  index: string[];  // ["SP500", "NASDAQ100"]
+}
+
+export interface UsQuote {
+  ticker: string;
+  price: number;
+  change: number;
+  changePercent: number;
+  previousClose: number;
+  high: number;
+  low: number;
+  open: number;
+  currency: string;
+  exchange: string;
+  timestamp: string;
+}
+
+export interface UsHistoryPoint {
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+}
+
+export interface UsMetrics {
+  volatility: number | null;
+  maxDrawdown: number | null;
+  sharpeRatio: number | null;
+  return3m: number | null;
+  return12m: number | null;
+}
+
+export interface UsFundamentals {
+  ticker: string;
+  name: string;
+  sector: string;
+  industry: string;
+  exchange: string;
+  currency: string;
+  marketCap: number;
+  peRatio: number | null;
+  forwardPE: number | null;
+  pegRatio: number | null;
+  priceToBook: number | null;
+  dividendYield: number | null;
+  profitMargins: number | null;
+  revenueGrowth: number | null;
+  earningsGrowth: number | null;
+  returnOnEquity: number | null;
+  returnOnAssets: number | null;
+  roic: number | null;
+  debtToEquity: number | null;
+  beta: number | null;
+  fiftyTwoWeekHigh: number | null;
+  fiftyTwoWeekLow: number | null;
+  averageVolume: number | null;
+  enterpriseValue: number | null;
+  ebit: number | null;
+  evEbit: number | null;
+  timestamp: string;
+}
+
+export interface UsScoreComponents {
+  momentum: number;
+  risk: number;
+  fundamentals: number;
+}
+
+export interface UsAnalysis {
+  ticker: string;
+  name: string;
+  sector: string;
+  exchange: string;
+  currency: string;
+  index: string[];
+  quote: UsQuote | null;
+  fundamentals: UsFundamentals | null;
+  metrics: UsMetrics;
+  score: number;
+  scoreComponents: UsScoreComponents;
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+  explanations: string[];
+  rankPosition?: number | null;
+  rankTotal?: number | null;
+  sectorBenchmarks?: {
+    sector: string;
+    sampleCount: number;
+    medians: Record<string, number | null>;
+    values: Record<string, number | null>;
+  } | null;
+  timestamp: string;
+}
+
+export interface UsRankedStock {
+  ticker: string;
+  name: string;
+  sector: string;
+  score: number;
+  riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
+  price: number;
+  change: number;
+  return3m: number | null;
+  return12m: number | null;
+  volatility: number | null;
+  peRatio?: number | null;
+  pbRatio?: number | null;
+  dividendYield?: number | null;
+  dividendAmount?: number | null;
+  evEbit?: number | null;
+  roic?: number | null;
+  beta?: number | null;
+  marketCap?: number | null;
+  index?: string[];
+}
+
+export interface UsScreenerResponse {
+  success: boolean;
+  filters_applied?: Record<string, any>;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
+  total_matches: number;
+  returned: number;
+  offset: number;
+  data: UsRankedStock[];
+}
+
+export interface UsMover {
+  ticker: string;
+  name: string;
+  price: number;
+  change: number;
+  changePercent: number;
+}
+
+export interface UsUniverse {
+  exchange: string;
+  currency: string;
+  country: string;
+  totalCount: number;
+  sp500Count: number;
+  nasdaq100Count: number;
+  sectors: Record<string, number>;
+  blueChips: string[];
+  stocks: UsStock[];
+}
+
+export interface UsMomentumStock {
+  ticker: string;
+  name: string;
+  price: number;
+  weeklyReturn: number;
+  volume: number;
+  avgVolume: number;
+  volumeRatio: number;
+  rsi: number | null;
+}
+
+export interface UsMomentumData {
+  weekly_gainers: UsMomentumStock[];
+  weekly_losers: UsMomentumStock[];
+  unusual_volume: UsMomentumStock[];
+  overbought: UsMomentumStock[];
+  oversold: UsMomentumStock[];
+  updated_at: string | null;
+}
+
+export interface UsPotentialStock {
+  ticker: string;
+  name: string;
+  sector: string;
+  price: number;
+  change: number;
+  potentialScore: number;
+  reasons: string[];
+  peRatio: number | null;
+  pbRatio: number | null;
+  dividendYield: number;
+  return3m: number | null;
+  return12m: number | null;
+  roe: number | null;
+  revenueGrowth: number | null;
+  riskLevel: string;
+  index?: string[];
+}
+
+export interface UsMacroIndicator {
+  code: string;
+  name: string;
+  symbol: string;
+  price: number | null;
+  change: number | null;
+  changePercent: number | null;
+  previousClose: number | null;
+}
+
+export interface UsMacroData {
+  indices: UsMacroIndicator[];
+  currencies: UsMacroIndicator[];
+  rates: UsMacroIndicator[];
+  commodities: UsMacroIndicator[];
+  timestamp: string;
+}
+
+export interface UsTechnicals {
+  ticker: string;
+  name: string;
+  sector: string;
+  price: number;
+  rsi: {
+    value: number | null;
+    signal: string | null;
+    period: number;
+  } | null;
+  macd: {
+    value: number | null;
+    signal_line: number | null;
+    histogram: number | null;
+    signal: string | null;
+  } | null;
+  bollinger: {
+    upper: number | null;
+    middle: number | null;
+    lower: number | null;
+    position: number | null;
+    signal: string | null;
+    period: number;
+  } | null;
+  sma: {
+    sma20: number | null;
+    sma50: number | null;
+    sma200: number | null;
+    trend: string | null;
+  } | null;
+  signals: Array<{
+    type: string;
+    signal: 'BUY' | 'SELL';
+    text: string;
+  }>;
+  summary: {
+    verdict: string;
+    text: string;
+  } | null;
+}
+
+/**
+ * Get US stock universe (S&P 500 + NASDAQ 100)
+ */
+export async function getUsUniverse() {
+  return apiCall<{ success: boolean } & UsUniverse>('/api/us/universe');
+}
+
+/**
+ * Get current quote for a US stock
+ */
+export async function getUsQuote(ticker: string) {
+  return apiCall<{ success: boolean; data: UsQuote }>(`/api/us/quote/${ticker}`);
+}
+
+/**
+ * Get historical data for a US stock
+ */
+export async function getUsHistory(
+  ticker: string,
+  range: string = '1y',
+  interval: string = '1d'
+) {
+  const params = new URLSearchParams({ range, interval });
+  return apiCall<{
+    success: boolean;
+    ticker: string;
+    range: string;
+    interval: string;
+    count: number;
+    data: UsHistoryPoint[];
+  }>(`/api/us/history/${ticker}?${params}`);
+}
+
+/**
+ * Get comprehensive analysis for a US stock
+ */
+export async function getUsAnalysis(ticker: string) {
+  return apiCall<{ success: boolean; data: UsAnalysis }>(`/api/us/analysis/${ticker}`);
+}
+
+/**
+ * Get technical analysis (RSI, MACD, Bollinger, SMA) for a US stock
+ */
+export async function getUsTechnicals(ticker: string) {
+  return apiCall<{ success: boolean; data: UsTechnicals }>(`/api/us/technicals/${ticker}`);
+}
+
+/**
+ * Get top-ranked US stocks by AI score
+ */
+export async function getUsRankings(limit: number = 50) {
+  const params = new URLSearchParams({ limit: limit.toString() });
+  return apiCall<{ success: boolean; count: number; data: UsRankedStock[] }>(
+    `/api/us/rank?${params}`
+  );
+}
+
+/**
+ * Get top gainers and losers for US stocks
+ */
+export async function getUsMovers(limit: number = 10) {
+  const params = new URLSearchParams({ limit: limit.toString() });
+  return apiCall<{ success: boolean; gainers: UsMover[]; losers: UsMover[] }>(
+    `/api/us/movers?${params}`
+  );
+}
+
+/**
+ * Get weekly momentum data for US stocks
+ */
+export async function getUsMomentum(limit: number = 10) {
+  const params = new URLSearchParams({ limit: limit.toString() });
+  return apiCall<{ success: boolean } & UsMomentumData>(
+    `/api/us/momentum?${params}`
+  );
+}
+
+/**
+ * Get US stocks with highest potential by timeframe
+ */
+export async function getUsPotential(timeframe: 'short' | 'medium' | 'long' = 'short', limit: number = 10) {
+  const params = new URLSearchParams({ timeframe, limit: limit.toString() });
+  return apiCall<{ success: boolean; timeframe: string; total: number; data: UsPotentialStock[] }>(
+    `/api/us/potential?${params}`
+  );
+}
+
+/**
+ * Get sector breakdown for US stocks
+ */
+export async function getUsSectors() {
+  return apiCall<{ success: boolean; data: Array<{ sector: string; count: number }> }>(
+    '/api/us/sectors'
+  );
+}
+
+/**
+ * Screen US stocks with index filter (SP500, NASDAQ100, ALL)
+ */
+export async function getUsScreener(params?: {
+  index?: string;  // SP500, NASDAQ100, or ALL
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc';
+  limit?: number;
+  offset?: number;
+  sector?: string;
+  min_dividend_yield?: number;
+  max_pe?: number;
+  min_pe?: number;
+  max_volatility?: number;
+  min_return_12m?: number;
+  min_return_3m?: number;
+  min_market_cap?: number;
+  risk_level?: string;
+}) {
+  const query = new URLSearchParams();
+  if (params?.index) query.set('index', params.index);
+  if (params?.sort_by) query.set('sort_by', params.sort_by);
+  if (params?.sort_order) query.set('sort_order', params.sort_order);
+  if (params?.limit !== undefined) query.set('limit', params.limit.toString());
+  if (params?.offset !== undefined) query.set('offset', params.offset.toString());
+  if (params?.sector) query.set('sector', params.sector);
+  if (params?.min_dividend_yield !== undefined) query.set('min_dividend_yield', params.min_dividend_yield.toString());
+  if (params?.max_pe !== undefined) query.set('max_pe', params.max_pe.toString());
+  if (params?.min_pe !== undefined) query.set('min_pe', params.min_pe.toString());
+  if (params?.max_volatility !== undefined) query.set('max_volatility', params.max_volatility.toString());
+  if (params?.min_return_12m !== undefined) query.set('min_return_12m', params.min_return_12m.toString());
+  if (params?.min_return_3m !== undefined) query.set('min_return_3m', params.min_return_3m.toString());
+  if (params?.min_market_cap !== undefined) query.set('min_market_cap', params.min_market_cap.toString());
+  if (params?.risk_level) query.set('risk_level', params.risk_level);
+
+  return apiCall<UsScreenerResponse>(`/api/us/screener${query.toString() ? `?${query}` : ''}`);
+}
+
+/**
+ * Get basic stock info for a US stock
+ */
+export async function getUsStockInfo(ticker: string) {
+  return apiCall<{ success: boolean; data: UsStock }>(`/api/us/stock/${ticker}`);
+}
+
+/**
+ * Get US macro indicators (S&P 500, NASDAQ, VIX, Treasury, etc.)
+ */
+export async function getUsMacro() {
+  return apiCall<{ success: boolean; data: UsMacroData }>('/api/us/macro');
+}
+
+/**
+ * Get US macro indicator history
+ */
+export async function getUsMacroHistory(code: string, period: string = '1y', interval: string = '1d') {
+  return apiCall<{ success: boolean; data: any }>(`/api/us/macro/${encodeURIComponent(code)}/history?period=${period}&interval=${interval}`);
+}
+
+// Helper for formatting USD prices
+export function formatUsdPrice(price: number): string {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(price);
+}
+
+// Helper for formatting large USD numbers
+export function formatLargeUsdNumber(value: number): string {
+  if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
+  if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
+  if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
+  if (value >= 1e3) return `$${(value / 1e3).toFixed(2)}K`;
+  return `$${value.toFixed(2)}`;
+}

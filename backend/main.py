@@ -17,7 +17,7 @@ from datetime import datetime
 import logging
 
 # Import routers
-from app.routers import stocks, crypto, social, macro, news, portfolio, chart, auth, watchlist, fi
+from app.routers import stocks, crypto, social, macro, news, portfolio, chart, auth, watchlist, fi, us
 from app.config.settings import settings
 
 # Configure logging
@@ -228,6 +228,11 @@ app.include_router(
     tags=["Finland (Nasdaq Helsinki)"],
 )
 
+app.include_router(
+    us.router,
+    tags=["United States (NYSE/NASDAQ)"],
+)
+
 # ============================================================================
 # Root & Health Endpoints
 # ============================================================================
@@ -358,9 +363,19 @@ async def startup_event():
         fi_service = get_fi_data_service()
         fi_service.warm_cache_async()
         print("🇫🇮 Finnish stocks cache warming requested")
-        print("=" * 60)
     except Exception as e:
         print(f"⚠️  Finnish cache warming failed: {e}")
+
+    # Start US stocks cache warming in background
+    try:
+        from app.services.us_data import get_us_data_service
+        us_service = get_us_data_service()
+        us_service.warm_cache_async()
+        print("🇺🇸 US stocks cache warming requested")
+        print("=" * 60)
+    except Exception as e:
+        print(f"⚠️  US cache warming failed: {e}")
+        print("=" * 60)
 
 @app.on_event("shutdown")
 async def shutdown_event():

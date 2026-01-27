@@ -368,11 +368,10 @@ const MetricCard = ({ label, value, subValue, icon: Icon, trend }: {
       {Icon && <Icon className="w-4 h-4 2xl:w-6 2xl:h-6" />}
       <span>{label}</span>
     </div>
-    <div className={`text-lg 2xl:text-4xl font-semibold ${
-      trend === 'up' ? 'text-green-400' :
-      trend === 'down' ? 'text-red-400' :
-      'text-white'
-    }`}>
+    <div className={`text-lg 2xl:text-4xl font-semibold ${trend === 'up' ? 'text-green-400' :
+        trend === 'down' ? 'text-red-400' :
+          'text-white'
+      }`}>
       {value}
     </div>
     {subValue && <div className="text-xs 2xl:text-base text-slate-500 mt-1 2xl:mt-2">{subValue}</div>}
@@ -573,9 +572,10 @@ export default function FiStockPage() {
             <div className="flex items-center gap-3 2xl:gap-4">
               <button
                 onClick={() => refetchAnalysis()}
-                className="p-2 2xl:p-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg 2xl:rounded-xl text-slate-400 hover:text-white transition-colors"
+                className="flex items-center gap-2 px-3 py-2 2xl:px-4 2xl:py-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-lg 2xl:rounded-xl text-slate-400 hover:text-white transition-colors"
               >
                 <RefreshCw className="w-4 h-4 2xl:w-6 2xl:h-6" />
+                <span className="text-xs 2xl:text-base hidden sm:inline">Päivitä saadaksesi reaaliaikaisimman hinnan</span>
               </button>
               <ThemeToggle />
             </div>
@@ -628,11 +628,10 @@ export default function FiStockPage() {
                   {technicals?.summary?.verdict && (
                     <div className="text-center">
                       <div className="text-[10px] 2xl:text-xs text-slate-400 mb-1">Tekninen</div>
-                      <div className={`inline-flex flex-col items-center px-4 py-2 rounded-xl border ${
-                        technicals.summary.verdict === 'OSTA' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
-                        technicals.summary.verdict === 'MYY' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
-                        'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
-                      }`}>
+                      <div className={`inline-flex flex-col items-center px-4 py-2 rounded-xl border ${technicals.summary.verdict === 'OSTA' ? 'bg-green-500/20 text-green-400 border-green-500/30' :
+                          technicals.summary.verdict === 'MYY' ? 'bg-red-500/20 text-red-400 border-red-500/30' :
+                            'bg-yellow-500/20 text-yellow-400 border-yellow-500/30'
+                        }`}>
                         <span className="text-lg 2xl:text-2xl font-bold">{technicals.summary.verdict}</span>
                         <span className="text-xs 2xl:text-sm opacity-80">{technicals.summary.text?.slice(0, 20) || ''}</span>
                       </div>
@@ -641,23 +640,22 @@ export default function FiStockPage() {
                 </div>
 
                 {quote && (
-                <div className="text-right">
-                  <div className="text-3xl md:text-4xl 2xl:text-6xl font-bold text-white mb-1 2xl:mb-3">
-                    {formatEur(quote.price)}
+                  <div className="text-right">
+                    <div className="text-3xl md:text-4xl 2xl:text-6xl font-bold text-white mb-1 2xl:mb-3">
+                      {formatEur(quote.price)}
+                    </div>
+                    <div className={`flex items-center justify-end gap-1 2xl:gap-2 text-lg 2xl:text-3xl ${(quote.changePercent || 0) >= 0 ? 'text-green-400' : 'text-red-400'
+                      }`}>
+                      {(quote.changePercent || 0) >= 0 ? (
+                        <ArrowUpRight className="w-5 h-5 2xl:w-8 2xl:h-8" />
+                      ) : (
+                        <ArrowDownRight className="w-5 h-5 2xl:w-8 2xl:h-8" />
+                      )}
+                      <span>{formatPercent(quote.changePercent)}</span>
+                      <span className="text-slate-500">({formatEur(quote.change)})</span>
+                    </div>
                   </div>
-                  <div className={`flex items-center justify-end gap-1 2xl:gap-2 text-lg 2xl:text-3xl ${
-                    (quote.changePercent || 0) >= 0 ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {(quote.changePercent || 0) >= 0 ? (
-                      <ArrowUpRight className="w-5 h-5 2xl:w-8 2xl:h-8" />
-                    ) : (
-                      <ArrowDownRight className="w-5 h-5 2xl:w-8 2xl:h-8" />
-                    )}
-                    <span>{formatPercent(quote.changePercent)}</span>
-                    <span className="text-slate-500">({formatEur(quote.change)})</span>
-                  </div>
-                </div>
-              )}
+                )}
 
                 {/* Technical Analysis Link */}
                 <Link
@@ -699,11 +697,10 @@ export default function FiStockPage() {
                         <button
                           key={period.value}
                           onClick={() => setTimePeriod(period.value)}
-                          className={`px-2 sm:px-3 2xl:px-5 py-1.5 2xl:py-2.5 text-xs sm:text-sm 2xl:text-xl font-medium rounded-md 2xl:rounded-lg transition-colors ${
-                            timePeriod === period.value
+                          className={`px-2 sm:px-3 2xl:px-5 py-1.5 2xl:py-2.5 text-xs sm:text-sm 2xl:text-xl font-medium rounded-md 2xl:rounded-lg transition-colors ${timePeriod === period.value
                               ? 'bg-cyan-600 text-white'
                               : 'text-slate-400 hover:text-white'
-                          }`}
+                            }`}
                         >
                           {period.label}
                         </button>
@@ -711,9 +708,8 @@ export default function FiStockPage() {
                     </div>
                     {/* Chart return indicator */}
                     {chartReturn !== null && (
-                      <div className={`px-2 2xl:px-4 py-1 2xl:py-2 rounded 2xl:rounded-lg text-xs 2xl:text-xl font-medium ${
-                        chartReturn >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-                      }`}>
+                      <div className={`px-2 2xl:px-4 py-1 2xl:py-2 rounded 2xl:rounded-lg text-xs 2xl:text-xl font-medium ${chartReturn >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                        }`}>
                         {chartReturn >= 0 ? '+' : ''}{chartReturn.toFixed(1)}%
                       </div>
                     )}
@@ -735,8 +731,8 @@ export default function FiStockPage() {
                       <AreaChart data={chartData}>
                         <defs>
                           <linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor={chartReturn && chartReturn >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0.3}/>
-                            <stop offset="95%" stopColor={chartReturn && chartReturn >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0}/>
+                            <stop offset="5%" stopColor={chartReturn && chartReturn >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0.3} />
+                            <stop offset="95%" stopColor={chartReturn && chartReturn >= 0 ? "#22c55e" : "#ef4444"} stopOpacity={0} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
@@ -1108,17 +1104,15 @@ export default function FiStockPage() {
                   </div>
                   <div className="flex justify-between text-sm 2xl:text-2xl">
                     <span className="text-slate-400">{t.revenueGrowth}</span>
-                    <span className={`${
-                      fundamentals.revenueGrowth && fundamentals.revenueGrowth > 0 ? 'text-green-400' : 'text-white'
-                    }`}>
+                    <span className={`${fundamentals.revenueGrowth && fundamentals.revenueGrowth > 0 ? 'text-green-400' : 'text-white'
+                      }`}>
                       {fundamentals.revenueGrowth ? formatPercent(fundamentals.revenueGrowth * 100) : '—'}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm 2xl:text-2xl">
                     <span className="text-slate-400">{t.earningsGrowth}</span>
-                    <span className={`${
-                      fundamentals.earningsGrowth && fundamentals.earningsGrowth > 0 ? 'text-green-400' : 'text-white'
-                    }`}>
+                    <span className={`${fundamentals.earningsGrowth && fundamentals.earningsGrowth > 0 ? 'text-green-400' : 'text-white'
+                      }`}>
                       {fundamentals.earningsGrowth ? formatPercent(fundamentals.earningsGrowth * 100) : '—'}
                     </span>
                   </div>
